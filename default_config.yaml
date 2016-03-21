@@ -1,6 +1,6 @@
 robot:
-  name: poppy
-  creature: poppy-ergo-jr
+  name: $name
+  creature: $creature
   camera: on
 
 info:
