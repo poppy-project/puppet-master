@@ -11,7 +11,7 @@ class PuppetMaster(object):
     def __init__(self, DaemonCls, configfile, pidfile, logfile):
         self.configfile = os.path.abspath(configfile)
         self.pidfile = os.path.abspath(pidfile)
-        self.logfile = os.path.abspath(logfile)
+        self.logfile = self.config.info.logfile
 
         self.daemon = DaemonCls(self.configfile, self.pidfile, self.logfile)
 
@@ -71,12 +71,10 @@ if __name__ == '__main__':
 
     configfile = os.path.expanduser('~/.poppy_config.yaml')
     pidfile = '/tmp/puppet-master-pid.lock'
-    logfile = '/tmp/puppet-master.log'
 
     puppet_master = PuppetMaster(DaemonCls=PoppyDaemon,
                                  configfile=configfile,
-                                 pidfile=pidfile,
-                                 logfile=logfile)
+                                 pidfile=pidfile)
 
     if sys.argv[1] == 'start':
         puppet_master.start()
