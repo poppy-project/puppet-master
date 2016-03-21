@@ -1,0 +1,8 @@
+robot:
+  name: poppy
+  creature: poppy-ergo-jr
+  camera: on
+
+info:
+  version: 1.0
+  logfile: /tmp/puppet-master.log
