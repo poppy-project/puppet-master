@@ -3,9 +3,8 @@ import os
 from subprocess import call
 from contextlib import closing
 
-from config import Config
 from poppyd import PoppyDaemon
-from toolbox import attrsetter
+from config import Config, attrsetter
 
 
 class PuppetMaster(object):
