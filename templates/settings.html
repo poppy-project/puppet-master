@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+    <div data-alert class="alert-box warning round">
+        {{ message }}
+        <a href="#" class="close">&times;</a>
+    </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+<div class="row">
+  <div class="large-12 columns">
+    <h1>Configure your robot</h1>
+
+    <h2>Enable or disable camera</h3>
+    <div class="switch">
+      <input id="enableCameraSwitch" type="checkbox" {% if robot.camera %} checked {% endif %} >
+      <label for="enableCameraSwitch">Enable camera</label>
+    </div>
+
+    <h2>Robot hostname</h3>
+
+    <form>
+        <div class="large-4 columns">
+          <div class="row collapse">
+            <label>Input Label</label>
+            <div class="small-9 columns">
+              <input id="robotHostname" type="text" placeholder={{ robot.name }}>
+            </div>
+            <div class="small-3 columns">
+              <span class="postfix">.local</span>
+            </div>
+          </div>
+        </div>
+        <div class="large-4 columns">
+            <button id="updateHostname" type="button" class="button">Update</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block endscript %}
+<script>
+ $('#enableCameraSwitch').change(function() {
+      if($(this).prop("checked") === true) {
+          $.get("/camera/on");
+      } else {
+          $.get("/camera/off");
+      }
+  });
+$('#updateHostname').click(function() {
+    newName = $('#robotHostname').val();
+
+    if(newName != "" && newName != "{{ robot.name }}") {
+        $.get("/change_hostname/" + newName);
+    }
+});
+</script>
+{% endblock endscript %}

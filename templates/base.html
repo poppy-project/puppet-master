@@ -1,0 +1,54 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poppy Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/github.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+  </head>
+  <body>
+    <div class="off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+        <nav class="tab-bar top-bar" data-topbar role="navigation">
+          <section class="left-small">
+            <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+          </section>
+
+          <section class="middle tab-bar-section">
+            <h1 class="title">
+              <img class="app-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="Poppy">
+            </h1>
+          </section>
+        </nav>
+
+        {% include 'drawer.html' %}
+
+
+        <div class="main-section">
+          {% block content %}{% endblock content %}
+        </div>
+
+        <a class="exit-off-canvas"></a>
+
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/jquery.cookie.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/fastclick.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/placeholder.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/foundation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/highlight.pack.js') }}"></script>
+    <script>
+      $(document).foundation();
+      hljs.initHighlightingOnLoad();
+    </script>
+
+    {% block endscript %}{% endblock %}
+
+  </body>
+</html>

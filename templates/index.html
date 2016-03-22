@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="row">
+
+  <h1>Poppy Web Interface</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+      <div data-alert class="alert-box warning round">
+          {{ message }}
+          <a href="#" class="close">&times;</a>
+      </div>
+      {% endfor %}
+
+    {% endif %}
+  {% endwith %}
+  
+  <h2>Control your {{ robot.creature }}</h2>
+
+  <h3><a href={{ url_for('monitor') }}>monitor</a></h3>
+  <h3><a href={{ url_for('snap') }}>snap</a></h3>
+  <h3><a href={{ url_for('jupyter') }}>jupyter</a></h3>
+
+  <h2>Misc</h2>
+  <h3><a href={{ url_for('settings') }}>Settings</a></h3>
+  <h3><a href={{ url_for('reset') }}>reset</a></h3>
+
+  <h3><a href={{ url_for('logs') }}>logs</a></h3>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="large-12 columns">
+    <h1>Logs</h1>
+    <pre>
+      <code class="accesslog hljs">{{ logs_content }}</code>
+    </pre>
+  </div>
+</div>
+
+{% endblock content %}

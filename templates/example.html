@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="row">
+
+  <h1>Using Fundation v5.5.3 (<a href="http://foundation.zurb.com/sites/docs/v/5.5.3/">docs</a>)</h1>
+
+  <h2>h2 title</h2>
+  <h3>h3 title</h3>
+  <h4>h4 title</h4>
+  <h5>h5 title</h5>
+  <h6>h6 title</h6>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt, alias,
+    mollitia. Iusto assumenda officia quidem laborum pariatur et cupiditate,
+    eligendi dolorum dolores perspiciatis voluptates eos, labore provident at
+    nam nemo.
+  </p>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt, alias,
+    mollitia. Iusto assumenda officia quidem laborum pariatur et cupiditate,
+    eligendi dolorum dolores perspiciatis voluptates eos, labore provident at
+    nam nemo.
+  </p>
+</div>
+
+<form>
+  <div class="row">
+    <div class="large-12 columns">
+      <label>Input Label
+        <input type="text" placeholder="large-12.columns">
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-4 columns">
+      <label>First name
+        <input type="text" placeholder="large-4.columns">
+      </label>
+    </div>
+    <div class="large-4 columns">
+      <label class="error">Age
+        <input type="text" class="error" placeholder="large-4.columns">
+      </label>
+      <small class="error">C'est nul</small>
+    </div>
+    <div class="large-4 columns">
+      <div class="row collapse">
+        <label>Input Label</label>
+        <div class="small-9 columns">
+          <input type="text" placeholder="robotname">
+        </div>
+        <div class="small-3 columns">
+          <span class="postfix">.local</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-4 columns">
+      <label>Select Box
+        <select>
+          <option value="husker">Husker</option>
+          <option value="starbuck">Starbuck</option>
+          <option value="hotdog">Hot Dog</option>
+          <option value="apollo">Apollo</option>
+        </select>
+      </label>
+    </div>
+    <div class="large-4 columns">
+      <label>Choose a color</label>
+      <input type="radio" name="color" value="Red" id="colorRed"><label for="colorRed">Red</label>
+      <input type="radio" name="color" value="Blue" id="colorBlue"><label for="colorBlue">Blue</label>
+    </div>
+    <div class="large-4 columns">
+      <label>Check these out</label>
+      <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
+      <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 large-6 columns">
+      <label>Textarea Label
+        <textarea placeholder="small-12.columns"></textarea>
+      </label>
+    </div>
+    <div class="large-6 columns">
+      <h4>Enable or disable camera</h4>
+      <div class="switch">
+        <input id="enableCameraSwitch" type="checkbox" checked>
+        <label for="enableCameraSwitch">Enable camera</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <button type="button" class="button">Default Button</button>
+      <button type="button" class="button secondary">Secondary Button</button>
+    </div>
+  </div>
+</form>
+
+<div class="row">
+  <div class="large-12 columns">
+    <h4>Code example</h4>
+    <pre>
+      <code class="accesslog hljs">[Mon Feb  8 10:55:47 CET 2016] Started Unity installation helper
+[Mon Feb  8 11:01:48 CET 2016] input: install
+[Mon Feb  8 11:01:48 CET 2016] package: /Users/damiencaselli/Downloads/UnityPackages/Unity.pkg
+[Mon Feb  8 11:01:48 CET 2016] target: /
+[Mon Feb  8 11:01:48 CET 2016] cmd: /usr/sbin/installer -pkg "/Users/damiencaselli/Downloads/UnityPackages/Unity.pkg" -target "/" -verboseR
+[Mon Feb  8 11:01:59 CET 2016] The package installed successfully
+[Mon Feb  8 11:01:59 CET 2016] input: install
+[Mon Feb  8 11:01:59 CET 2016] package: /Users/damiencaselli/Downloads/UnityPackages/Documentation.pkg
+[Mon Feb  8 11:01:59 CET 2016] target: /
+[Mon Feb  8 11:01:59 CET 2016] cmd: /usr/sbin/installer -pkg "/Users/damiencaselli/Downloads/UnityPackages/Documentation.pkg" -target "/" -verboseR
+[Mon Feb  8 11:02:08 CET 2016] The package installed successfully
+[Mon Feb  8 11:02:08 CET 2016] input: install
+[Mon Feb  8 11:02:08 CET 2016] package: /Users/damiencaselli/Downloads/UnityPackages/WebPlayer.pkg
+[Mon Feb  8 11:02:08 CET 2016] target: /
+[Mon Feb  8 11:02:08 CET 2016] cmd: /usr/sbin/installer -pkg "/Users/damiencaselli/Downloads/UnityPackages/WebPlayer.pkg" -target "/" -verboseR
+[Mon Feb  8 11:02:11 CET 2016] The package installed successfully
+[Mon Feb  8 11:02:11 CET 2016] input: install
+[Mon Feb  8 11:02:11 CET 2016] package: /Users/damiencaselli/Downloads/UnityPackages/StandardAssets.pkg
+[Mon Feb  8 11:02:11 CET 2016] target: /
+[Mon Feb  8 11:02:11 CET 2016] cmd: /usr/sbin/installer -pkg "/Users/damiencaselli/Downloads/UnityPackages/StandardAssets.pkg" -target "/" -verboseR
+[Mon Feb  8 11:02:13 CET 2016] The package installed successfully
+[Mon Feb  8 11:02:13 CET 2016] input: install
+[Mon Feb  8 11:02:13 CET 2016] package: /Users/damiencaselli/Downloads/UnityPackages/Examples.pkg
+[Mon Feb  8 11:02:13 CET 2016] target: /
+[Mon Feb  8 11:02:13 CET 2016] cmd: /usr/sbin/installer -pkg "/Users/damiencaselli/Downloads/UnityPackages/Examples.pkg" -target "/" -verboseR
+[Mon Feb  8 11:02:19 CET 2016] The package installed successfully
+[Mon Feb  8 11:02:19 CET 2016] input: install
+[Mon Feb  8 11:02:19 CET 2016] package: /Users/damiencaselli/Downloads/UnityPackages/UnitySetup-Mac-Support-for-Editor-5.3.2f1.pkg
+[Mon Feb  8 11:02:19 CET 2016] target: /</code>
+    </pre>
+  </div>
+</div>
+
+{% endblock content %}
