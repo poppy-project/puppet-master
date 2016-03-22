@@ -17,7 +17,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-
     # Install config from default template
     with open('default_config.yaml') as f:
         s = Template(f.read())
