@@ -7,12 +7,14 @@ class Config(object):
         object.__setattr__(self, '_{}__file'.format(type(self).__name__), filename)
 
     def close(self):
-        config = self.__dict__['_{}__config'.format(type(self).__name__)]
         filename = self.__dict__['_{}__file'.format(type(self).__name__)]
 
         if filename is not None:
             with open(filename, 'w') as f:
-                f.write(yaml.dump(config))
+                f.write(yaml.safe_dump(self.as_dict(), default_flow_style=False))
+
+    def as_dict(self):
+        return self.__dict__['_{}__config'.format(type(self).__name__)]
 
     @classmethod
     def from_file(cls, filename):
@@ -20,7 +22,7 @@ class Config(object):
             return cls(yaml.load(f), filename)
 
     def __repr__(self):
-        return str(self.__config)
+        return str(self.as_dict())
 
     def __getattr__(self, key):
         value = self.__config[key]
