@@ -5,13 +5,19 @@ from flask import (Flask,
                    render_template, flash,
                    send_from_directory)
 
-from dummy_pm import PuppetMaster
+from puppet_master import PuppetMaster
+from poppyd import PoppyDaemon
 
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-pm = PuppetMaster(None, 'tmp.yaml', '/tmp/puppet-master-pid.lock')
+configfile = os.path.expanduser('~/.poppy_config.yaml')
+pidfile = '/tmp/puppet-master-pid.lock'
+
+pm = PuppetMaster(DaemonCls=PoppyDaemon,
+                  configfile=configfile,
+                  pidfile=pidfile)
 
 
 @app.context_processor
