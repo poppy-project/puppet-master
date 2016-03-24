@@ -83,6 +83,8 @@ class PoppyDaemon(Daemon):
         if 'use-dummy' in config['robot'] and config['robot']['use-dummy']:
             cmd += ['--poppy-simu']
 
+        return cmd
+
 
 if __name__ == '__main__':
     import argparse
