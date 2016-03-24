@@ -19,6 +19,10 @@ pm = PuppetMaster(DaemonCls=PoppyDaemon,
                   configfile=configfile,
                   pidfile=pidfile)
 
+if os.path.exists(pidfile):
+    pm.force_clean()
+pm.start()
+
 
 @app.context_processor
 def inject_robot_config():
