@@ -56,8 +56,7 @@ def jupyter():
     if pm.running:
         pm.stop()
 
-    # TODO broken?
-    return redirect('{}:8888'.format(get_root(request)))
+    return redirect('http://{}:8888'.format(get_host(request)))
 
 
 @app.route('/settings')
@@ -120,8 +119,15 @@ def example():
     return render_template('example.html')
 
 
-def get_root(request):
-    return request.url_root[:request.url_root.rfind(':')]
+def get_host(request):
+    root = request.url_root
+    if root.startswith('http://'):
+        root = root[len('http://'):]
+
+    if root.endswith('/'):
+        root = root[:-1]
+
+    return root
 
 
 if __name__ == "__main__":
