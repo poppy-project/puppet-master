@@ -8,10 +8,12 @@ from subprocess import Popen
 
 
 class Daemon(object):
-    def __init__(self, cmd, pidfile, logfile):
-        self.cmd = cmd
+    def __init__(self, pidfile, logfile):
         self.pidfile = os.path.abspath(pidfile)
         self.logfile = os.path.abspath(logfile)
+
+    def get_command(self):
+        raise NotImplementedError
 
     def start(self):
         if 'running' in self.status():
@@ -19,7 +21,7 @@ class Daemon(object):
                               'Daemon already running?'.format(self.pidfile))
 
         with open(self.logfile, 'w') as log:
-            p = Popen(self.cmd, stdout=log, stderr=log)
+            p = Popen(self.get_command(), stdout=log, stderr=log)
 
             with open(self.pidfile, 'w') as f:
                 f.write('{}'.format(p.pid))
@@ -57,7 +59,15 @@ class Daemon(object):
 
 class PoppyDaemon(Daemon):
     def __init__(self, configfile, pidfile):
-        with open(configfile) as f:
+        self.configfile = configfile
+
+        with open(self.configfile) as f:
+            config = yaml.load(f)
+
+        Daemon.__init__(self, pidfile, config['info']['logfile'])
+
+    def get_command(self):
+        with open(self.configfile) as f:
             config = yaml.load(f)
 
         cmd = [
@@ -72,8 +82,6 @@ class PoppyDaemon(Daemon):
 
         if 'use-dummy' in config['robot'] and config['robot']['use-dummy']:
             cmd += ['--poppy-simu']
-
-        Daemon.__init__(self, cmd, pidfile, config['info']['logfile'])
 
 
 if __name__ == '__main__':
