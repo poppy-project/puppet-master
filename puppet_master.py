@@ -8,12 +8,12 @@ from config import Config, attrsetter
 
 
 class PuppetMaster(object):
-    def __init__(self, DaemonCls, configfile, pidfile, logfile):
+    def __init__(self, DaemonCls, configfile, pidfile):
         self.configfile = os.path.abspath(configfile)
         self.pidfile = os.path.abspath(pidfile)
         self.logfile = self.config.info.logfile
 
-        self.daemon = DaemonCls(self.configfile, self.pidfile, self.logfile)
+        self.daemon = DaemonCls(self.configfile, self.pidfile)
 
         self.config_handlers = {
             'robot.camera': lambda _: self.restart(),
