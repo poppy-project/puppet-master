@@ -3,21 +3,49 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row" data-equalizer data-equalize-on="medium">
 
-  <h1>Poppy Web Interface</h1>
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('monitor') }}" data-equalizer-watch>
+      <h3>Monitor</h3>
+      <p>The monitor</p>
+    </a>
+  </div>
 
-  <h2>Control your {{ robot.creature }}</h2>
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('snap') }}" data-equalizer-watch>
+      <h3>Snap<em>!</em></h3>
+      <p>BYOB</p>
+    </a>
+  </div>
 
-  <h3><a href={{ url_for('monitor') }}>monitor</a></h3>
-  <h3><a href={{ url_for('snap') }}>snap</a></h3>
-  <h3><a href={{ url_for('jupyter') }}>jupyter</a></h3>
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('jupyter') }}" data-equalizer-watch>
+      <h3>Jupyter</h3>
+      <p>Not the planet</p>
+    </a>
+  </div>
 
-  <h2>Misc</h2>
-  <h3><a href={{ url_for('settings') }}>Settings</a></h3>
-  <h3><a href={{ url_for('reset') }}>reset</a></h3>
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('settings') }}" data-equalizer-watch>
+      <h3>Settings</h3>
+      <p>Configure the robot</p>
+    </a>
+  </div>
 
-  <h3><a href={{ url_for('logs') }}>logs</a></h3>
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('reset') }}" data-equalizer-watch>
+      <h3>Reset</h3>
+      <p>reboot</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('logs') }}" data-equalizer-watch>
+      <h3>Logs</h3>
+      <p>What happened?</p>
+    </a>
+  </div>
 
 </div>
 {% endblock content %}

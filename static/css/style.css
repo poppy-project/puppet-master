@@ -11,3 +11,15 @@
   font-size: 1rem;
   margin-bottom: 0;
 }
+
+.menu-tile {
+  padding: 1rem;
+}
+
+.menu-tile a {
+  display: block;
+  padding: 1rem;
+
+  border: 1px solid #2199e8;
+  text-align: center;
+}
