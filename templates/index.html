@@ -7,45 +7,68 @@
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('monitor') }}" data-equalizer-watch>
-      <h3>Monitor</h3>
+      <h3>
+        <svg class="pp-icon pp-icon-stats">
+          <title>Monitor</title>
+          <use xlink:href="#pp-icon-stats"></use>
+        </svg>
+      </h3>
       <p>The monitor</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('snap') }}" data-equalizer-watch>
-      <h3>Snap<em>!</em></h3>
+      <h3></h3>
       <p>BYOB</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('jupyter') }}" data-equalizer-watch>
-      <h3>Jupyter</h3>
+      <h3></h3>
       <p>Not the planet</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('settings') }}" data-equalizer-watch>
-      <h3>Settings</h3>
+      <h3>
+        <svg class="pp-icon pp-icon-build">
+          <title>Settings</title>
+          <use xlink:href="#pp-icon-build"></use>
+        </svg>
+      </h3>
       <p>Configure the robot</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('reset') }}" data-equalizer-watch>
-      <h3>Reset</h3>
-      <p>reboot</p>
+      <h3>
+        <svg class="pp-icon pp-icon-sync">
+          <title>Restart</title>
+          <use xlink:href="#pp-icon-sync"></use>
+        </svg>
+      </h3>
+      <p>reboot the robot</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('logs') }}" data-equalizer-watch>
-      <h3>Logs</h3>
+      <h3>
+        <svg class="pp-icon pp-icon-assignment">
+          <title>Logs</title>
+          <use xlink:href="#pp-icon-assignment"></use>
+        </svg>
+      </h3>
       <p>What happened?</p>
     </a>
   </div>
 
 </div>
+
+{% include 'defs-svg.html' %}
+
 {% endblock content %}

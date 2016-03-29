@@ -1,3 +1,10 @@
+.pp-icon {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  fill: currentColor;
+}
+
 .top-bar {
   padding: 1rem;
   margin-bottom: 1rem;
@@ -14,6 +21,11 @@
 
 .menu-tile {
   padding: 1rem;
+}
+
+.menu-tile .pp-icon {
+  width: 60px;
+  height: 60px;
 }
 
 .menu-tile a {
