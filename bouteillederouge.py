@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import (Flask,
                    redirect, url_for,
@@ -116,6 +117,24 @@ def done_updating():
 def switch_camera(checked):
     pm.update_config('robot.camera', True if checked == 'on' else False)
     return 'OK'
+
+
+@app.route('/ready-to-roll')
+def ready_to_roll():
+    with open(pm.config.info.logfile) as f:
+        content = f.read()
+
+    if 'SnapRobotServer is now running on' not in content:
+        return 'KO'
+
+    try:
+        r = requests.get('http://{}:6969/motors/get/positions'.format(get_host()))
+        if r.status_code == 200:
+            return 'OK'
+    except:
+        pass
+
+    return 'KO'
 
 
 @app.route('/example')
