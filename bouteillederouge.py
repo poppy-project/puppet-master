@@ -26,7 +26,7 @@ pm.start()
 
 @app.context_processor
 def inject_robot_config():
-    return dict(robot=pm.config.robot)
+    return dict(robot=pm.config.robot, info=pm.config.info)
 
 
 @app.route('/')
