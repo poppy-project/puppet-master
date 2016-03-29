@@ -19,14 +19,18 @@
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('snap') }}" data-equalizer-watch>
-      <h3></h3>
+      <h3>
+        <img width="113" height="62" src="{{ url_for('static', filename='img/logo-snap.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-snap-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Snap!">
+      </h3>
       <p>BYOB</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('jupyter') }}" data-equalizer-watch>
-      <h3></h3>
+      <h3>
+        <img width="63" height="62" src="{{ url_for('static', filename='img/logo-jupyter.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-jupyter-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Jupyter">
+      </h3>
       <p>Not the planet</p>
     </a>
   </div>

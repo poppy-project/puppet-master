@@ -23,9 +23,17 @@
   padding: 1rem;
 }
 
+.menu-tile h3 {
+  margin-bottom: 1rem;
+}
+
 .menu-tile .pp-icon {
-  width: 60px;
-  height: 60px;
+  width: 62px;
+  height: 62px;
+
+  margin: 0 auto;
+
+  display: block;
 }
 
 .menu-tile a {
