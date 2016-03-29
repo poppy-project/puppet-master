@@ -5,7 +5,7 @@ import argparse
 from flask import (Flask,
                    redirect, url_for,
                    render_template, flash,
-                   send_from_directory)
+                   send_from_directory, Response)
 
 from poppyd import PoppyDaemon
 
@@ -167,6 +167,16 @@ def ready_to_roll():
 @app.route('/example')
 def example():
     return render_template('example.html')
+
+
+@app.route('/api/raw_logs')
+def raw_logs():
+    try:
+        with open(pm.config.info.logfile) as f:
+            content = f.read()
+    except IOError:
+        content = 'No log found...'
+    return Response(content, mimetype='text/plain')
 
 
 def get_host():

@@ -20,7 +20,7 @@
 var timeOut;
 
 function refreshLogs() {
-  $.get('/raw_logs', function(rawLogs) {
+  $.get('{{ url_for('raw_logs') }}', function(rawLogs) {
     var logsElement = document.getElementById('robot-logs');
 
     logsElement.innerHTML = rawLogs;
