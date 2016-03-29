@@ -26,7 +26,7 @@ python bouteillederouge.py
 
 It will start the webserver binded on 0.0.0.0 and use the default port 5000. So, you can now connect to http://localhost:5000 and see this:
 
-![Homepage of the Web Interface](TODO)
+![Homepage of the Web Interface](homepage-snapshot.png)
 
 You can run it in test mode that can be used on any computer without risking erasing anything via. The debug flag is for Flask debug mode:
 
