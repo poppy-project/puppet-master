@@ -1,3 +1,14 @@
+/*
+  Helpers
+ */
+.il {
+  display: inline;
+}
+
+/*
+  Specific
+ */
+
 .pp-icon {
   width: 1em;
   height: 1em;
@@ -7,11 +18,24 @@
 
 .top-bar {
   padding: 1rem;
-  margin-bottom: 1rem;
+
+  border-bottom: 1px solid #cacaca;
+}
+
+.top-bar, .top-bar ul {
+  background-color: #fefefe;
+}
+
+.wrap {
+  padding: 20px 0;
 }
 
 .version {
   font-size: 12px;
+}
+
+.flash-message {
+  margin: 1rem auto;
 }
 
 .flash-message h5 {
@@ -42,4 +66,8 @@
 
   border: 1px solid #2199e8;
   text-align: center;
+}
+
+.section-title {
+  padding: 2rem 0;
 }

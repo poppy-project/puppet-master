@@ -2,50 +2,46 @@
 
 {% block content %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-    <div data-alert class="alert-box warning round">
-        {{ message }}
-        <a href="#" class="close">&times;</a>
-    </div>
-    {% endfor %}
-
-  {% endif %}
-{% endwith %}
-
-<h1>Configure your robot</h1>
-
 <div class="row">
-  <div class="large-12 columns">
-    <h2>Toggle camera on/off</h2>
-
-    <div class="switch">
-      <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch"{% if robot.camera %} checked{% endif %}>
-      <label class="switch-paddle" for="camera-switch">
-        <span class="show-for-sr">Toggle Camera</span>
-      </label>
-    </div>
+  <div class="columns">
+    <h1 class="section-title">Configure your robot</h1>
   </div>
 </div>
 
 <div class="row">
-  <div class="large-12 columns">
-    <h2>Robot hostname</h3>
+  <div class="large-6 columns">
+    <div class="callout">
+      <h2>
+        Toggle camera on/off
 
-    <form>
-      <div class="row">
-        <div class="large-4 columns">
-          <div class="input-group">
-            <input id="robot-hostname" class="input-group-field" type="number" placeholder={{ robot.name }}>
-            <span class="input-group-label">.local</span>
+        <div class="switch il">
+          <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch"{% if robot.camera %} checked{% endif %}>
+          <label class="switch-paddle" for="camera-switch">
+            <span class="show-for-sr">Toggle Camera</span>
+          </label>
+        </div>
+      </h2>
+    </div>
+  </div>
+
+  <div class="large-6 columns">
+    <div class="callout">
+      <h2>Robot hostname</h3>
+
+      <form>
+        <div class="row">
+          <div class="large-9 columns">
+            <div class="input-group">
+              <input id="robot-hostname" class="input-group-field" type="number" placeholder={{ robot.name }}>
+              <span class="input-group-label">.local</span>
+            </div>
+          </div>
+          <div class="large-3 columns">
+            <button id="update-robot-hostname" type="button" class="button">Update</button>
           </div>
         </div>
-        <div class="large-4 columns end">
-          <button id="update-robot-hostname" type="button" class="button">Update</button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
 
   </div>
 </div>

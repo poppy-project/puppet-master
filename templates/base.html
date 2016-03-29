@@ -31,7 +31,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}
     <div class="row">
       {%- for category, message in messages %}
-      <div class="flash-message callout {{ category }} column" data-closable>
+      <div class="flash-message callout {{ category }} large-centered large-8 columns" data-closable>
         <h5>{{ message }}</h5>
         <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
           <span aria-hidden="true">&times;</span>
