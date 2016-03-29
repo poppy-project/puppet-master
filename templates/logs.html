@@ -25,7 +25,6 @@ function refreshLogs() {
 
     logsElement.innerHTML = rawLogs;
     hljs.highlightBlock(logsElement);
-    window.scrollTo(0, document.body.scrollHeight);
 
     startTimeout();
   });
