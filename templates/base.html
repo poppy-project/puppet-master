@@ -30,14 +30,14 @@
 
     {% with messages = get_flashed_messages() %}{% if messages %}
     <div class="row">
-      {% for message in messages %}
-      <div class="flash-message callout warning column" data-closable>
+      {%- for category, message in messages %}
+      <div class="flash-message callout {{ category }} column" data-closable>
         <h5>{{ message }}</h5>
         <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      {% endfor %}
+      {%- endfor %}
     </div>
     {% endif %}{% endwith %}
 
