@@ -60,7 +60,10 @@ def jupyter():
     if pm.running:
         pm.stop()
 
-    return redirect('http://{}.local:8888'.format(pm.config.robot.name))
+    host = pm.config.robot.name
+    host = host if host == 'localhost' else '{}.local'.format(host)
+
+    return redirect('http://{}:8888'.format(host))
 
 
 @app.route('/settings')
