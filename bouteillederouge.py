@@ -1,19 +1,46 @@
 import os
 import requests
+import argparse
 
 from flask import (Flask,
                    redirect, url_for,
                    render_template, flash,
                    send_from_directory)
 
-from puppet_master import PuppetMaster
 from poppyd import PoppyDaemon
+
+
+parser = argparse.ArgumentParser(description='Serve the webinterface '
+                                             'for controlling Poppy robots')
+parser.add_argument('--debug', action='store_true',
+                    help='use the debug mode')
+parser.add_argument('--test', action='store_true',
+                    help='does not modify anything on your machine '
+                         '(except from a config file in /tmp)')
+args = parser.parse_args()
+
+
+if args.test:
+    from dummy_pm import PuppetMaster
+else:
+    from puppet_master import PuppetMaster
 
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-configfile = os.path.expanduser('~/.poppy_config.yaml')
+if args.debug:
+    app.debug = True
+
+if args.test:
+    from subprocess import call
+    configfile = '/tmp/poppy_config.yaml'
+    call(['python', 'bootstrap.py',
+          '--config-path', configfile,
+          'localhost', 'poppy-ergo-jr'])
+else:
+    configfile = os.path.expanduser('~/.poppy_config.yaml')
+
 pidfile = '/tmp/puppet-master-pid.lock'
 
 pm = PuppetMaster(DaemonCls=PoppyDaemon,
@@ -149,4 +176,4 @@ def get_host():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
