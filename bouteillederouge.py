@@ -99,7 +99,7 @@ def settings():
 @app.route('/change_hostname/<name>')
 def change_hostname(name):
     pm.update_config('robot.name', name)
-    flash('Robot name was changed to {}'.format(name))
+    flash('Robot name was changed to {}'.format(name), 'warning')
     return 'OK'
 
 
@@ -119,14 +119,15 @@ def reset():
         pm.stop()
 
     pm.start()
-    flash('Your robot has been restarted.')
+    flash('Your robot has been restarted.', 'warning')
     return redirect(url_for('index'))
 
 
 @app.route('/udpate')
 def update():
     pm.self_update()
-    flash('Your robot is currently updating. Please do not turn it off before it\' done!')
+    flash('Your robot is currently updating. '
+          'Please do not turn it off before it\' done!', 'warning')
 
 
 @app.route('/updating')
@@ -136,13 +137,14 @@ def is_updating():
 
 @app.route('/done-updating')
 def done_updating():
-    flash('Your robot is now up-to-date!')
+    flash('Your robot is now up-to-date!', 'success')
     return redirect(url_for('index'))
 
 
 @app.route('/camera/<checked>')
 def switch_camera(checked):
     pm.update_config('robot.camera', True if checked == 'on' else False)
+    flash('Your robot camera is now turned {}!'.format(checked), 'success')
     return 'OK'
 
 
