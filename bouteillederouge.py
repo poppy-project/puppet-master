@@ -67,7 +67,13 @@ def monitor():
     if not pm.running:
         pm.start()
 
-    return render_template('monitor.html')
+    return redirect(url_for('base_static_monitor',
+                            filename='{}.html'.format(pm.config.robot.creature)))
+
+
+@app.route('/monitor/<path:filename>')
+def base_static_monitor(filename):
+    return send_from_directory(app.root_path + '/monitor/', filename)
 
 
 @app.route('/snap')
@@ -75,11 +81,11 @@ def snap():
     if not pm.running:
         pm.start()
 
-    return redirect(url_for('base_static', filename='snap.html'))
+    return redirect(url_for('base_static_snap', filename='snap.html'))
 
 
 @app.route('/snap/<path:filename>')
-def base_static(filename):
+def base_static_snap(filename):
     return send_from_directory(app.root_path + '/snap/', filename)
 
 
