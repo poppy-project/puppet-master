@@ -14,11 +14,11 @@
   {% endif %}
 {% endwith %}
 
+<h1>Configure your robot</h1>
+
 <div class="row">
   <div class="large-12 columns">
-    <h1>Configure your robot</h1>
-
-    <h2>Toggle camera on/off</h3>
+    <h2>Toggle camera on/off</h2>
 
     <div class="switch">
       <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch"{% if robot.camera %} checked{% endif %}>
@@ -26,23 +26,24 @@
         <span class="show-for-sr">Toggle Camera</span>
       </label>
     </div>
+  </div>
+</div>
 
+<div class="row">
+  <div class="large-12 columns">
     <h2>Robot hostname</h3>
 
     <form>
-      <div class="large-4 columns">
-        <div class="row collapse">
-          <label>Input Label</label>
-          <div class="small-9 columns">
-            <input id="robotHostname" type="text" placeholder={{ robot.name }}>
-          </div>
-          <div class="small-3 columns">
-            <span class="postfix">.local</span>
+      <div class="row">
+        <div class="large-4 columns">
+          <div class="input-group">
+            <input id="robot-hostname" class="input-group-field" type="number" placeholder={{ robot.name }}>
+            <span class="input-group-label">.local</span>
           </div>
         </div>
-      </div>
-      <div class="large-4 columns">
-        <button id="updateHostname" type="button" class="button">Update</button>
+        <div class="large-4 columns end">
+          <button id="update-robot-hostname" type="button" class="button">Update</button>
+        </div>
       </div>
     </form>
 
@@ -62,8 +63,8 @@ $('#camera-switch').change(function() {
   }
 });
 
-$('#updateHostname').click(function() {
-    newName = $('#robotHostname').val();
+$('#update-robot-hostname').click(function() {
+    newName = $('#robot-hostname').val().trim();
 
     if (newName !== '' && newName !== '{{ robot.name }}') {
       $.get('/change_hostname/' + newName);
