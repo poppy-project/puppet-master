@@ -1,7 +1,7 @@
 import os
 
 from flask import (Flask,
-                   redirect, request, url_for,
+                   redirect, url_for,
                    render_template, flash,
                    send_from_directory)
 
@@ -60,7 +60,7 @@ def jupyter():
     if pm.running:
         pm.stop()
 
-    return redirect('http://{}:8888'.format(get_host(request)))
+    return redirect('http://{}.local:8888'.format(pm.config.robot.name))
 
 
 @app.route('/settings')
@@ -121,17 +121,6 @@ def switch_camera(checked):
 @app.route('/example')
 def example():
     return render_template('example.html')
-
-
-def get_host(request):
-    root = request.url_root
-    if root.startswith('http://'):
-        root = root[len('http://'):]
-
-    if root.endswith('/'):
-        root = root[:-1]
-
-    return root
 
 
 if __name__ == "__main__":
