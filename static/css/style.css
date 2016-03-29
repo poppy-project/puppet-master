@@ -1,7 +1,13 @@
 .top-bar {
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .version {
   font-size: 12px;
+}
+
+.flash-message h5 {
+  font-size: 1rem;
+  margin-bottom: 0;
 }

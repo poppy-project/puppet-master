@@ -16,20 +16,32 @@
 
     <nav class="top-bar" role="navigation">
       <div class="top-bar-title">
-        <img width="100" height="33" data-interchange="[{{ url_for('static', filename='img/logo-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Poppy">
+        <a href="{{ url_for('index') }}">
+          <img width="100" height="33" data-interchange="[{{ url_for('static', filename='img/logo-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Poppy">
+        </a>
       </div>
       <div class="top-bar-right">
         <ul class="menu">
-          <li><a href="{{ url_for('index') }}">Home</a></li>
           <li><a href="http://docs.poppy-project.org/en/" target="_blank">Docs</a></li>
           <li><span class="version">v{{ info.version }}</span></li>
         </ul>
       </div>
     </nav>
 
-    <div class="main-section">
-      {% block content %}{% endblock content %}
+    {% with messages = get_flashed_messages() %}{% if messages %}
+    <div class="row">
+      {% for message in messages %}
+      <div class="flash-message callout warning column" data-closable>
+        <h5>{{ message }}</h5>
+        <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
     </div>
+    {% endif %}{% endwith %}
+
+    {% block content %}{% endblock content %}
 
     <script src="{{ url_for('static', filename='js/vendor/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/vendor/what-input.min.js') }}"></script>
