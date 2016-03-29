@@ -1,2 +1,9 @@
 # puppet-master
-Control webinterface for poppy robots
+
+Control web interface for Poppy robots.
+
+## Instructions
+
+```bash
+pip install -r requirements.txt
+```
