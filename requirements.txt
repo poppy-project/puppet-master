@@ -1,3 +1,4 @@
 Flask>=0.10
 pyaml>=15.8
 requests>=2.9
+poppy-ergo-jr>=1.6
