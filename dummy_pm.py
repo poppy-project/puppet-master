@@ -2,9 +2,9 @@ from __future__ import print_function
 
 import os
 
-from contextlib import closing
+from collections import defaultdict
 
-from config import Config, attrsetter
+import puppet_master as pm
 
 
 success = """
@@ -31,95 +31,28 @@ Could not start up the robot...
 """
 
 
-def call(cmd):
-    print('Calling "{}"'.format(' '.join(cmd)))
-
-
-class PuppetMaster(object):
+class PuppetMaster(pm.PuppetMaster):
     def __init__(self, DaemonCls, configfile, pidfile):
-        self.configfile = os.path.abspath(configfile)
-        self.pidfile = os.path.abspath(pidfile)
-        self.logfile = self.config.info.logfile
+        pm.PuppetMaster.__init__(self, DaemonCls, configfile, pidfile)
 
-        self.daemon = None
-        self._running = 'stopped'
+        self.config_handlers = defaultdict(lambda: lambda _: _)
+        self.update_config('robot.use-dummy', True)
 
-        self.config_handlers = {
-            'robot.camera': lambda _: self.restart(),
-            'robot.name': self._change_hostname,
-        }
+    def log(self, msg, erase=False):
+        if erase:
+            os.remove(self.config.info.logfile)
 
-    def log(self, msg):
-        print(msg)
         with open(self.config.info.logfile, 'a') as f:
             f.write('{}\n'.format(msg))
 
     def start(self):
-        self.log('Start daemon')
-        self._running = 'running'
-
-    @property
-    def running(self):
-        return 'running' in self._running
+        self.log(success, erase=True)
+        pm.PuppetMaster.start(self)
 
     def stop(self):
-        try:
-            self.log('Stop daemon')
-            self._running = 'stopped'
-        except OSError:
-            self.force_clean()
-
-    def restart(self):
-        self.log('Restart daemon')
-        if self.running:
-            self.stop()
-
-        self.start()
-
-    def force_clean(self):
-        self.log('Force clean')
-        # self.daemon.force_clean()
-
-    @property
-    def config(self):
-        return Config.from_file(self.configfile)
+        self.log('Stop daemon')
+        pm.PuppetMaster.stop(self)
 
     def update_config(self, key, value):
         self.log('Update config {}={}'.format(key, value))
-        with closing(self.config) as c:
-            attrsetter(key)(c, value)
-
-        if key in self.config_handlers:
-            self.config_handlers[key](value)
-
-    def update(self):
-        raise NotImplementedError
-
-    @property
-    def is_updating(self):
-        raise NotImplementedError
-
-    def _change_hostname(self, name):
-        self.log('change hostname to {}'.format(name))
-        call(['sudo', 'raspi-config', '--change-hostname', name])
-        call(['sudo', 'service', 'avahi-daemon', 'restart'])
-        self.restart()
-
-
-if __name__ == '__main__':
-    import sys
-
-    # configfile = os.path.expanduser('~/.poppy_config.yaml')
-    configfile = 'bob.yaml'
-    pidfile = '/tmp/puppet-master-pid.lock'
-    logfile = '/tmp/puppet-master.log'
-
-    puppet_master = PuppetMaster(DaemonCls=None,
-                                 configfile=configfile,
-                                 pidfile=pidfile,
-                                 logfile=logfile)
-
-    if sys.argv[1] == 'start':
-        puppet_master.start()
-    elif sys.argv[1] == 'stop':
-        puppet_master.stop()
+        pm.PuppetMaster.update_config(self, key, value)
