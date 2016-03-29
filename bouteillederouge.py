@@ -60,10 +60,7 @@ def jupyter():
     if pm.running:
         pm.stop()
 
-    host = pm.config.robot.name
-    host = host if host == 'localhost' else '{}.local'.format(host)
-
-    return redirect('http://{}:8888'.format(host))
+    return redirect('http://{}:8888'.format(get_host()))
 
 
 @app.route('/settings')
@@ -124,6 +121,12 @@ def switch_camera(checked):
 @app.route('/example')
 def example():
     return render_template('example.html')
+
+
+def get_host():
+    host = pm.config.robot.name
+    host = host if host == 'localhost' else '{}.local'.format(host)
+    return host
 
 
 if __name__ == "__main__":
