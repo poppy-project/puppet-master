@@ -73,6 +73,7 @@ class PoppyDaemon(Daemon):
         cmd = [
             'poppy-services',
             config['robot']['creature'],
+            '--http',
             '--snap',
             '--no-browser',
         ]
