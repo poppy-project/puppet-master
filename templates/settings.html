@@ -64,7 +64,7 @@ $('#update-robot-hostname').click(function() {
 
     if (newHostname !== '' && newHostname !== '{{ robot.name }}') {
       $.get('/change_hostname/' + newHostname, function() {
-        window.location.href = 'http://' + newHostname;
+        window.location.href = 'http://' + newHostname + '.local';
       });
     }
 });
