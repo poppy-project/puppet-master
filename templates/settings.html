@@ -60,10 +60,12 @@ $('#camera-switch').change(function() {
 });
 
 $('#update-robot-hostname').click(function() {
-    newName = $('#robot-hostname').val().trim();
+    newHostname = $('#robot-hostname').val().trim();
 
-    if (newName !== '' && newName !== '{{ robot.name }}') {
-      $.get('/change_hostname/' + newName);
+    if (newHostname !== '' && newHostname !== '{{ robot.name }}') {
+      $.get('/change_hostname/' + newHostname, function() {
+        window.location.href = 'http://' + newHostname;
+      });
     }
 });
 
