@@ -6,3 +6,8 @@ robot:
 info:
   version: 1.0
   logfile: /tmp/puppet-master.log
+
+update:
+  url: https://raw.githubusercontent.com/pierre-rouanet/raspoppy/master/auto-update.sh
+  logfile: $home/.install.log
+  lockfile: /tmp/poppy-update-pid.lock

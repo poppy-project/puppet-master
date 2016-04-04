@@ -21,7 +21,8 @@ if __name__ == '__main__':
     with open('default_config.yaml') as f:
         s = Template(f.read())
 
-    s = s.substitute(name=args.hostname, creature=args.creature)
+    s = s.substitute(name=args.hostname, creature=args.creature,
+                     home=os.path.expanduser('~'))
 
     with open(args.config_path, 'w') as f:
         f.write(s)
