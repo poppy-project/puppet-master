@@ -1,6 +1,8 @@
 from __future__ import print_function
 
 import os
+import time
+import random
 
 from collections import defaultdict
 
@@ -37,6 +39,7 @@ class PuppetMaster(pm.PuppetMaster):
 
         self.config_handlers = defaultdict(lambda: lambda _: _)
         self.update_config('robot.use-dummy', True)
+        self.update_config('update.logfile', '/tmp/update.log')
 
     def log(self, msg, erase=False):
         if erase:
@@ -56,3 +59,24 @@ class PuppetMaster(pm.PuppetMaster):
     def update_config(self, key, value):
         self.log('Update config {}={}'.format(key, value))
         pm.PuppetMaster.update_config(self, key, value)
+
+    def self_update(self):
+        self._updating = True
+
+        if os.path.exists(self.config.update.logfile):
+            os.remove(self.config.update.logfile)
+
+        while True:
+            with open(self.config.update.logfile, 'a') as f:
+                f.write('Faking some install...\n')
+            time.sleep(random.random() * 2)
+
+            if random.random() < 0.1:
+                break
+
+        with open(self.config.update.logfile, 'a') as f:
+            f.write('Your robot is now up-to-date!\n')
+
+        self._updating = False
+
+        return True

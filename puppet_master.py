@@ -1,6 +1,6 @@
 import os
 
-from subprocess import call
+from subprocess import call, check_call
 from contextlib import closing
 
 from poppyd import PoppyDaemon
@@ -19,6 +19,7 @@ class PuppetMaster(object):
             'robot.camera': lambda _: self.restart(),
             'robot.name': self._change_hostname,
         }
+        self._updating = False
 
     def start(self):
         self.daemon.start()
@@ -53,12 +54,23 @@ class PuppetMaster(object):
         if key in self.config_handlers:
             self.config_handlers[key](value)
 
-    def update(self):
-        raise NotImplementedError
+    def self_update(self):
+        if self._updating:
+            return
+
+        self._updating = True
+        self.stop()
+
+        success = check_call(['poppy-update'])
+
+        self.start()
+        self._updating = False
+
+        return success
 
     @property
     def is_updating(self):
-        raise NotImplementedError
+        return self._updating
 
     def _change_hostname(self, name):
         call(['sudo', 'raspi-config', '--change-hostname', name])

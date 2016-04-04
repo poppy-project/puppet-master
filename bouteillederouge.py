@@ -2,10 +2,13 @@ import os
 import requests
 import argparse
 
+from threading import Thread
+
 from flask import (Flask,
                    redirect, url_for,
                    render_template, flash,
-                   send_from_directory, Response)
+                   send_from_directory, Response,
+                   copy_current_request_context)
 
 from poppyd import PoppyDaemon
 
@@ -119,6 +122,16 @@ def logs():
     return render_template('logs.html', logs_content=content)
 
 
+@app.route('/update-logs')
+def update_logs():
+    try:
+        with open(pm.config.update.logfile) as f:
+            content = f.read()
+    except IOError:
+        content = 'No log found...'
+    return render_template('update.html', update_logs_content=content)
+
+
 @app.route('/reset')
 def reset():
     if pm.running:
@@ -129,16 +142,29 @@ def reset():
     return redirect(url_for('index'))
 
 
-@app.route('/udpate')
+@app.route('/update')
 def update():
-    pm.self_update()
+    @copy_current_request_context
+    def update_in_bg():
+        success = pm.self_update()
+
+        if success:
+            flash('Your robot is now up-to-date!', 'success')
+        else:
+            flash('Update failed, check logs for details!', 'alert')
+
     flash('Your robot is currently updating. '
-          'Please do not turn it off before it\' done!', 'warning')
+          'Please do not turn it off before it\'s done!', 'warning')
+
+    if not pm.is_updating:
+        Thread(target=update_in_bg).start()
+
+    return redirect(url_for('update_logs'))
 
 
 @app.route('/updating')
 def is_updating():
-    return pm.is_updating
+    return 'true' if pm.is_updating else 'false'
 
 
 @app.route('/done-updating')
@@ -181,6 +207,16 @@ def example():
 def raw_logs():
     try:
         with open(pm.config.info.logfile) as f:
+            content = f.read()
+    except IOError:
+        content = 'No log found...'
+    return Response(content, mimetype='text/plain')
+
+
+@app.route('/api/update_raw_logs')
+def update_raw_logs():
+    try:
+        with open(pm.config.update.logfile) as f:
             content = f.read()
     except IOError:
         content = 'No log found...'
