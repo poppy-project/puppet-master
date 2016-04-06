@@ -4,8 +4,6 @@ import os
 import time
 import random
 
-from collections import defaultdict
-
 import puppet_master as pm
 
 
@@ -33,11 +31,17 @@ Could not start up the robot...
 """
 
 
+def print_command(cmd):
+    print(' '.join(cmd))
+
+
+pm.call = print_command
+
+
 class PuppetMaster(pm.PuppetMaster):
     def __init__(self, DaemonCls, configfile, pidfile):
         pm.PuppetMaster.__init__(self, DaemonCls, configfile, pidfile)
 
-        self.config_handlers = defaultdict(lambda: lambda _: _)
         self.update_config('robot.use-dummy', True)
         self.update_config('update.logfile', '/tmp/update.log')
 
