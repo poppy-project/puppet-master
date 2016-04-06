@@ -201,6 +201,7 @@ def ready_to_roll():
 @app.route('/shutdown')
 def shutdown():
     flash('Your Raspberry-Pi will now be halted in a few seconds.', 'warning')
+    pm.shutdown()
     return redirect(url_for('index'))
 
 
