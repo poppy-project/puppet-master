@@ -198,9 +198,6 @@ def ready_to_roll():
     return 'KO'
 
 
-@app.route('/example')
-def example():
-    return render_template('example.html')
 
 
 @app.route('/api/raw_logs')
