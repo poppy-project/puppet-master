@@ -198,6 +198,10 @@ def ready_to_roll():
     return 'KO'
 
 
+@app.route('/shutdown')
+def shutdown():
+    flash('Your Raspberry-Pi will now be halted in a few seconds.', 'warning')
+    return redirect(url_for('index'))
 
 
 @app.route('/api/raw_logs')

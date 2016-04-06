@@ -77,6 +77,9 @@ class PuppetMaster(object):
         call(['sudo', 'service', 'avahi-daemon', 'restart'])
         self.restart()
 
+    def shutdown(self):
+        call(['sudo', 'halt'])
+
 
 if __name__ == '__main__':
     import sys
