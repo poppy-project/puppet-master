@@ -1,4 +1,6 @@
 import os
+import time
+import requests
 
 from subprocess import call, check_call
 from contextlib import closing
@@ -78,8 +80,20 @@ class PuppetMaster(object):
         self.restart()
 
     def shutdown(self):
+        for m in self.get_motors():
+            self.send_value(m, 'compliant', True)
+        time.sleep(2.)
+
         call(['sudo', 'halt'])
 
+    def get_motors(self):
+        r = requests.get('http://localhost:8080/motor/list.json').json()
+        return r['motors']
+
+    def send_value(self, motor, register, value):
+        url = 'http://localhost:8080/motor/{}/register/{}/value.json'
+        r = requests.post(url.format(motor, register), json=value)
+        return r
 
 if __name__ == '__main__':
     import sys
