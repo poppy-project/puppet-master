@@ -63,6 +63,7 @@ class PuppetMaster(object):
         self._updating = True
         self.stop()
 
+        os.remove(self.config.update.logfile)
         success = check_call(['poppy-update'])
 
         self.start()
