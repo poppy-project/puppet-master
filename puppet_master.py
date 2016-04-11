@@ -82,9 +82,12 @@ class PuppetMaster(object):
         self.restart()
 
     def shutdown(self):
-        for m in self.get_motors():
-            self.send_value(m, 'compliant', True)
-        time.sleep(2.)
+        try:
+            for m in self.get_motors():
+                self.send_value(m, 'compliant', True)
+            time.sleep(2.)
+        except:
+            pass
 
         call(['sudo', 'halt'])
 
