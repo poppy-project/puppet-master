@@ -1,6 +1,6 @@
 # Puppet Master: a Control Web Interface for Poppy robots.
 
-**Warning: Puppet Master is only intended to work on a Raspberry-Pi [correctly setup](TODO) to work with Poppy robots. You should not run it on your own computer!**
+**Warning: Puppet Master is only intended to work on a Raspberry-Pi [correctly setup](https://github.com/poppy-project/raspoppy) to work with Poppy robots. You should not run it on your own computer!**
 
 ## Installation
 
@@ -27,7 +27,7 @@ To start the web interface, simply run the *bouteillederouge.py* script:
 python bouteillederouge.py
 ```
 
-It will start the webserver binded on 0.0.0.0 and use the default port 5000. So, you can now connect to http://localhost:5000 and see this:
+It will start the webserver bind on 0.0.0.0 and use the default port 5000. So, you can now connect to http://localhost:5000 and see this:
 
 ![Homepage of the Web Interface](homepage-snapshot.png)
 
