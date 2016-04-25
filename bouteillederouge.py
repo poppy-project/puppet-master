@@ -70,8 +70,13 @@ def monitor():
     if not pm.running:
         pm.start()
 
-    return redirect(url_for('base_static_monitor',
-                            filename='{}.html'.format(pm.config.robot.creature)))
+    return render_template(
+        'base-iframe.html',
+        iframe_src=url_for(
+            'base_static_monitor',
+            filename='{}.html'.format(pm.config.robot.creature)
+        )
+    )
 
 
 @app.route('/monitor/<path:filename>')
@@ -84,7 +89,10 @@ def snap():
     if not pm.running:
         pm.start()
 
-    return redirect(url_for('base_static_snap', filename='snap.html'))
+    return render_template(
+        'base-iframe.html',
+        iframe_src=url_for('base_static_snap', filename='snap.html')
+    )
 
 
 @app.route('/snap/<path:filename>')
@@ -97,7 +105,10 @@ def jupyter():
     if pm.running:
         pm.stop()
 
-    return redirect('http://{}:8888'.format(get_host()))
+    return render_template(
+        'base-iframe.html',
+        iframe_src='http://{}:8888'.format(get_host())
+    )
 
 
 @app.route('/settings')

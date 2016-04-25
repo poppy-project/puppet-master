@@ -71,3 +71,14 @@
 .section-title {
   padding: 2rem 0;
 }
+
+.tall-iframe {
+  width: 100%;
+  height: calc(100vh - 2rem - 1px - 38px);
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  outline: 0;
+}
