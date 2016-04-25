@@ -4,6 +4,7 @@ import requests
 
 from subprocess import call, check_call
 from contextlib import closing
+from threading import Thread
 
 from poppyd import PoppyDaemon
 from config import Config, attrsetter
@@ -85,11 +86,13 @@ class PuppetMaster(object):
         try:
             for m in self.get_motors():
                 self.send_value(m, 'compliant', True)
-            time.sleep(2.)
         except:
             pass
 
-        call(['sudo', 'halt'])
+        def delayed_halt(sec=5):
+            time.sleep(sec)
+            call(['sudo', 'halt'])
+        Thread(target=delayed_halt).start()
 
     def get_motors(self):
         r = requests.get('http://localhost:8080/motor/list.json').json()
