@@ -1,4 +1,5 @@
 import os
+import sys
 import requests
 import argparse
 
@@ -10,6 +11,8 @@ from flask import (Flask,
                    send_from_directory, Response,
                    copy_current_request_context)
 
+from poppy.creatures import installed_poppy_creatures
+
 from poppyd import PoppyDaemon
 
 
@@ -20,6 +23,8 @@ parser.add_argument('--debug', action='store_true',
 parser.add_argument('--test', action='store_true',
                     help='does not modify anything on your machine '
                          '(except from a config file in /tmp)')
+parser.add_argument('--creature', choices=installed_poppy_creatures.keys(),
+                    help='Which creature to use (by default will use the one set in the yaml config).')
 args = parser.parse_args()
 
 
@@ -36,11 +41,16 @@ if args.debug:
     app.debug = True
 
 if args.test:
+    if not args.creature:
+        print('You must choose a creature in test mode!\n')
+        parser.print_help()
+        sys.exit(1)
+
     from subprocess import call
     configfile = '/tmp/poppy_config.yaml'
     call(['python', 'bootstrap.py',
           '--config-path', configfile,
-          'localhost', 'poppy-ergo-jr'])
+          'localhost', args.creature])
 else:
     configfile = os.path.expanduser('~/.poppy_config.yaml')
 
