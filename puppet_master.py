@@ -34,7 +34,7 @@ class PuppetMaster(object):
     def stop(self):
         try:
             self.daemon.stop()
-        except OSError:
+        except (OSError, SystemError):
             self.force_clean()
 
     def restart(self):
