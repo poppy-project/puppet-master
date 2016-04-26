@@ -79,6 +79,8 @@
   padding: 0;
   margin: 0;
 
+  display: block;
+
   border: 0;
   outline: 0;
 }
