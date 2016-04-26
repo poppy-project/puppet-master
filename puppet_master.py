@@ -45,6 +45,7 @@ class PuppetMaster(object):
 
     def force_clean(self):
         self.daemon.force_clean()
+        call(['pkill', '-f', 'poppy-services'])
 
     @property
     def config(self):
