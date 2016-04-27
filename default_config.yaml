@@ -6,6 +6,7 @@ robot:
 info:
   version: 1.0
   logfile: /tmp/puppet-master.log
+  board: $board
 
 update:
   url: https://raw.githubusercontent.com/pierre-rouanet/raspoppy/master/auto-update.sh

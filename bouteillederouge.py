@@ -224,7 +224,7 @@ def shutdown():
     pm.shutdown()
     return render_template(
         'shutdown.html',
-        shutdown_msg='Your Raspberry-Pi will now be halted in a few seconds.'
+        shutdown_msg='Your {} will now be halted in a few seconds.'.format(pm.config.info.board)
     )
 
 
