@@ -27,7 +27,7 @@ To start the web interface, simply run the *bouteillederouge.py* script:
 python bouteillederouge.py
 ```
 
-It will start the webserver bind on 0.0.0.0 and use the default port 5000. So, you can now connect to http://localhost:5000 and see this:
+It will start the webserver bind on 0.0.0.0 and use the default port 2280. So, you can now connect to http://localhost:2280 and see this:
 
 ![Homepage of the Web Interface](homepage-snapshot.png)
 
