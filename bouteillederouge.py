@@ -3,6 +3,11 @@ import sys
 import requests
 import argparse
 
+if sys.version_info < (3, 3):
+    from urlparse import urlparse
+else:
+    from urllib.parse import urlparse
+
 from threading import Thread
 
 from flask import (Flask,
@@ -117,7 +122,7 @@ def jupyter():
 
     return render_template(
         'base-iframe.html',
-        iframe_src='http://{}:8888'.format(get_host())
+        iframe_src='http://{}:8888'.format(urlparse(request.url_root).hostname)
     )
 
 
