@@ -1,4 +1,0 @@
-Flask>=0.10
-pyaml>=15.8
-requests>=2.9
-poppy-creature>=1.8

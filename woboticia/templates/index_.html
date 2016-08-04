@@ -6,7 +6,7 @@
 <div class="row wrap" data-equalizer data-equalize-on="medium">
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('monitor') }}" data-equalizer-watch>
+    <a href="{{ url_for_monitor }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-stats">
           <title>Monitor</title>
@@ -18,25 +18,25 @@
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('snap') }}" data-equalizer-watch>
+    <a href="{{ url_for_snap }}" data-equalizer-watch>
       <h3>
-        <img width="113" height="62" src="{{ url_for('static', filename='img/logo-snap.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-snap-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Snap!">
+        <img width="113" height="62" src="/static/img/logo-snap.png" data-interchange="[/static/img/logo-snap-large.png, retina]" src="/static/img/logo.png" alt="Snap!">
       </h3>
       <p>Build Your Own Blocks</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('jupyter') }}" data-equalizer-watch>
+    <a href="{{ url_for_jupyter }}" data-equalizer-watch>
       <h3>
-        <img width="63" height="62" src="{{ url_for('static', filename='img/logo-jupyter.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-jupyter-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Jupyter">
+        <img width="63" height="62" src="/static/img/logo-jupyter.png" data-interchange="[/static/img/logo-jupyter-large.png, retina]" src="/static/img/logo.png" alt="Jupyter">
       </h3>
       <p>Python, Terminal</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('settings') }}" data-equalizer-watch>
+    <a href="{{ url_for_settings }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-build">
           <title>Settings</title>
@@ -48,7 +48,7 @@
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('reset') }}" data-equalizer-watch>
+    <a href="{{ url_for_reset }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-sync">
           <title>Restart</title>
@@ -60,7 +60,7 @@
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('logs') }}" data-equalizer-watch>
+    <a href="{{ url_for_logs }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-assignment">
           <title>Logs</title>
@@ -72,7 +72,7 @@
   </div>
 
   <div class="large-4 large-offset-4 end medium-6 columns menu-tile">
-    <a href="{{ url_for('shutdown') }}" data-equalizer-watch>
+    <a href="{{ url_for_shutdown }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-power">
           <title>Shutdown</title>
