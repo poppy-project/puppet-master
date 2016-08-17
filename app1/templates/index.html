@@ -1,0 +1,177 @@
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poppy Manager - starter</title>
+
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+<link rel="apple-touch-icon" sizes="57x57" href="/static/img/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/static/img/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/static/img/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/static/img/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/static/img/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/static/img/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/static/img/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/img/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/img/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/static/img/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon/favicon-16x16.png">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/static/img/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" href="/static/css/foundation.min.css">
+    <link rel="stylesheet" href="/static/css/github.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+  </head>
+  <body>
+
+    <nav class="top-bar" role="navigation">
+      <div class="top-bar-title">
+        <a href="/">
+          <img width="100" height="38" data-interchange="[/static/img/logo-large.png, retina]" src="/static/img/logo.png" alt="Poppy">
+        </a>
+      </div>
+      <div class="top-bar-right">
+        <ul class="menu">
+          <li><a href="http://docs.poppy-project.org/en/" target="_blank">Docs</a></li>
+          <li><span class="version">v{{ info.version}}</span></li>
+        </ul>
+      </div>
+    </nav>
+
+    
+
+    
+
+<div class="row wrap" data-equalizer data-equalize-on="medium">
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="/monitor" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-stats">
+          <title>Monitor</title>
+          <use xlink:href="#pp-icon-stats"></use>
+        </svg>
+      </h3>
+      <p>Monitor and Control</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="/snap" data-equalizer-watch>
+      <h3>
+        <img width="113" height="62" src="/static/img/logo-snap.png" data-interchange="[/static/img/logo-snap-large.png, retina]" src="/static/img/logo.png" alt="Snap!">
+      </h3>
+      <p>Build Your Own Blocks</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="/jupyter" data-equalizer-watch>
+      <h3>
+        <img width="63" height="62" src="/static/img/logo-jupyter.png" data-interchange="[/static/img/logo-jupyter-large.png, retina]" src="/static/img/logo.png" alt="Jupyter">
+      </h3>
+      <p>Python, Terminal</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="/settings" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-build">
+          <title>Settings</title>
+          <use xlink:href="#pp-icon-build"></use>
+        </svg>
+      </h3>
+      <p>Configure the robot</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="/reset" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-sync">
+          <title>Restart</title>
+          <use xlink:href="#pp-icon-sync"></use>
+        </svg>
+      </h3>
+      <p>Reboot the robot</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="/logs" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-assignment">
+          <title>Logs</title>
+          <use xlink:href="#pp-icon-assignment"></use>
+        </svg>
+      </h3>
+      <p>What happened?</p>
+    </a>
+  </div>
+
+  <div class="large-4 large-offset-4 end medium-6 columns menu-tile">
+    <a href="/shutdown" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-power">
+          <title>Shutdown</title>
+          <use xlink:href="#pp-icon-power"></use>
+        </svg>
+      </h3>
+      <p>Shutdown the Raspberry Pi</p>
+    </a>
+  </div>
+
+</div>
+
+<svg style="position: absolute; width: 0; height: 0;" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <symbol id="pp-icon-assignment" viewBox="0 0 24 24">
+      <path class="path1" d="M17.016 9v-2.016h-10.031v2.016h10.031zM17.016 12.984v-1.969h-10.031v1.969h10.031zM14.016 17.016v-2.016h-7.031v2.016h7.031zM12 3c-0.563 0-0.984 0.422-0.984 0.984s0.422 1.031 0.984 1.031 0.984-0.469 0.984-1.031-0.422-0.984-0.984-0.984zM18.984 3c1.078 0 2.016 0.938 2.016 2.016v13.969c0 1.078-0.938 2.016-2.016 2.016h-13.969c-1.078 0-2.016-0.938-2.016-2.016v-13.969c0-1.078 0.938-2.016 2.016-2.016h4.172c0.422-1.172 1.5-2.016 2.813-2.016s2.391 0.844 2.813 2.016h4.172z"></path>
+    </symbol>
+    <symbol id="pp-icon-build" viewBox="0 0 24 24">
+      <path class="path1" d="M22.688 18.984c0.422 0.281 0.422 0.984-0.094 1.406l-2.297 2.297c-0.422 0.422-0.984 0.422-1.406 0l-9.094-9.094c-2.297 0.891-4.969 0.422-6.891-1.5-2.016-2.016-2.531-5.016-1.313-7.406l4.406 4.313 3-3-4.313-4.313c2.391-1.078 5.391-0.703 7.406 1.313 1.922 1.922 2.391 4.594 1.5 6.891z"></path>
+    </symbol>
+    <symbol id="pp-icon-sync" viewBox="0 0 24 24">
+      <path class="path1" d="M12 18v-3l3.984 3.984-3.984 4.031v-3c-4.406 0-8.016-3.609-8.016-8.016 0-1.547 0.469-3.047 1.266-4.266l1.453 1.453c-0.469 0.844-0.703 1.781-0.703 2.813 0 3.328 2.672 6 6 6zM12 3.984c4.406 0 8.016 3.609 8.016 8.016 0 1.547-0.469 3.047-1.266 4.266l-1.453-1.453c0.469-0.844 0.703-1.781 0.703-2.813 0-3.328-2.672-6-6-6v3l-3.984-3.984 3.984-4.031v3z"></path>
+    </symbol>
+    <symbol id="pp-icon-update" viewBox="0 0 24 24">
+      <path class="path1" d="M12.516 8.016v4.219l3.469 2.109-0.703 1.219-4.266-2.578v-4.969h1.5zM21 10.125h-6.797l2.766-2.813c-2.719-2.719-7.172-2.813-9.891-0.094s-2.719 7.031 0 9.75 7.172 2.719 9.891 0c1.359-1.359 2.016-2.906 2.016-4.875h2.016c0 1.969-0.844 4.547-2.625 6.281-3.516 3.469-9.234 3.469-12.75 0s-3.516-9.094 0-12.563 9.141-3.469 12.656 0l2.719-2.813v7.125z"></path>
+    </symbol>
+    <symbol id="pp-icon-question_answer" viewBox="0 0 24 24">
+      <path class="path1" d="M17.016 12q0 0.422-0.305 0.703t-0.727 0.281h-9.984l-3.984 4.031v-14.016q0-0.422 0.281-0.703t0.703-0.281h12.984q0.422 0 0.727 0.281t0.305 0.703v9zM21 6q0.422 0 0.703 0.281t0.281 0.703v15l-3.984-3.984h-11.016q-0.422 0-0.703-0.281t-0.281-0.703v-2.016h12.984v-9h2.016z"></path>
+    </symbol>
+    <symbol id="pp-icon-stats" viewBox="0 0 32 32">
+      <path class="path1" d="M30 0h-28c-1.104 0-2 0.896-2 2v20c0 1.104 0.896 2 2 2h8l-4 8h1l7.2-8h3.6l7.2 8h1l-4-8h8c1.104 0 2-0.896 2-2v-20c0-1.104-0.896-2-2-2zM30 21c0 0.553-0.447 1-1 1h-26c-0.553 0-1-0.447-1-1v-18c0-0.553 0.447-1 1-1h26c0.553 0 1 0.447 1 1v18zM20.878 15.631l-4.521-11.629-4.938 9.29-2.756-2.835-4.663 2.906 1.316 0.758 2.988-1.862 3.605 3.712 4.175-7.853 4.616 11.879 3.937-8.288 1.604 3.414 1.759-0.295-3.354-7.132-3.768 7.935z"></path>
+    </symbol>
+    <symbol id="pp-icon-github" viewBox="0 0 32 32">
+      <path class="path1" d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>
+    </symbol>
+    <symbol id="pp-icon-power" viewBox="0 0 32 32">
+      <path class="path1" d="M23.75 6.875c2.563 2.188 4.25 5.5 4.25 9.125 0 6.625-5.375 12-12 12s-12-5.375-12-12c0-3.625 1.688-6.938 4.25-9.125l1.875 1.875c-2.063 1.688-3.438 4.313-3.438 7.25 0 5.188 4.125 9.313 9.313 9.313s9.313-4.125 9.313-9.313c0-2.938-1.313-5.5-3.438-7.188zM17.313 4v13.313h-2.625v-13.313h2.625z"></path>
+    </symbol>
+  </defs>
+</svg>
+
+
+
+    
+    <script src="/static/js/vendor/jquery.min.js"></script>
+    <script src="/static/js/vendor/what-input.min.js"></script>
+    <script src="/static/js/vendor/highlight.pack.js"></script>
+    <script src="/static/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      hljs.initHighlightingOnLoad();
+    </script>
+    
+
+    
+
+  </body>
+</html>
