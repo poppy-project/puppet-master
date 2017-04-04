@@ -76,6 +76,7 @@ class PoppyDaemon(Daemon):
             '--http',
             '--snap',
             '--no-browser',
+            '--ws'
         ]
 
         if not config['robot']['camera']:
