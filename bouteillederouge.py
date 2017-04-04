@@ -16,7 +16,7 @@ from flask import (Flask, request,
                    send_from_directory, Response,
                    copy_current_request_context)
 
-from poppy.creatures import installed_poppy_creatures
+from pypot.creatures import installed_poppy_creatures
 
 from poppyd import PoppyDaemon
 
