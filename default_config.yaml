@@ -1,7 +1,7 @@
 robot:
   name: $name
   creature: $creature
-  camera: on
+  camera: off
 
 info:
   version: 1.0
@@ -9,6 +9,6 @@ info:
   board: $board
 
 update:
-  url: https://raw.githubusercontent.com/pierre-rouanet/raspoppy/master/auto-update.sh
+  url: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
   logfile: $home/.install.log
   lockfile: /tmp/poppy-update-pid.lock
