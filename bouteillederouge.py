@@ -3,11 +3,6 @@ import sys
 import requests
 import argparse
 
-if sys.version_info < (3, 3):
-    from urlparse import urlparse
-else:
-    from urllib.parse import urlparse
-
 from threading import Thread
 
 from flask import (Flask, request,
@@ -19,6 +14,11 @@ from flask import (Flask, request,
 from pypot.creatures import installed_poppy_creatures
 
 from poppyd import PoppyDaemon
+
+if sys.version_info < (3, 3):
+    from urlparse import urlparse
+else:
+    from urllib.parse import urlparse
 
 
 parser = argparse.ArgumentParser(description='Serve the webinterface '
@@ -73,6 +73,14 @@ pm.start()
 @app.context_processor
 def inject_robot_config():
     return dict(robot=pm.config.robot, info=pm.config.info)
+
+
+@app.after_request
+def cache_buster(response):
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 @app.route('/')
@@ -131,11 +139,12 @@ def settings():
     return render_template('settings.html')
 
 
-@app.route('/change_hostname/<name>')
-def change_hostname(name):
+@app.route('/change_hostname', methods=['POST'])
+def change_hostname():
+    name = request.form['hostname']
     pm.update_config('robot.name', name)
     flash('Robot name was changed to {}'.format(name), 'warning')
-    return 'OK'
+    return ('', 204)
 
 
 @app.route('/logs')
@@ -199,11 +208,12 @@ def done_updating():
     return redirect(url_for('index'))
 
 
-@app.route('/camera/<checked>')
-def switch_camera(checked):
+@app.route('/camera', methods=['POST'])
+def switch_camera():
+    checked = request.form['checked'];
     pm.update_config('robot.camera', True if checked == 'on' else False)
     flash('Your robot camera is now turned {}!'.format(checked), 'success')
-    return 'OK'
+    return ('', 204)
 
 
 @app.route('/ready-to-roll')

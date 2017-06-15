@@ -71,18 +71,14 @@
 <script>
 
 $('#camera-switch').change(function() {
-  if ($(this).prop('checked') === true) {
-    $.get('/camera/on');
-  } else {
-    $.get('/camera/off');
-  }
+  $.post('/camera', { checked: ($(this).prop('checked') === true ? 'on' : 'off') });
 });
 
 $('#update-robot-hostname').click(function() {
     newHostname = $('#robot-hostname').val().trim();
 
     if (newHostname !== '' && newHostname !== '{{ robot.name }}') {
-      $.get('/change_hostname/' + newHostname, function() {
+      $.post('/change_hostname', { hostname: newHostname }, function() {
         window.location.href = 'http://' + newHostname + '.local';
       });
     }
