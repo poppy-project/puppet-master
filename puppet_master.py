@@ -79,8 +79,9 @@ class PuppetMaster(object):
         return self._updating
 
     def _change_hostname(self, name):
-        call(['sudo', 'raspi-config', '--change-hostname', name])
-        call(['sudo', 'service', 'avahi-daemon', 'restart'])
+        call(['sudo', 'hostnamectl', 'set-hostname', name])
+        call(['sudo', 'systemctl', 'restart', 'networking.service'])
+        call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service'])
         self.restart()
 
     def shutdown(self):
