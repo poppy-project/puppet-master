@@ -12,3 +12,7 @@ update:
   url: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
   logfile: $home/.install.log
   lockfile: /tmp/poppy-update-pid.lock
+
+poppy_configure:
+  logfile: /tmp/poppy-config.log
+  poppup_startup: on

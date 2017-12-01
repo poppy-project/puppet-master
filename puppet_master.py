@@ -8,6 +8,7 @@ from threading import Thread
 
 from poppyd import PoppyDaemon
 from config import Config, attrsetter
+from pypot.creatures import installed_poppy_creatures
 
 
 class PuppetMaster(object):
@@ -21,6 +22,7 @@ class PuppetMaster(object):
         self.config_handlers = {
             'robot.camera': lambda _: self.restart(),
             'robot.name': self._change_hostname,
+            'robot.motors': self._configure_motors
         }
         self._updating = False
 
@@ -85,6 +87,20 @@ class PuppetMaster(object):
         call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service'])
         self.restart()
 
+    def _get_robot_motor_list(self):
+        try:
+            RobotCls = installed_poppy_creatures[self.config.robot.creature]
+            return sorted(RobotCls.default_config['motors'].keys())
+        except KeyError:
+            return ['']
+
+    def _configure_motors(self, motor):
+        self.stop()
+        creature = self.config.robot.creature.split('poppy-')[1]
+        f = open(self.config.poppy_configure.logfile,"wb")
+        check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
+        self.start()
+
     def shutdown(self):
         try:
             for m in self.get_motors():
@@ -105,6 +121,7 @@ class PuppetMaster(object):
         url = 'http://localhost:8080/motor/{}/register/{}/value.json'
         r = requests.post(url.format(motor, register), json=value)
         return r
+
 
 if __name__ == '__main__':
     import sys
