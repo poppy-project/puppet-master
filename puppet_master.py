@@ -25,6 +25,8 @@ class PuppetMaster(object):
         self._updating = False
 
     def start(self):
+        # Kill all robot instances in Jupyter that could interfere with poppy-services
+        self._stop_jupyter_kernels("http://localhost:8888")
         self.daemon.start()
 
     @property
@@ -105,6 +107,18 @@ class PuppetMaster(object):
         url = 'http://localhost:8080/motor/{}/register/{}/value.json'
         r = requests.post(url.format(motor, register), json=value)
         return r
+
+    def _stop_jupyter_kernels(self, base_url):
+        """
+        Shutdown Jupyter notebook kernels using Jupyter REST API
+        """
+        # A GET request on main page is needed to have the xsrf token in cookies
+        client = requests.session()
+        client.get(base_url)
+        kernels = client.get("%s/api/kernels" % base_url).json()
+        for k in kernels:
+            client.delete("%s/api/kernels/%s" % (base_url, k["id"]),
+                          data = {"_xsrf": client.cookies['_xsrf']})
 
 if __name__ == '__main__':
     import sys
