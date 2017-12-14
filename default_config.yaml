@@ -16,3 +16,9 @@ update:
 poppy_configure:
   logfile: /tmp/poppy-config.log
   poppup_startup: on
+
+wifi:
+  hostspot_conf_file: /boot/hotspot.txt
+  hostspot_service: rpi-access-point
+  default_ssid: Poppy Hotspot
+  default_password: poppyproject

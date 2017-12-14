@@ -232,6 +232,18 @@ def call_poppy_configure():
     pm.update_config('robot.motors', motor)
     return ('', 204)
 
+@app.route('/settings/wifi')
+def configure_wifi():
+    return render_template('wifi.html')
+
+@app.route('/wifi/list')
+def wifi_list():
+    return
+
+@app.route('/configure_hostspot', methods=['POST'])
+def hostspot_configuration():
+    return
+
 
 @app.route('/ready-to-roll')
 def ready_to_roll():
