@@ -43,10 +43,26 @@
       </form>
     </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="large-12 columns">
+  <div class="large-6 columns">
+    <div class="callout">
+      <h2>Configure your motors</h2>
+      <div class="row">
+        <div class="large-9 columns">
+          <div class="callout primary">
+            <p>Configure your motors when you assemble your robot for the first time.</p>
+          </div>
+        </div>
+        <div class="large-3 columns">
+          <a href={{ url_for('configure_motors') }}>
+            <button type="button" class="button">Start configuration</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="large-6 columns">
     <div class="callout">
       <h2>Upgrade your robot software</h2>
       <div class="row">
@@ -63,7 +79,8 @@
       </div>
     </div>
   </div>
-</div>
+
+
 
 {% endblock content %}
 

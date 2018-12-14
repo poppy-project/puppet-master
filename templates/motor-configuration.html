@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <div class="row">
+    <div class="columns">
+      <h1 class="section-title">Configure your motors</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-6 columns">
+      <div class="callout">
+        <p>
+          Out of factory motors come all with the same identifiant in their internal memory. To be able to differenciate each motor in the robot, we have to configure it, to change their identifiant.
+          <br>
+          To do so,
+          <b>you have to plug ONE motor at a time</b>. It is very important, otherwise, they will all have the same new identifiant and you won't be able to communicate with them.
+        </p>
+      </div>
+    </div>
+
+    <div class="large-6 columns">
+      <div class="callout">
+        <div class="row">
+          <div class="large-9 columns">
+            <img width="900" src="{{ url_for('static', filename='img/motor_one_by_one.jpg') }}" alt="How to plug a motor">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-6 columns">
+        <div class="callout">
+          <h4>
+            Which motor do you want to configure?
+          </h4>
+          {% if motors | length > 1 %}
+            <form>
+              <div class="row">
+                <div class="large-9 columns">
+                  <select id="motor">
+                    {% for m in motors %}
+                      <option value="{{ m }}">{{ m }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="large-3 columns">
+                  <button id="configure-motor" type="button" class="button">Configure</button>
+                </div>
+              </div>
+            </form>
+          {% else %}
+            <p>No Poppy creature seems to be installed on the robot.</p>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <pre>
+      <code id="robot-logs" class="accesslog hljs">{{ update_logs_content }}</code>
+    </pre>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block endscript %}
+  <script>
+    var timeOut;
+    // /api/configure_motors_logs
+    function refreshLogs() {
+      $.get('{{ url_for('poppy_config_logs') }}', function (rawLogs) {
+        var logsElement = document.getElementById('robot-logs');
+
+        logsElement.innerHTML = rawLogs;
+        hljs.highlightBlock(logsElement);
+
+        startTimeout();
+      });
+    }
+
+    function startTimeout() {
+      logTimeOut = window.setTimeout(refreshLogs, 1000);
+    }
+
+    startTimeout();
+
+    $('#configure-motor').click(function () {
+      motor_to_configure = $('#motor').val().trim();
+      $.post('/call_poppy_configure', {motor: motor_to_configure});
+
+    });
+  </script>
+{% endblock endscript %}

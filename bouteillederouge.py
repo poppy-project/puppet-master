@@ -2,6 +2,7 @@ import os
 import sys
 import requests
 import argparse
+import subprocess
 
 from threading import Thread
 
@@ -51,11 +52,10 @@ if args.test:
         parser.print_help()
         sys.exit(1)
 
-    from subprocess import call
     configfile = '/tmp/poppy_config.yaml'
-    call(['python', 'bootstrap.py',
-          '--config-path', configfile,
-          'localhost', args.creature])
+    subprocess.call(['python', 'bootstrap.py',
+                     '--config-path', configfile,
+                     'localhost', args.creature])
 else:
     configfile = os.path.expanduser('~/.poppy_config.yaml')
 
@@ -210,10 +210,39 @@ def done_updating():
 
 @app.route('/camera', methods=['POST'])
 def switch_camera():
-    checked = request.form['checked'];
+    checked = request.form['checked']
     pm.update_config('robot.camera', True if checked == 'on' else False)
     flash('Your robot camera is now turned {}!'.format(checked), 'success')
     return ('', 204)
+
+
+@app.route('/configure-motors')
+def configure_motors():
+    # Remove old poppy-configure output to avoid user confusion
+    try:
+        os.remove(pm.config.poppy_configure.logfile)
+    except OSError:
+        pass
+    return render_template('motor-configuration.html', motors=pm._get_robot_motor_list())
+
+
+@app.route('/call_poppy_configure', methods=['POST'])
+def call_poppy_configure():
+    motor = request.form['motor']
+    pm.update_config('robot.motors', motor)
+    return ('', 204)
+
+@app.route('/settings/wifi')
+def configure_wifi():
+    return render_template('wifi.html')
+
+@app.route('/wifi/list')
+def wifi_list():
+    return
+
+@app.route('/configure_hostspot', methods=['POST'])
+def hostspot_configuration():
+    return
 
 
 @app.route('/ready-to-roll')
@@ -260,6 +289,16 @@ def update_raw_logs():
             content = f.read()
     except IOError:
         content = 'No log found...'
+    return Response(content, mimetype='text/plain')
+
+
+@app.route('/api/configure_motors_logs')
+def poppy_config_logs():
+    try:
+        with open(pm.config.poppy_configure.logfile) as f:
+            content = f.read()
+    except IOError:
+        content = ''
     return Response(content, mimetype='text/plain')
 
 

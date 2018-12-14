@@ -1,13 +1,16 @@
 import os
 import time
+import re
 import requests
 
 from subprocess import call, check_call
 from contextlib import closing
 from threading import Thread
+from string import Template
 
 from poppyd import PoppyDaemon
 from config import Config, attrsetter
+from pypot.creatures import installed_poppy_creatures
 
 
 class PuppetMaster(object):
@@ -21,6 +24,7 @@ class PuppetMaster(object):
         self.config_handlers = {
             'robot.camera': lambda _: self.restart(),
             'robot.name': self._change_hostname,
+            'robot.motors': self._configure_motors
         }
         self._updating = False
 
@@ -85,6 +89,62 @@ class PuppetMaster(object):
         call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service'])
         self.restart()
 
+    def _get_robot_motor_list(self):
+        try:
+            RobotCls = installed_poppy_creatures[self.config.robot.creature]
+            return sorted(RobotCls.default_config['motors'].keys())
+        except KeyError:
+            return ['']
+
+    def _configure_motors(self, motor):
+        self.stop()
+        creature = self.config.robot.creature.split('poppy-')[1]
+        f = open(self.config.poppy_configure.logfile,"wb")
+        check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
+        self.start()
+
+    def _set_hostspot_configuration(self, ssid, passphrase, hide_hostname=0):
+        conf = "ssid=%s\npassphrase=%s\nhide_hostname=%s\n" % (ssid, passphrase, hide_hostname)
+        with open('/tmp/hotspot.conf', 'w') as f:
+            f.write(conf)
+
+        os.system('sudo mv /tmp/hotspot.conf %s' % self.config.wifi.hostspot_conf_file)
+        call(['sudo', 'systemctl', 'restart', self.config.wifi.hostspot_service])
+
+    def _get_hostspot_configuration(self):
+        conf=''
+        with open(self.config.wifi.hostspot_conf_file, 'r') as f:
+            conf = f.read()
+        ssid=re.match('s/^ssid=\(.\+\)$/\1/p', conf)
+        passphrase = re.match('s/^passphrase=\(.\+\)$/\1/p', conf)
+        hide_hostname = re.match('s/^hide_hostname=\(.\+\)$/\1/p', conf)
+        return {'ssid'=ssid, 'passphrase'=passphrase, 'hide_hostname'=hide_hostname}
+
+    def _disable_hostpot(self):
+        conf_path = self.config.wifi.hostspot_conf_file
+        if os.path.isfile(conf_path):
+            os.system("sudo mv %s %s" % (conf_path, os.path.join(conf_path, '.backup'))
+            call(['sudo', 'systemctl', 'restart', self.config.wifi.hostspot_service])
+
+    def _enable_hostspot(self):
+        conf_path = self.config.wifi.hostspot_conf_file
+        if os.path.isfile(os.path.join(conf_path, '.backup')):
+            cmd = "sudo mv %s %s" % (os.path.join(conf_path, '.backup'), conf_path)
+            call(['sudo', 'systemctl', 'restart', self.config.wifi.hostspot_service])
+
+        else:
+            self._set_hostspot_configuration(self.config.wifi.default_ssid, self.config.wifi.default_password)
+
+
+    def _disable_wifi_client(self):
+        pass
+        # os.system("sudo mv /etc/wpa-supplicant.conf")
+
+    def _wifi_list(self):
+        pass
+    def _wifi connect(self, ssid, password):
+        pass
+
     def shutdown(self):
         try:
             for m in self.get_motors():
@@ -105,6 +165,7 @@ class PuppetMaster(object):
         url = 'http://localhost:8080/motor/{}/register/{}/value.json'
         r = requests.post(url.format(motor, register), json=value)
         return r
+
 
 if __name__ == '__main__':
     import sys
