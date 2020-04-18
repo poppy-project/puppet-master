@@ -72,8 +72,10 @@ pm.start()
 
 @app.context_processor
 def inject_robot_config():
-    return dict(robot=pm.config.robot, info=pm.config.info)
-
+    return dict(robot=pm.config.robot,
+                info=pm.config.info,
+                wifi=pm.config.wifi,
+                hotspot=pm.config.hotspot)
 
 @app.after_request
 def cache_buster(response):
@@ -139,13 +141,38 @@ def settings():
     return render_template('settings.html')
 
 
-@app.route('/change_hostname', methods=['POST'])
-def change_hostname():
-    name = request.form['hostname']
-    pm.update_config('robot.name', name)
-    flash('Robot name was changed to {}'.format(name), 'warning')
+@app.route('/settings_update', methods=['POST'])
+def settings_update():
+    msg=''
+    for key, value in request.form.items() :
+        if value != '':
+            key=key.split('_')
+            value=value.replace(' ','')#prevent user mistake
+            if value == 'on': value = True
+            elif value == 'off': value = False
+            if value != getattr(getattr(pm.config, key[0]), key[1]):
+                pm.update_config('.'.join(key),value)
+                msg+='- {} of {} was changed -'.format(key[1], key[0])
+    if msg == '': flash('Nothing was changed!', 'warning')
+    else: flash(msg, 'success')
     return ('', 204)
 
+@app.route('/terminal')
+def terminal():
+    if pm.running:
+        pm.stop()
+    return render_template(
+        'base-iframe.html',
+        iframe_src='http://{}:8888/terminals/poppy'.format(urlparse(request.url_root).hostname)
+    )
+
+@app.route('/reboot')
+def reboot():
+    pm.reboot()
+    return render_template(
+        'closing.html',
+        closing_msg='Your {} will now be REBOOT in a few seconds.'.format(pm.config.info.board)
+    )
 
 @app.route('/logs')
 def logs():
@@ -167,14 +194,31 @@ def update_logs():
     return render_template('update.html', update_logs_content=content)
 
 
-@app.route('/reset')
-def reset():
+@app.route('/APIreset')
+def APIreset():
     if pm.running:
         pm.stop()
-
     pm.start()
-    flash('Your robot has been restarted.', 'warning')
-    return redirect(url_for('index'))
+    flash('Your robot has been restarted.', 'success')
+    return redirect(request.referrer)
+
+@app.route('/APIstart')
+def APIstart():
+    if pm.running:
+        flash('Your robot\'s API has already Started.', 'warning')
+    else:
+        pm.start()
+        flash('Your robot\'s API has been Started.', 'success')
+    return redirect(request.referrer)
+
+@app.route('/APIstop')
+def APIstop():
+    if pm.running:
+        pm.stop()
+        flash('Your robot\'s API has been stopped.', 'success')
+    else:
+        flash('Your robot\'s API has already stopped.', 'warning')
+    return redirect(request.referrer)
 
 
 @app.route('/update')
@@ -207,14 +251,12 @@ def done_updating():
     flash('Your robot is now up-to-date!', 'success')
     return redirect(url_for('index'))
 
-
 @app.route('/camera', methods=['POST'])
 def switch_camera():
     checked = request.form['checked']
     pm.update_config('robot.camera', True if checked == 'on' else False)
-    flash('Your robot camera is now turned {}!'.format(checked), 'success')
+    #flash('Your robot camera is now turned {}!'.format(checked), 'success')
     return ('', 204)
-
 
 @app.route('/configure-motors')
 def configure_motors():
@@ -255,8 +297,8 @@ def ready_to_roll():
 def shutdown():
     pm.shutdown()
     return render_template(
-        'shutdown.html',
-        shutdown_msg='Your {} will now be halted in a few seconds.'.format(pm.config.info.board)
+        'closing.html',
+        closing_msg='Your {} will now be HALTED in a few seconds.'.format(pm.config.info.board)
     )
 
 

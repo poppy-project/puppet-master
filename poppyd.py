@@ -6,6 +6,7 @@ import signal
 
 from subprocess import Popen
 
+yaml.warnings({'YAMLLoadWarning': False}) #https://msg.pyyaml.org/load
 
 class Daemon(object):
     def __init__(self, pidfile, logfile):
@@ -38,6 +39,8 @@ class Daemon(object):
 
         os.kill(pid, signal.SIGTERM)
         os.remove(self.pidfile)
+
+        open(self.logfile, 'w').close()
 
         return('Poppy daemon is now stopped!')
 

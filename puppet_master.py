@@ -22,7 +22,16 @@ class PuppetMaster(object):
         self.config_handlers = {
             'robot.camera': lambda _: self.restart(),
             'robot.name': self._change_hostname,
-            'robot.motors': self._configure_motors
+            'robot.motors': self._configure_motors,
+            'wifi.start': self._auto_start_wifi,
+            'wifi.ssid': self._add_wifi_ssid,
+            'wifi.psk': self._add_wifi_psk,
+            'hotspot.start': self._auto_start_hotspot,
+            'hotspot.ssid': self._set_hotspot_ssid,
+            'hotspot.psk': self._set_hotspot_psk,
+            'robot.firstPage': self._set_first_page,
+            'robot.autoStart' : self._auto_start_api,
+            'robot.virtualBot' : self._start_virtual_bot
         }
         self._updating = False
 
@@ -100,6 +109,37 @@ class PuppetMaster(object):
         f = open(self.config.poppy_configure.logfile,"wb")
         check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
         self.start()
+
+    def _auto_start_wifi(self, state):
+        print('_auto_start_wifi No implemented! Comming soon')
+
+    def _add_wifi_ssid(self, ssid):
+        print('_add_wifi_ssid No implemented! Comming soon')
+
+    def _add_wifi_psk(self, psk):
+        print('_add_wifi_psk No implemented! Comming soon')
+
+    def _auto_start_hotspot(self, state):
+        print('_auto_start_hotspot No implemented! Comming soon')
+
+    def _set_hotspot_ssid(self, ssid):
+        print('_set_hotspot_ssid No implemented! Comming soon')
+
+    def _set_hotspot_psk(self, psk):
+        print('_set_hotspot_psk No implemented! Comming soon')
+
+    def _set_first_page(self, state):
+        print('_set_first_page No implemented! Comming soon')
+
+    def _auto_start_api(self, state):
+        print('_auto_start_api No implemented! Comming soon')
+
+    def _start_virtual_bot(self, nb):
+        print('_start_virtual_bot No implemented! Comming soon')
+
+    def reboot(self):
+        print('reboot No implemented! Comming soon')
+
 
     def shutdown(self):
         try:

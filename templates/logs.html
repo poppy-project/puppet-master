@@ -9,6 +9,25 @@
 </div>
 
 <div class="row">
+    <div class="large-6 columns">
+        <a class="button button-primary" id="APIstart" href="{{ url_for('APIstart') }}">Start Robot API</a>
+        <a class="button button-primary" id="APIreset" href="{{ url_for('APIreset') }}">Reboot Robot API</a>
+        <a class="button button-primary" id="APIstop" href="{{ url_for('APIstop') }}">Stop Robot API</a>
+    </div>
+    <div class="large-6 columns" align="right">
+          <h4>
+            Toggle camera
+          </h4>
+          <div class="switch il">
+            <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch"{% if robot.camera %} checked{% endif %}>
+            <label class="switch-paddle" for="camera-switch">
+              <span class="show-for-sr">Toggle Camera</span>
+            </label>
+          </div>
+        </div>
+</div>
+
+<div class="row">
   <div class="large-12 columns">
     <pre>
       <code id="robot-logs" class="accesslog hljs">{{ logs_content }}</code>
@@ -20,6 +39,10 @@
 
 {% block endscript %}
 <script>
+
+$('#camera-switch').change(function() {
+  $.post('/camera', { checked: ($(this).prop('checked') === true ? 'on' : 'off') });
+});
 
 var timeOut;
 

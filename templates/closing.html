@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row columns" style="max-width: 600px; margin: auto">
+  <h1 class="section-title">Closing</h1>
+  <div class="callout">
+    <p class="lead" align="center">
+      {{ closing_msg }}
+    </p>
+  </div>
+  <div class="row" align="center">
+    <p id='decompte'>Redirection in 10 secondes<p>
+    <a href="{{ url_for('index') }}">
+      <button type="button" class="button">Return to home now</button>
+    </a>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block endscript %}
+<script>
+var sec = 9;
+function tick() {
+    document.getElementById('decompte').innerHTML = 'Redirection in ' + sec + ' seconde(s)';
+    sec--;
+    if(sec < 0) {
+        document.getElementById('decompte').innerHTML = 'Redirection !';
+        document.location = "{{ url_for('index') }}";
+    }
+}
+window.setInterval(tick, 1000);
+</script>
+{% endblock endscript %}
