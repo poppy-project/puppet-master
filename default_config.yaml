@@ -9,6 +9,7 @@ robot:
 info:
   version: 1.0
   logfile: /tmp/puppet-master.log
+  virtualBotLog: /tmp/virtual-bot.log
   board: $board
 
 update:

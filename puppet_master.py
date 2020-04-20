@@ -2,7 +2,7 @@ import os
 import time
 import requests
 
-from subprocess import call, check_call
+from subprocess import call, check_call, Popen
 from contextlib import closing
 from threading import Thread
 
@@ -28,10 +28,7 @@ class PuppetMaster(object):
             'wifi.psk': self._add_wifi_psk,
             'hotspot.start': self._auto_start_hotspot,
             'hotspot.ssid': self._set_hotspot_ssid,
-            'hotspot.psk': self._set_hotspot_psk,
-            'robot.firstPage': self._set_first_page,
-            'robot.autoStart' : self._auto_start_api,
-            'robot.virtualBot' : self._start_virtual_bot
+            'hotspot.psk': self._set_hotspot_psk
         }
         self._updating = False
 
@@ -128,17 +125,42 @@ class PuppetMaster(object):
     def _set_hotspot_psk(self, psk):
         print('_set_hotspot_psk No implemented! Comming soon')
 
-    def _set_first_page(self, state):
-        print('_set_first_page No implemented! Comming soon')
-
-    def _auto_start_api(self, state):
-        print('_auto_start_api No implemented! Comming soon')
-
-    def _start_virtual_bot(self, nb):
-        print('_start_virtual_bot No implemented! Comming soon')
+    def clone(self, number, http=8080, snap=6969, ws=9009):
+        # port http, snap and ws, are hard coded in pypot for real robot
+        nb_try = 0
+        status = 'occuped'
+        while status == 'occuped':
+            nb_try+=1
+            http+=1
+            snap+=1
+            ws+=1
+            try:
+                requests.get('http://{}:{}'.format(self.config.robot.name,http))
+            except:
+                status = 'free'
+        for nb in range (number):
+            f= open(self.config.info.virtualBotLog.replace('.log', '_{}.log'.format(nb+nb_try)), "wb")
+            Popen(['poppy-services', '--poppy-simu', '--no-browser',
+                   '--http', '--http-port', str(http),
+                   '--snap', '--snap-port', str(snap),
+                   '--ws', '--ws-port', str(ws),
+                   self.config.robot.creature],
+                   stdout=f, stderr=f)
+            http+=1
+            snap+=1
+            ws+=1
 
     def reboot(self):
-        print('reboot No implemented! Comming soon')
+        try:
+            for m in self.get_motors():
+                self.send_value(m, 'compliant', True)
+        except:
+            pass
+
+        def delayed_halt(sec=5):
+            time.sleep(sec)
+            call(['sudo', 'reboot'])
+        Thread(target=delayed_halt).start()
 
 
     def shutdown(self):

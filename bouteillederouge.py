@@ -67,8 +67,26 @@ pm = PuppetMaster(DaemonCls=PoppyDaemon,
 
 if os.path.exists(pidfile):
     pm.force_clean()
-pm.start()
 
+if pm.config.robot.autoStart:
+    if pm.config.robot.camera:
+        print("Starting API with camera")
+    else:
+        print("Starting API without camera")
+    pm.start()
+else:
+    print("Auto-start API disable")
+
+number=int(pm.config.robot.virtualBot)
+if number>0:
+    print("Start {} virtual instance of {}".format(pm.config.robot.virtualBot, pm.config.robot.creature))
+    pm.clone(number)
+'''
+@app.route('/clone', methods=['POST'])
+def clone():
+    pm.clone(request.form['number'])
+    return ('', 204)
+'''
 
 @app.context_processor
 def inject_robot_config():
@@ -87,13 +105,21 @@ def cache_buster(response):
 
 @app.route('/')
 def index():
+    if pm.config.robot.firstPage:
+        return render_template('opening.html')
+    else:
+        return render_template('index.html')
+
+@app.route('/end_opening')
+def end_opening():
+    pm.update_config('robot.firstPage', False)
     return render_template('index.html')
 
 
 @app.route('/monitor')
 def monitor():
     if not pm.running:
-        pm.start()
+        flash('API is NOT running, start before use monitor', 'alert') #pm.start()
 
     return render_template(
         'base-iframe.html',
@@ -112,7 +138,7 @@ def base_static_monitor(filename):
 @app.route('/snap')
 def snap():
     if not pm.running:
-        pm.start()
+        flash('API is NOT running, start before use snap', 'alert') #pm.start()
 
     return render_template(
         'base-iframe.html',
@@ -128,7 +154,7 @@ def base_static_snap(filename):
 @app.route('/jupyter')
 def jupyter():
     if pm.running:
-        pm.stop()
+        flash('API is already running, stop before instanciate the robot on python', 'alert') #pm.stop()
 
     return render_template(
         'base-iframe.html',
