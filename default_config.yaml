@@ -10,15 +10,13 @@ info:
   version: 1.0
   logfile: /tmp/puppet-master.log
   virtualBotLog: /tmp/virtual-bot.log
+  configMotorLog: /tmp/motor-config.log
   board: $board
 
 update:
   url: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
   logfile: $home/.install.log
   lockfile: /tmp/poppy-update-pid.lock
-
-poppy_configure:
-  logfile: /tmp/poppy-config.log
 
 hotspot:
   start: on

@@ -6,8 +6,6 @@ import signal
 
 from subprocess import Popen
 
-yaml.warnings({'YAMLLoadWarning': False}) #https://msg.pyyaml.org/load
-
 class Daemon(object):
     def __init__(self, pidfile, logfile):
         self.pidfile = os.path.abspath(pidfile)
@@ -21,8 +19,16 @@ class Daemon(object):
             raise SystemError('pidfile {} already exist. '
                               'Daemon already running?'.format(self.pidfile))
 
+        cmd = self.get_command()
+
         with open(self.logfile, 'w') as log:
-            p = Popen(self.get_command(), stdout=log, stderr=log)
+
+            if '--disable-camera' in cmd:
+                log.write('Starting API without camera... \n')
+            else:
+                log.write('Starting API with camera... \n')
+
+            p = Popen(cmd, stdout=log, stderr=log)
 
             with open(self.pidfile, 'w') as f:
                 f.write('{}'.format(p.pid))
@@ -40,7 +46,9 @@ class Daemon(object):
         os.kill(pid, signal.SIGTERM)
         os.remove(self.pidfile)
 
-        open(self.logfile, 'w').close()
+        with open(self.logfile, 'w') as log:
+            log.write('API stopped!\n')
+            log.close()
 
         return('Poppy daemon is now stopped!')
 
@@ -65,13 +73,13 @@ class PoppyDaemon(Daemon):
         self.configfile = configfile
 
         with open(self.configfile) as f:
-            config = yaml.load(f)
+            config = yaml.load(f, Loader=yaml.SafeLoader)
 
         Daemon.__init__(self, pidfile, config['info']['logfile'])
 
     def get_command(self):
         with open(self.configfile) as f:
-            config = yaml.load(f)
+            config = yaml.load(f, Loader=yaml.SafeLoader)
 
         cmd = [
             'poppy-services',

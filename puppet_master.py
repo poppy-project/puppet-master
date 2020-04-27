@@ -20,7 +20,6 @@ class PuppetMaster(object):
         self.daemon = DaemonCls(self.configfile, self.pidfile)
 
         self.config_handlers = {
-            'robot.camera': lambda _: self.restart(),
             'robot.name': self._change_hostname,
             'robot.motors': self._configure_motors,
             'wifi.start': self._auto_start_wifi,
@@ -71,13 +70,19 @@ class PuppetMaster(object):
             return
 
         self._updating = True
-        self.stop()
+
+        if self.running:
+            self.stop()
+            flag=True
+        else:
+            flag=False
 
         if os.path.exists(self.config.update.logfile):
             os.remove(self.config.update.logfile)
         success = check_call(['poppy-update'])
 
-        self.start()
+        if flag: self.start()
+
         self._updating = False
 
         return success
@@ -89,9 +94,12 @@ class PuppetMaster(object):
     def _change_hostname(self, name):
         call(['sudo', 'raspi-config', '--change-hostname', name])
         call(['sudo', 'hostnamectl', 'set-hostname', name])
+
+    def restart_network(self):
         call(['sudo', 'systemctl', 'restart', 'networking.service'])
         call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service'])
-        self.restart()
+        if self.running:
+            self.restart()
 
     def _get_robot_motor_list(self):
         try:
@@ -101,11 +109,17 @@ class PuppetMaster(object):
             return ['']
 
     def _configure_motors(self, motor):
-        self.stop()
+        if self.running:
+            self.stop()
+            flag=True
+        else:
+            flag=False
+
         creature = self.config.robot.creature.split('poppy-')[1]
-        f = open(self.config.poppy_configure.logfile,"wb")
+        f = open(self.config.info.configMotorLog,"wb")
         check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
-        self.start()
+
+        if flag: self.start()
 
     def _auto_start_wifi(self, state):
         print('_auto_start_wifi No implemented! Comming soon')
@@ -157,7 +171,7 @@ class PuppetMaster(object):
         except:
             pass
 
-        def delayed_halt(sec=5):
+        def delayed_halt(sec=3):
             time.sleep(sec)
             call(['sudo', 'reboot'])
         Thread(target=delayed_halt).start()
@@ -170,7 +184,7 @@ class PuppetMaster(object):
         except:
             pass
 
-        def delayed_halt(sec=5):
+        def delayed_halt(sec=3):
             time.sleep(sec)
             call(['sudo', 'halt'])
         Thread(target=delayed_halt).start()

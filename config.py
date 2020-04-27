@@ -19,7 +19,7 @@ class Config(object):
     @classmethod
     def from_file(cls, filename):
         with open(filename) as f:
-            return cls(yaml.load(f), filename)
+            return cls(yaml.load(f, Loader=yaml.SafeLoader), filename)
 
     def __repr__(self):
         return str(self.as_dict())

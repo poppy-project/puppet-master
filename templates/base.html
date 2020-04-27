@@ -52,6 +52,14 @@
       $(document).foundation();
       hljs.initHighlightingOnLoad();
     </script>
+    <script>
+    function refreshForMsg(url)  {
+        $.ajax(url, {
+            success: function () {
+                window.location.reload();
+            }});
+    };
+    </script>
     {% endblock foundation_scripts %}
 
     {% block endscript %}{% endblock %}

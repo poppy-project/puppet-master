@@ -6,7 +6,7 @@ import subprocess
 
 from threading import Thread
 
-from flask import (Flask, request,
+from flask import (Flask, request, Markup,
                    redirect, url_for,
                    render_template, flash,
                    send_from_directory, Response,
@@ -69,17 +69,14 @@ if os.path.exists(pidfile):
     pm.force_clean()
 
 if pm.config.robot.autoStart:
-    if pm.config.robot.camera:
-        print("Starting API with camera")
-    else:
-        print("Starting API without camera")
     pm.start()
 else:
-    print("Auto-start API disable")
+    with open(pm.config.info.logfile, 'w') as log:
+        log.write('Auto-start API disable ! \nShow configuration page for enable auto-start, or start manually.')
+        log.close()
 
 number=int(pm.config.robot.virtualBot)
 if number>0:
-    print("Start {} virtual instance of {}".format(pm.config.robot.virtualBot, pm.config.robot.creature))
     pm.clone(number)
 '''
 @app.route('/clone', methods=['POST'])
@@ -119,7 +116,7 @@ def end_opening():
 @app.route('/monitor')
 def monitor():
     if not pm.running:
-        flash('API is NOT running, start before use monitor', 'alert') #pm.start()
+        flash(Markup('> API is <b>not running</b>, start before use Monitor. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
 
     return render_template(
         'base-iframe.html',
@@ -138,7 +135,7 @@ def base_static_monitor(filename):
 @app.route('/snap')
 def snap():
     if not pm.running:
-        flash('API is NOT running, start before use snap', 'alert') #pm.start()
+        flash(Markup('> API is <b>not running</b>, start before use Snap. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
 
     return render_template(
         'base-iframe.html',
@@ -154,7 +151,7 @@ def base_static_snap(filename):
 @app.route('/jupyter')
 def jupyter():
     if pm.running:
-        flash('API is already running, stop before instanciate the robot on python', 'alert') #pm.stop()
+        flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
 
     return render_template(
         'base-iframe.html',
@@ -169,6 +166,14 @@ def settings():
 
 @app.route('/settings_update', methods=['POST'])
 def settings_update():
+    label= {'name': 'Hostname',
+            'firstPage':'State for first connection page',
+            'autoStart':'API auto-start',
+            'camera':'State of camera (when API start)',
+            'virtualBot':'Number of virtual instance',
+            'start':'State',
+            'ssid':'Name',
+            'psk':'Password'}
     msg=''
     for key, value in request.form.items() :
         if value != '':
@@ -178,10 +183,20 @@ def settings_update():
             elif value == 'off': value = False
             if value != getattr(getattr(pm.config, key[0]), key[1]):
                 pm.update_config('.'.join(key),value)
-                msg+='- {} of {} was changed -'.format(key[1], key[0])
-    if msg == '': flash('Nothing was changed!', 'warning')
-    else: flash(msg, 'success')
+                msg+='> {} of {} was changed.'.format(label[key[1]], key[0])
+                if key[1] == 'name' or key[0] == 'hotspot' or key[0] == 'wifi':
+                    msg+=' <a href="{}">Restart network service</a> to apply (or wait next reboot).'.format(url_for('restart_network'))
+                msg+='<br>'
+    if msg == '': flash('> Nothing was changed!', 'warning')
+    else: flash(Markup(msg), 'success')
     return ('', 204)
+
+@app.route('/restart_network')
+def restart_network():
+    pm.restart_network()
+    goback= request.referrer.replace(urlparse(request.url_root).hostname, pm.config.robot.name+'.local')
+    flash('> Network service was restarted', 'success')
+    return redirect(goback)
 
 @app.route('/terminal')
 def terminal():
@@ -195,10 +210,8 @@ def terminal():
 @app.route('/reboot')
 def reboot():
     pm.reboot()
-    return render_template(
-        'closing.html',
-        closing_msg='Your {} will now be REBOOT in a few seconds.'.format(pm.config.info.board)
-    )
+    flash('> Your {} will now be REBOOT in a few seconds.'.format(pm.config.info.board), 'success')
+    return ('', 204)
 
 @app.route('/logs')
 def logs():
@@ -225,26 +238,26 @@ def APIreset():
     if pm.running:
         pm.stop()
     pm.start()
-    flash('Your robot has been restarted.', 'success')
-    return redirect(request.referrer)
+    flash('> Your robot\'s API has been restarted.', 'success')
+    return ('', 204)
 
 @app.route('/APIstart')
 def APIstart():
     if pm.running:
-        flash('Your robot\'s API has already Started.', 'warning')
+        flash('> Your robot\'s API has already started.', 'warning')
     else:
         pm.start()
-        flash('Your robot\'s API has been Started.', 'success')
-    return redirect(request.referrer)
+        flash('> Your robot\'s API has been started.', 'success')
+    return ('', 204)
 
 @app.route('/APIstop')
 def APIstop():
     if pm.running:
         pm.stop()
-        flash('Your robot\'s API has been stopped.', 'success')
+        flash('> Your robot\'s API has been stopped.', 'success')
     else:
-        flash('Your robot\'s API has already stopped.', 'warning')
-    return redirect(request.referrer)
+        flash('> Your robot\'s API has already stopped.', 'warning')
+    return ('', 204)
 
 
 @app.route('/update')
@@ -254,12 +267,12 @@ def update():
         success = pm.self_update()
 
         if success:
-            flash('Your robot is now up-to-date!', 'success')
+            flash('> Your robot is now up-to-date!', 'success')
         else:
-            flash('Update failed, check logs for details!', 'alert')
+            flash('> Update failed, check logs for details!', 'alert')
+        #flash msg probably does not work, check this after fixing updating bug
 
-    flash('Your robot is currently updating. '
-          'Please do not turn it off before it\'s done!', 'warning')
+    flash('> Your robot is currently updating. Please do not turn it off before it\'s done!', 'warning')
 
     if not pm.is_updating:
         Thread(target=update_in_bg).start()
@@ -274,21 +287,24 @@ def is_updating():
 
 @app.route('/done-updating')
 def done_updating():
-    flash('Your robot is now up-to-date!', 'success')
+    flash('> Your robot is now up-to-date!', 'success')
     return redirect(url_for('index'))
 
-@app.route('/camera', methods=['POST'])
+@app.route('/switch_camera')
 def switch_camera():
-    checked = request.form['checked']
-    pm.update_config('robot.camera', True if checked == 'on' else False)
-    #flash('Your robot camera is now turned {}!'.format(checked), 'success')
+    if pm.config.robot.camera:
+        pm.update_config('robot.camera', False)
+        flash('> Your robot camera is now turned off!', 'success')
+    else:
+        pm.update_config('robot.camera', True)
+        flash('> Your robot camera is now turned on!', 'success')
     return ('', 204)
 
 @app.route('/configure-motors')
 def configure_motors():
     # Remove old poppy-configure output to avoid user confusion
     try:
-        os.remove(pm.config.poppy_configure.logfile)
+        os.remove(pm.config.info.configMotorLog)
     except OSError:
         pass
     return render_template('motor-configuration.html', motors=pm._get_robot_motor_list())
@@ -322,10 +338,8 @@ def ready_to_roll():
 @app.route('/shutdown')
 def shutdown():
     pm.shutdown()
-    return render_template(
-        'closing.html',
-        closing_msg='Your {} will now be HALTED in a few seconds.'.format(pm.config.info.board)
-    )
+    flash('> Your {} will now be HALTED in a few seconds.'.format(pm.config.info.board), 'success')
+    return ('', 204)
 
 
 @app.route('/api/raw_logs')
@@ -351,7 +365,7 @@ def update_raw_logs():
 @app.route('/api/configure_motors_logs')
 def poppy_config_logs():
     try:
-        with open(pm.config.poppy_configure.logfile) as f:
+        with open(pm.config.info.configMotorLog) as f:
             content = f.read()
     except IOError:
         content = ''
