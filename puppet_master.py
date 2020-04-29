@@ -30,6 +30,7 @@ class PuppetMaster(object):
             'hotspot.psk': self._set_hotspot_psk
         }
         self._updating = False
+        self.nb_clone = 0
 
     def start(self):
         self.daemon.start()
@@ -139,7 +140,7 @@ class PuppetMaster(object):
     def _set_hotspot_psk(self, psk):
         print('_set_hotspot_psk No implemented! Comming soon')
 
-    def clone(self, number, http=8080, snap=6969, ws=9009):
+    def clone(self, number=1, http=8080, snap=6969, ws=9009):
         # port http, snap and ws, are hard coded in pypot for real robot
         nb_try = 0
         status = 'occuped'
@@ -160,6 +161,7 @@ class PuppetMaster(object):
                    '--ws', '--ws-port', str(ws),
                    self.config.robot.creature],
                    stdout=f, stderr=f)
+            self.nb_clone+=1
             http+=1
             snap+=1
             ws+=1

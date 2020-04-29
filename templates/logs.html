@@ -2,37 +2,69 @@
 
 {% block content %}
 
-<div class="row">
+<div class="large-10 medium-10 row">
   <div class="columns">
-    <h1 class="section-title">Logs</h1>
+    <h1 class="section-title">What happened?</h1>
   </div>
 </div>
-
-<div class="row">
-    <div class="large-9 medium-9 small-6 columns">
+<div class="large-10 medium-10 row">
+  <div class="callout">
+    <div class="row">
+      <div class="columns">
+        <h3>> Real Robot</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-9 medium-9 small-6 columns">
+        &emsp;
         <a class="button button-primary" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
         <a class="button button-primary" id="APIreset" onclick="refreshForMsg('{{ url_for('APIreset') }}')">Reboot Robot API</a>
         <a class="button button-primary" id="APIstop" onclick="refreshForMsg('{{ url_for('APIstop') }}')">Stop Robot API</a>
-    </div>
-    <div class="large-3 medium-3 small-3 columns" align="right">
-          <h4>
-            Toggle camera
-          </h4>
-          <div class="switch il">
-            <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch" onclick="refreshForMsg('{{ url_for('switch_camera') }}')" {% if robot.camera %} checked{% endif %}>
-            <label class="switch-paddle" for="camera-switch">
-              <span class="show-for-sr">Toggle Camera</span>
-            </label>
-          </div>
+      </div>
+      <div class="large-3 medium-3 small-3 columns" align="right">
+        <h4>Toggle camera</h4>
+        <div class="switch il">
+          <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch" onclick="refreshForMsg('{{ url_for('switch_camera') }}')" {% if robot.camera %} checked{% endif %}>
+          <label class="switch-paddle" for="camera-switch">
+            <span class="show-for-sr">Toggle Camera</span>
+          </label>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-12 columns">
+        <pre>
+Logs for real robot <span id="show-switch_0" style="visibility:hidden" onclick="switchShow(0)">(<a>show more</a>)</span>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_0" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_0" onclick="downloadLogs(0)">Save this logs</a>
+        </pre>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="row">
-  <div class="large-12 columns">
-    <pre>
-<a id="show-switch" style="visibility:hidden">show more</a>
-<code style="max-height:145px;overflow-y:hidden;" id="robot-logs" class="accesslog hljs">{{ logs_content }}</code>
-    </pre>
+<div class="large-10 medium-10 row">
+  <div class="callout">
+    <div class="row">
+      <div class="columns">
+        <h3>> Virtual instance of robot</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns">
+        &emsp;
+        <a class="button button-primary" id="launch-clone" onclick="refreshForMsg('{{ url_for('clone') }}')">Launch one more instance</a>
+      </div>
+    </div>
+    &emsp;
+    {%- for nb in range(1,clone+1) %}
+    <div class="row">
+      <div class="large-12 columns">
+        <pre>
+Logs for virtual instance number {{ nb }} <span id="show-switch_{{ nb }}" style="visibility:hidden" onclick="switchShow({{ nb }})">(<a>show more</a>)</span>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_{{ nb }}" class="accesslog hljs">logs_content</code><a id="save-logs_{{ nb }}" onclick="downloadLogs({{ nb }})">Save this logs</a>
+        </pre>
+      </div>
+    </div>
+    {%- endfor %}
   </div>
 </div>
 
@@ -41,36 +73,67 @@
 {% block endscript %}
 <script>
 var timeOut;
-var logsElement = document.getElementById('robot-logs');
-var showSwitch = document.getElementById('show-switch');
-
-$('#show-switch').click(function() {
-    if (showSwitch.innerHTML === "show more") {
-        logsElement.style.maxHeight = "none";
-        logsElement.style.overflow-y = "auto";
-        showSwitch.innerHTML = "show less";
-    } else {
-        logsElement.style.maxHeight = "145px";
-        logsElement.style.overflow-y = "hidden";
-        showSwitch.innerHTML = "show more";
-    };
-});
+var logsRealBot = document.getElementById('logs_0');
 
 function refreshLogs() {
-
-  if (logsElement.scrollHeight < 145) {
-      showSwitch.style.visibility = "hidden";
-  } else {
-      showSwitch.style.visibility = "visible";
-  };
-
+  //real robot
   $.get('{{ url_for('raw_logs') }}', function(rawLogs) {
-    logsElement.innerHTML = rawLogs;
-    logsElement.scrollTop = logsElement.scrollHeight;
-    hljs.highlightBlock(logsElement);
-
-    startTimeout();
+      logsRealBot.innerHTML = rawLogs;
+      logsRealBot.scrollTop = logsRealBot.scrollHeight;
+      hljs.highlightBlock(logsRealBot);
   });
+  if (logsRealBot.scrollHeight > 145) {
+      document.getElementById('show-switch_0').style.visibility = "visible";
+  } else {
+      document.getElementById('show-switch_0').style.visibility = "hidden";
+  };
+  //virtual instance
+  for (i = 1; i < {{ clone+1 }} ; i++) {
+      getLogsVirtualBot(i);
+  };
+  startTimeout();
+}
+
+function getLogsVirtualBot(id) {
+  var logsVirtualBot = document.getElementById('logs_'+id);
+  $.post('{{ url_for('raw_logs_vir') }}', {id:id}, function(rawLogs) {
+      logsVirtualBot.innerHTML = rawLogs;
+      logsVirtualBot.scrollTop = logsVirtualBot.scrollHeight;
+      hljs.highlightBlock(logsVirtualBot);
+  });
+  if (logsVirtualBot.scrollHeight > 145) {
+      document.getElementById('show-switch_'+id).style.visibility = "visible";
+  } else {
+      document.getElementById('show-switch_'+id).style.visibility = "hidden";
+  };
+}
+
+function switchShow(id) {
+    var showSwitch = document.getElementById('show-switch_'+id);
+    var showElement = document.getElementById('logs_'+id);
+    if (showSwitch.innerHTML === "(<a>show more</a>)") {
+        showElement.style.maxHeight = "none";
+        showElement.style.overflowY = "auto";
+        showSwitch.innerHTML = "(<a>show less</a>)";
+    } else {
+        showElement.style.maxHeight = "145px";
+        showElement.style.overflowY = "hidden";
+        showSwitch.innerHTML = "(<a>show more</a>)";
+    };
+}
+
+function downloadLogs(id) {
+    var ContentElement =  document.getElementById('save-logs_'+id);
+    ContentElement.download="logs_"+id+".txt";
+    if (id === 0) {
+        $.get('{{ url_for('raw_logs') }}', function(rawLogs) {
+          ContentElement.href="data:text/html," + rawLogs;
+        });
+    } else {
+        $.post('{{ url_for('raw_logs_vir') }}', {id:id}, function(rawLogs) {
+          ContentElement.href="data:text/html," + rawLogs;
+        });
+    }
 }
 
 function startTimeout() {

@@ -78,19 +78,15 @@ else:
 number=int(pm.config.robot.virtualBot)
 if number>0:
     pm.clone(number)
-'''
-@app.route('/clone', methods=['POST'])
-def clone():
-    pm.clone(request.form['number'])
-    return ('', 204)
-'''
+
 
 @app.context_processor
 def inject_robot_config():
     return dict(robot=pm.config.robot,
                 info=pm.config.info,
                 wifi=pm.config.wifi,
-                hotspot=pm.config.hotspot)
+                hotspot=pm.config.hotspot,
+                clone=pm.nb_clone)
 
 @app.after_request
 def cache_buster(response):
@@ -300,6 +296,12 @@ def switch_camera():
         flash('> Your robot camera is now turned on!', 'success')
     return ('', 204)
 
+@app.route('/clone')
+def clone():
+    pm.clone()
+    flash('> One more instance was launched', 'success')
+    return ('', 204)
+
 @app.route('/configure-motors')
 def configure_motors():
     # Remove old poppy-configure output to avoid user confusion
@@ -351,6 +353,15 @@ def raw_logs():
         content = 'No log found...'
     return Response(content, mimetype='text/plain')
 
+@app.route('/api/raw_logs_vir', methods=['POST'])
+def raw_logs_vir():
+    file= pm.config.info.virtualBotLog.replace('.log', '_{}.log'.format(request.form['id']))
+    try:
+        with open(file) as f:
+            content = f.read()
+    except IOError:
+        content = 'No log found...'
+    return Response(content, mimetype='text/plain')
 
 @app.route('/api/update_raw_logs')
 def update_raw_logs():
