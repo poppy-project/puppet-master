@@ -22,12 +22,12 @@ class PuppetMaster(object):
         self.config_handlers = {
             'robot.name': self._change_hostname,
             'robot.motors': self._configure_motors,
-            'wifi.start': self._auto_start_wifi,
-            'wifi.ssid': self._add_wifi_ssid,
-            'wifi.psk': self._add_wifi_psk,
-            'hotspot.start': self._auto_start_hotspot,
-            'hotspot.ssid': self._set_hotspot_ssid,
-            'hotspot.psk': self._set_hotspot_psk
+            'wifi.start': self._set_wifi,
+            'wifi.ssid': self._change_wifi,
+            'wifi.psk': self._change_wifi,
+            'hotspot.start': self._set_hotspot,
+            'hotspot.ssid': self._set_hotspot,
+            'hotspot.psk': self._set_hotspot
         }
         self._updating = False
         self.nb_clone = 0
@@ -97,8 +97,13 @@ class PuppetMaster(object):
         call(['sudo', 'hostnamectl', 'set-hostname', name])
 
     def restart_network(self):
-        call(['sudo', 'systemctl', 'restart', 'networking.service'])
-        call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service'])
+        print('restart_network No implemented! Comming soon')
+        #I'm not sure what is the right service to restart
+        #call(['sudo', 'systemctl', 'restart', 'networking.service']) #needed for change hostname
+        #call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service']) #needed for change hostname
+        #call(['sudo', 'systemctl', 'restart', 'dhcpcd.service'])  #needed for switch from hotspot to wifi
+        #call(['sudo', 'systemctl', 'restart', 'rpi-access-point.service']) #needed for switch from hotspot to wifi AND for switch from wifi to hotspot
+        print('Right now, reboot raspberry to apply network changes')
         if self.running:
             self.restart()
 
@@ -122,23 +127,53 @@ class PuppetMaster(object):
 
         if flag: self.start()
 
-    def _auto_start_wifi(self, state):
-        print('_auto_start_wifi No implemented! Comming soon')
+    def _set_wifi(self, state):
+        tmp_file='/tmp/tmp.txt'
+        with open(tmp_file, 'w') as f:
+            #tricks to pass through of the permission denied in conf file
+            call(['sudo', 'cat', self.config.wifi.confFile], stdout=f)
+            f.close()
+        with open(tmp_file, 'r') as f:
+            data = f.readlines()
+            f.close()
+        if state:
+            add= [
+                '#default_Network\n',
+                'network={\n',
+                '\tssid=\"{}\"\n'.format(self.config.wifi.ssid),
+                '\tpsk=\"{}\"\n'.format(self.config.wifi.psk),
+                '}\n'
+            ]
+            data+=add
+        else:
+            for i,line in enumerate(data):
+                if '#default_Network' in line:
+                    for _ in range(5):
+                        del data[i]
+        with open(tmp_file, 'w') as f:
+            f.writelines(data)
+            f.close()
+        call(['sudo', 'cp', tmp_file, self.config.wifi.confFile])
+        call(['sudo', 'rm', tmp_file])
 
-    def _add_wifi_ssid(self, ssid):
-        print('_add_wifi_ssid No implemented! Comming soon')
+    def _change_wifi(self, _):
+        if self.config.wifi.start:
+            self._set_wifi(False)#remove old config
+            self._set_wifi(True)#set new config
 
-    def _add_wifi_psk(self, psk):
-        print('_add_wifi_psk No implemented! Comming soon')
-
-    def _auto_start_hotspot(self, state):
-        print('_auto_start_hotspot No implemented! Comming soon')
-
-    def _set_hotspot_ssid(self, ssid):
-        print('_set_hotspot_ssid No implemented! Comming soon')
-
-    def _set_hotspot_psk(self, psk):
-        print('_set_hotspot_psk No implemented! Comming soon')
+    def _set_hotspot(self, _):
+        if self.config.hotspot.start:
+            tmp_file='/tmp/tmp.txt'
+            with open(tmp_file, 'w') as f:
+                f.write('ssid={}\npassphrase={}\n'.format(self.config.hotspot.ssid, self.config.hotspot.psk))
+                f.close()
+            call(['sudo', 'cp', tmp_file, self.config.hotspot.confFile])
+            call(['sudo', 'rm', tmp_file])
+        else:
+            try:
+                call(['sudo', 'rm', self.config.hotspot.confFile])
+            except:
+                pass
 
     def clone(self, number=1, http=8080, snap=6969, ws=9009):
         # port http, snap and ws, are hard coded in pypot for real robot
