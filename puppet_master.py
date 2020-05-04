@@ -97,13 +97,9 @@ class PuppetMaster(object):
         call(['sudo', 'hostnamectl', 'set-hostname', name])
 
     def restart_network(self):
-        print('restart_network No implemented! Comming soon')
-        #I'm not sure what is the right service to restart
-        #call(['sudo', 'systemctl', 'restart', 'networking.service']) #needed for change hostname
-        #call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service']) #needed for change hostname
-        #call(['sudo', 'systemctl', 'restart', 'dhcpcd.service'])  #needed for switch from hotspot to wifi
-        #call(['sudo', 'systemctl', 'restart', 'rpi-access-point.service']) #needed for switch from hotspot to wifi AND for switch from wifi to hotspot
-        print('Right now, reboot raspberry to apply network changes')
+        call(['sudo', 'systemctl', 'restart', 'networking.service']) #needed for change hostname
+        call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service']) #needed for change hostname
+        call(['sudo', 'systemctl', 'restart', self.config.info.serviceNetwork ]) #needed for change wifi or hotspot
         if self.running:
             self.restart()
 
@@ -172,7 +168,7 @@ class PuppetMaster(object):
         else:
             try:
                 call(['sudo', 'rm', self.config.hotspot.confFile])
-            except:
+            except OSError:
                 pass
 
     def clone(self, number=1, http=8080, snap=6969, ws=9009):
@@ -203,8 +199,11 @@ class PuppetMaster(object):
 
     def reboot(self):
         try:
+            if not self.running: self.start()
             for m in self.get_motors():
                 self.send_value(m, 'compliant', True)
+                self.send_value(m, 'led', 'off')
+            self.stop()
         except:
             pass
 
@@ -216,8 +215,11 @@ class PuppetMaster(object):
 
     def shutdown(self):
         try:
+            if not self.running: self.start()
             for m in self.get_motors():
                 self.send_value(m, 'compliant', True)
+                self.send_value(m, 'led', 'off')
+            self.stop()
         except:
             pass
 
@@ -226,9 +228,9 @@ class PuppetMaster(object):
             call(['sudo', 'halt'])
         Thread(target=delayed_halt).start()
 
-    def get_motors(self):
-        r = requests.get('http://localhost:8080/motor/list.json').json()
-        return r['motors']
+    def get_motors(self, alias='motors'):
+        r = requests.get('http://localhost:8080/motor/{}/list.json'.format(alias)).json()
+        return r[alias]
 
     def send_value(self, motor, register, value):
         url = 'http://localhost:8080/motor/{}/register/{}/value.json'

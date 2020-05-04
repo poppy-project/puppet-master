@@ -11,6 +11,9 @@ info:
   logfile: /tmp/puppet-master.log
   virtualBotLog: /tmp/virtual-bot.log
   configMotorLog: /tmp/motor-config.log
+  serviceNetwork: rpi-access-point
+  serviceJupiter: jupyter-notebook.service
+  servicePuppetMaster: puppet-master.service
   board: $board
 
 update:
@@ -21,13 +24,11 @@ update:
 hotspot:
   start: on
   confFile: /boot/hotspot.txt
-  service: rpi-access-point
   ssid: Poppy-Hotspot
   psk: poppyproject
 
 wifi:
   start: off
   confFile: /etc/wpa_supplicant/wpa_supplicant.conf
-  service: rpi-access-point
   ssid: Poppy-Router
   psk: poppyproject
