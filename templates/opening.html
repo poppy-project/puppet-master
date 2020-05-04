@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row columns" style="max-width: 600px; margin: auto">
+  <h1 class="section-title">Page of first connection</h1>
+  <div class="callout">
+    <p class="lead" align="center">
+        TODO
+    </p>
+  </div>
+  <div class="row" align="center">
+    <a href="{{ url_for('end_opening') }}">
+      <button type="button" class="button">Go to Home</button>
+    </a>
+  </div>
+</div>
+
+{% endblock content %}
+

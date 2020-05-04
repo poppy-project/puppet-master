@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <div class="large-6 row">
+    <div class="columns">
+      <h1 class="section-title">Configure your motors</h1>
+    </div>
+  </div>
+
+  <div class="large-6 row">
+      
+    <div class="large-6 medium-6 columns">
+      <div class="callout">
+        <div class="row">
+          <div class="large-12 columns">
+            <p>Don't plug 2 motors in a same time</p>
+            <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
+          </div>
+        </div>
+      </div>
+    </div>
+      
+    <div class="large-6 medium-6 columns">
+      <div class="callout">
+        <div class="row">
+          <div class="large-12 columns">
+            <p>Plug only 1 motor for configuration</p>
+            <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="How to plug a motor">
+          </div>
+        </div>
+      </div>
+    </div>
+      
+  </div>
+
+    <div class="large-6 row">
+      <div class="large-12 columns">
+        <div class="callout">
+          <h4>
+            Which motor do you want to configure?
+          </h4>
+          {% if motors | length > 1 %}
+            <form>
+              <div class="row">
+                <div class="large-9 columns">
+                  <select id="motor">
+                    {% for m in motors %}
+                      <option value="{{ m }}">{{ m }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="large-3 columns">
+                  <button id="configure-motor" onclick="showLog()" type="button" class="button">Configure</button>
+                </div>
+              </div>
+            </form>
+          {% else %}
+            <p>No Poppy creature seems to be installed on the robot.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="large-6 row" id="logs">
+      <div class="large-12 columns">
+        <div class="callout">
+          <pre>
+> Start configuration...
+            <code id="robot-logs" class="accesslog hljs">{{ update_logs_content }}</code>
+          </pre>
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}
+{% block endscript %}
+  <script>
+      
+    document.getElementById("logs").style.visibility = "hidden";
+    var timeOut;
+    timeOut=10000;
+    
+    // when configure button are click
+    function showLog() {
+      document.getElementById('logs').style.visibility = 'visible';
+      timeOut=500;
+    }
+    
+    // /api/configure_motors_logs
+    function refreshLogs() {
+      $.get('{{ url_for('poppy_config_logs') }}', function (rawLogs) {
+        var logsElement = document.getElementById('robot-logs');
+
+        logsElement.innerHTML = rawLogs;
+        hljs.highlightBlock(logsElement);
+
+        startTimeout();
+      });
+    }
+    function startTimeout() {
+      logTimeOut = window.setTimeout(refreshLogs, timeOut);
+    }
+    startTimeout();
+
+    $('#configure-motor').click(function () {
+      motor_to_configure = $('#motor').val().trim();
+      $.post('/call_poppy_configure', {motor: motor_to_configure});
+    });
+      
+  </script>
+{% endblock endscript %}

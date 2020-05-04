@@ -1,14 +1,34 @@
 robot:
   name: $name
   creature: $creature
+  firstPage: on
+  autoStart: on
   camera: off
+  virtualBot: 0
 
 info:
   version: 1.0
   logfile: /tmp/puppet-master.log
+  virtualBotLog: /tmp/virtual-bot.log
+  configMotorLog: /tmp/motor-config.log
+  serviceNetwork: rpi-access-point
+  serviceJupiter: jupyter-notebook.service
+  servicePuppetMaster: puppet-master.service
   board: $board
 
 update:
   url: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
   logfile: $home/.install.log
   lockfile: /tmp/poppy-update-pid.lock
+
+hotspot:
+  start: on
+  confFile: /boot/hotspot.txt
+  ssid: Poppy-Hotspot
+  psk: poppyproject
+
+wifi:
+  start: off
+  confFile: /etc/wpa_supplicant/wpa_supplicant.conf
+  ssid: Poppy-Router
+  psk: poppyproject
