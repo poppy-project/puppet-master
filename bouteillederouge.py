@@ -109,11 +109,16 @@ def end_opening():
     return render_template('index.html')
 
 
-@app.route('/monitor')
+@app.route('/monitoring')
+def monitoring():
+    if not pm.running:
+        flash(Markup('> API is <b>not running</b>, start before use these tools. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+    return render_template('monitoring.html')
+
+@app.route('/monitoring/monitor')
 def monitor():
     if not pm.running:
-        flash(Markup('> API is <b>not running</b>, start before use Monitor. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
-
+        flash(Markup('> API is <b>not running</b>, start before use monitor. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src=url_for(
@@ -121,46 +126,68 @@ def monitor():
             filename='{}.html'.format(pm.config.robot.creature)
         )
     )
-
-
-@app.route('/monitor/<path:filename>')
+@app.route('/monitoring/monitor/<path:filename>')
 def base_static_monitor(filename):
     return send_from_directory(app.root_path + '/monitor/', filename)
 
+@app.route('/monitoring/visualisator')
+def visualisator():
+    if not pm.running:
+        flash(Markup('> API is <b>not running</b>, start before use web viewer. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+    #return render_template('base-iframe.html', iframe_src='http://{}:8000/{}/#{}'.format(find_local_ip(get_host()),pm.config.robot.creature,port))
+    return 'comming soon'
 
-@app.route('/snap')
+@app.route('/monitoring/camera')
+def camera():
+    if not pm.running:
+        flash(Markup('> API is <b>not running</b>, start before use web camera. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+    #return render_template('camera.html')
+    return 'comming soon'
+
+@app.route('/programming')
+def programming():
+    return render_template('programming.html')
+
+@app.route('/programming/snap')
 def snap():
     if not pm.running:
         flash(Markup('> API is <b>not running</b>, start before use Snap. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
-
     return render_template(
         'base-iframe.html',
         iframe_src=url_for('base_static_snap', filename='snap.html')
     )
-
-
-@app.route('/snap/<path:filename>')
+@app.route('/programming/snap/<path:filename>')
 def base_static_snap(filename):
     return send_from_directory(app.root_path + '/snap/', filename)
 
-
-@app.route('/jupyter')
+@app.route('/programming/jupyter')
 def jupyter():
     if pm.running:
         flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
-
     return render_template(
         'base-iframe.html',
-        iframe_src='http://{}:8888'.format(urlparse(request.url_root).hostname)
+        iframe_src= 'http://{}:8888/tree/My%20Documents/Python%20Notebook/Empty%20Notebook.ipynb'.format(urlparse(request.url_root).hostname)
     )
 
+@app.route('/programming/other')
+def AnotherLanguage():
+    if pm.running:
+        flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
+    return render_template(
+        'base-iframe.html',
+        iframe_src='http://{}:8888/tree/My%20Documents/Tuto/Another%20language.ipynb'.format(urlparse(request.url_root).hostname)
+    )
+
+@app.route('/MyDocuments')
+def MyDoc():
+    return render_template('base-iframe.html', iframe_src='http://{}:8888/tree/My%20Documents'.format(urlparse(request.url_root).hostname))
 
 @app.route('/settings')
 def settings():
     return render_template('settings.html')
 
 
-@app.route('/settings_update', methods=['POST'])
+@app.route('/settings/settings_update', methods=['POST'])
 def settings_update():
     label= {'name': 'Hostname',
             'firstPage':'State for first connection page',
@@ -219,7 +246,7 @@ def logs():
     return render_template('logs.html', logs_content=content)
 
 
-@app.route('/update-logs')
+@app.route('/settings/update-logs')
 def update_logs():
     try:
         with open(pm.config.update.logfile) as f:
@@ -256,7 +283,7 @@ def APIstop():
     return ('', 204)
 
 
-@app.route('/update')
+@app.route('/settings/update')
 def update():
     @copy_current_request_context
     def update_in_bg():
@@ -276,12 +303,12 @@ def update():
     return redirect(url_for('update_logs'))
 
 
-@app.route('/updating')
+@app.route('/settings/updating')
 def is_updating():
     return 'true' if pm.is_updating else 'false'
 
 
-@app.route('/done-updating')
+@app.route('/settings/done-updating')
 def done_updating():
     flash('> Your robot is now up-to-date!', 'success')
     return redirect(url_for('index'))
@@ -302,7 +329,7 @@ def clone():
     flash('> One more instance was launched', 'success')
     return ('', 204)
 
-@app.route('/configure-motors')
+@app.route('/settings/configure-motors')
 def configure_motors():
     # Remove old poppy-configure output to avoid user confusion
     try:

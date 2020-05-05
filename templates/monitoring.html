@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="large-10 medium-10 row wrap" data-equalizer data-equalize-on="medium">
+  <div class="large-12 medium-12 columns menu-tile">
+    <h3>Monitor and control</h3>
+  </div>
+</div>
+
+<div class="large-10 medium-10 row wrap" data-equalizer data-equalize-on="medium">
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('monitor') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-stats">
+          <title>Monitor</title>
+          <use xlink:href="#pp-icon-stats"></use>
+        </svg>
+      </h3>
+      <p>Primitive manager</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('visualisator') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-eye">
+          <title>visualisator</title>
+          <use xlink:href="#pp-icon-eye"></use>
+        </svg>
+      </h3>
+      <p>Web Viewer</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('camera') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-camera">
+          <title>Camera</title>
+          <use xlink:href="#pp-icon-camera"></use>
+        </svg>
+      </h3>
+      <p>Web Camera</p>
+    </a>
+  </div>
+
+</div>
+
+{% include 'defs-svg.html' %}
+
+{% endblock content %}
+

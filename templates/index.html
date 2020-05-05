@@ -6,7 +6,7 @@
 <div class="row wrap" data-equalizer data-equalize-on="medium">
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('monitor') }}" data-equalizer-watch>
+    <a href="{{ url_for('monitoring') }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-stats">
           <title>Monitor</title>
@@ -18,20 +18,26 @@
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('snap') }}" data-equalizer-watch>
+    <a href="{{ url_for('programming') }}" data-equalizer-watch>
       <h3>
-        <img width="113" height="62" src="{{ url_for('static', filename='img/logo-snap.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-snap-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Snap!">
+        <svg class="pp-icon pp-icon-computer">
+          <title>Programming</title>
+          <use xlink:href="#pp-icon-computer"></use>
+        </svg>
       </h3>
-      <p>Build Your Own Blocks</p>
+      <p>Programming</p>
     </a>
   </div>
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('jupyter') }}" data-equalizer-watch>
+    <a href="{{ url_for('MyDoc') }}" data-equalizer-watch>
       <h3>
-        <img width="63" height="62" src="{{ url_for('static', filename='img/logo-jupyter.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-jupyter-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Jupyter">
+        <svg class="pp-icon pp-icon-folder">
+          <title>My Documents</title>
+          <use xlink:href="#pp-icon-folder"></use>
+        </svg>
       </h3>
-      <p>Python, Terminal</p>
+      <p>My Documents</p>
     </a>
   </div>
 
