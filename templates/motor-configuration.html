@@ -104,7 +104,7 @@
 
     $('#configure-motor').click(function () {
       motor_to_configure = $('#motor').val().trim();
-      $.post('/call_poppy_configure', {motor: motor_to_configure});
+      $.post('{{ url_for('call_poppy_configure') }}', {motor: motor_to_configure});
     });
       
   </script>

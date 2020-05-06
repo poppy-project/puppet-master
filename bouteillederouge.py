@@ -79,6 +79,7 @@ number=int(pm.config.robot.virtualBot)
 if number>0:
     pm.clone(number)
 
+pm.start_viewer()
 
 @app.context_processor
 def inject_robot_config():
@@ -128,14 +129,17 @@ def monitor():
     )
 @app.route('/monitoring/monitor/<path:filename>')
 def base_static_monitor(filename):
-    return send_from_directory(app.root_path + '/monitor/', filename)
+    path=app.root_path.replace('/puppet-master','')
+    return send_from_directory(path + '/poppy-monitor/', filename)
 
 @app.route('/monitoring/visualisator')
-def visualisator():
+def visualisator(http_port='8080'):
     if not pm.running:
         flash(Markup('> API is <b>not running</b>, start before use web viewer. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
-    #return render_template('base-iframe.html', iframe_src='http://{}:8000/{}/#{}'.format(find_local_ip(get_host()),pm.config.robot.creature,port))
-    return 'comming soon'
+    return render_template(
+        'base-iframe.html',
+        iframe_src='http://{}:{}/{}/#{}'.format(urlparse(request.url_root).hostname, pm.viewer_port, pm.config.robot.creature, http_port)
+    )
 
 @app.route('/monitoring/camera')
 def camera():
@@ -158,7 +162,8 @@ def snap():
     )
 @app.route('/programming/snap/<path:filename>')
 def base_static_snap(filename):
-    return send_from_directory(app.root_path + '/snap/', filename)
+    path=app.root_path.replace('/puppet-master','')
+    return send_from_directory(path + '/snap/', filename)
 
 @app.route('/programming/jupyter')
 def jupyter():
@@ -238,11 +243,7 @@ def reboot():
 
 @app.route('/logs')
 def logs():
-    try:
-        with open(pm.config.info.logfile) as f:
-            content = f.read()
-    except IOError:
-        content = 'No log found...'
+    content="Loading content..."
     return render_template('logs.html', logs_content=content)
 
 
@@ -321,6 +322,8 @@ def switch_camera():
     else:
         pm.update_config('robot.camera', True)
         flash('> Your robot camera is now turned on!', 'success')
+    if pm.running:
+        pm.restart()
     return ('', 204)
 
 @app.route('/clone')
@@ -370,22 +373,19 @@ def shutdown():
     flash('> Your {} will now be HALTED in a few seconds.'.format(pm.config.info.board), 'success')
     return ('', 204)
 
-
-@app.route('/api/raw_logs')
+@app.route('/api/raw_logs', methods=['POST'])
 def raw_logs():
-    try:
-        with open(pm.config.info.logfile) as f:
-            content = f.read()
-    except IOError:
-        content = 'No log found...'
-    return Response(content, mimetype='text/plain')
-
-@app.route('/api/raw_logs_vir', methods=['POST'])
-def raw_logs_vir():
-    file= pm.config.info.virtualBotLog.replace('.log', '_{}.log'.format(request.form['id']))
+    id=int(request.form['id'])
+    if id > 0:
+        file= pm.config.info.virtualBotLog.replace('.log', '_{}.log'.format(request.form['id']))
+    elif id == -1:
+        file= pm.config.info.viewerLog
+    else:
+        file= pm.config.info.logfile
     try:
         with open(file) as f:
             content = f.read()
+            f.close()
     except IOError:
         content = 'No log found...'
     return Response(content, mimetype='text/plain')

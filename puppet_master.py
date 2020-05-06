@@ -9,7 +9,7 @@ from threading import Thread
 from poppyd import PoppyDaemon
 from config import Config, attrsetter
 from pypot.creatures import installed_poppy_creatures
-
+from pypot.server.snap import find_local_ip
 
 class PuppetMaster(object):
     def __init__(self, DaemonCls, configfile, pidfile):
@@ -31,6 +31,7 @@ class PuppetMaster(object):
         }
         self._updating = False
         self.nb_clone = 0
+        self.viewer_port = '8000'
 
     def start(self):
         self.daemon.start()
@@ -118,8 +119,9 @@ class PuppetMaster(object):
             flag=False
 
         creature = self.config.robot.creature.split('poppy-')[1]
-        f = open(self.config.info.configMotorLog,"wb")
-        check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
+        with open(self.config.info.configMotorLog,"wb") as f:
+            check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
+            f.close()
 
         if flag: self.start()
 
@@ -185,17 +187,29 @@ class PuppetMaster(object):
             except:
                 status = 'free'
         for nb in range (number):
-            f= open(self.config.info.virtualBotLog.replace('.log', '_{}.log'.format(nb+nb_try)), "wb")
-            Popen(['poppy-services', '--poppy-simu', '--no-browser',
-                   '--http', '--http-port', str(http),
-                   '--snap', '--snap-port', str(snap),
-                   '--ws', '--ws-port', str(ws),
-                   self.config.robot.creature],
-                   stdout=f, stderr=f)
+            with open(self.config.info.virtualBotLog.replace('.log', '_{}.log'.format(nb+nb_try)), 'wb') as f:
+                Popen(['poppy-services', '--poppy-simu', '--no-browser',
+                       '--http', '--http-port', str(http),
+                       '--snap', '--snap-port', str(snap),
+                       '--ws', '--ws-port', str(ws),
+                       self.config.robot.creature],
+                       stdout=f, stderr=f)
+                f.close()
             self.nb_clone+=1
             http+=1
             snap+=1
             ws+=1
+
+    def start_viewer(self):
+        path='/home/poppy/dev/poppy-simu/'
+        with open(self.config.info.viewerLog, 'w') as f:
+            f.write(
+                'Starting Web Viewer...\n'+
+                'Connect on: http://<robot_ip>:<viewer_port>/<creature_type>/#<robot_http_port>\n'+
+                'By default: http://{}:{}/{}/#8080\n'.format(find_local_ip(), self.viewer_port, self.config.robot.creature)+
+                'Logs:\n')
+            Popen(['python','-u', '-m', 'http.server', self.viewer_port, '--directory', path], stdout=f, stderr=f)
+            f.close()
 
     def reboot(self):
         try:
