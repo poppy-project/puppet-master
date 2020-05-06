@@ -244,7 +244,7 @@ $('#update-network').click(function() {
     document.getElementById("wait-update-network").style.visibility = "visible";
     hostname = ($('#robot-hostname').val().trim() !== '' ?
                 $('#robot-hostname').val().trim() : '{{ robot.name }}');
-    $.post('/settings_update', {
+    $.post("{{ url_for('settings_update') }}", {
         wifi_start: ($('#wifi-switch').prop('checked') === true ? 'on' : 'off'),
         wifi_ssid : $('#robot-wifi-ssid').val().trim(),
         wifi_psk : $('#robot-wifi-psk').val().trim(),
@@ -274,7 +274,7 @@ document.getElementById("wait-update-starting").style.visibility = "hidden";
 
 $('#update-starting').click(function() {
     document.getElementById("wait-update-starting").style.visibility = "visible";
-    $.post('/settings_update', {
+    $.post("{{ url_for('settings_update') }}", {
         robot_firstPage: ($('#first-switch').prop('checked') === true ? 'on' : 'off'),
         robot_autoStart : ($('#autostart-switch').prop('checked') === true ? 'on' : 'off'),
         robot_camera : ($('#camera-switch').prop('checked') === true ? 'on' : 'off'),
