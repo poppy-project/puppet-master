@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row" align="middle" >
+     <h3>&emsp;</h3>
+</div>
+
+<div class="large-6 row" align="middle" >
+     <div class="large-12 columns">
+        <span>FPS  <input type="range" id="fps" min="1" max="11" value="{{ FPS }}" style="height: 10px;"> <span id="print_fps"> {{ FPS }} f/s </span>  </span>
+        <div class="callout" align='middle'>
+          <img src="{{ source }}" id="frame" alt="No Frame Found. Check Logs"><br>
+        </div>
+        <a class="button button-primary" id="snapshot" href="{{ source }}/saved_in_my_documents" target="_blank" >Take SnapShot</a><br>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block endscript %}
+<script>
+var FPS = {{ FPS }};
+var source = "{{ source }}";
+
+$("#fps").change(function() {
+    FPS=parseInt(document.getElementById("fps").value)
+    document.getElementById("print_fps").innerHTML=document.getElementById("fps").value + " f/s";
+});
+
+function refreshIt() {
+    document.getElementById("frame").src = source;
+    setTimeout("refreshIt()", 1000/FPS);
+}
+
+setTimeout("refreshIt()",250);
+</script>
+{% endblock endscript %}

@@ -201,7 +201,7 @@ class PuppetMaster(object):
             ws+=1
 
     def start_viewer(self):
-        path='/home/poppy/dev/poppy-simu/'
+        path='/home/poppy/dev/poppy-viewer/'
         with open(self.config.info.viewerLog, 'w') as f:
             f.write(
                 'Starting Web Viewer...\n'+

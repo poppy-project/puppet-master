@@ -13,6 +13,7 @@ from flask import (Flask, request, Markup,
                    copy_current_request_context)
 
 from pypot.creatures import installed_poppy_creatures
+from pypot.server.snap import find_local_ip
 
 from poppyd import PoppyDaemon
 
@@ -138,15 +139,14 @@ def visualisator(http_port='8080'):
         flash(Markup('> API is <b>not running</b>, start before use web viewer. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
-        iframe_src='http://{}:{}/{}/#{}'.format(urlparse(request.url_root).hostname, pm.viewer_port, pm.config.robot.creature, http_port)
+        iframe_src='http://{}:{}/{}/#{}'.format(find_local_ip(urlparse(request.url_root).hostname), pm.viewer_port, pm.config.robot.creature, http_port)
     )
 
 @app.route('/monitoring/camera')
 def camera():
     if not pm.running:
         flash(Markup('> API is <b>not running</b>, start before use web camera. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
-    #return render_template('camera.html')
-    return 'comming soon'
+    return render_template('camera.html', source='http://{}:6969/frame.png'.format(find_local_ip(urlparse(request.url_root).hostname)), FPS=6)
 
 @app.route('/programming')
 def programming():
