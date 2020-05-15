@@ -32,7 +32,7 @@ class PuppetMaster(object):
         self._updating = False
         self.nb_clone = 0
         self.viewer_port = '8000'
-        self.docs_build = False
+        self.docs_running = False
         self.docs_port = '4000'
 
 
@@ -191,13 +191,18 @@ class PuppetMaster(object):
                 status = 'free'
         for nb in range (number):
             with open(self.config.info.virtualBotLog.replace('.log', '_{}.log'.format(nb+nb_try)), 'wb') as f:
-                Popen(['poppy-services', '--poppy-simu', '--no-browser',
-                       '--http', '--http-port', str(http),
-                       '--snap', '--snap-port', str(snap),
-                       '--ws', '--ws-port', str(ws),
-                       self.config.robot.creature],
-                       stdout=f, stderr=f)
-                f.close()
+                try:
+                    Popen(['poppy-services', '--poppy-simu', '--no-browser',
+                           '--http', '--http-port', str(http),
+                           '--snap', '--snap-port', str(snap),
+                           '--ws', '--ws-port', str(ws),
+                           self.config.robot.creature],
+                           stdout=f, stderr=f)
+                    f.close()
+                except:
+                    f.write('>> ERROR <<')
+                    f.close()
+                    return 'ECHEC'
             self.nb_clone+=1
             http+=1
             snap+=1
@@ -206,16 +211,22 @@ class PuppetMaster(object):
     def start_viewer(self):
         path='/home/poppy/dev/poppy-viewer/'
         with open(self.config.info.viewerLog, 'w') as f:
-            f.write(
-                'Starting Web Viewer...\n'+
-                'Connect on: http://<robot_ip>:<viewer_port>/<creature_type>/#<robot_http_port>\n'+
-                'By default: http://{}:{}/{}/#8080\n'.format(find_local_ip(), self.viewer_port, self.config.robot.creature)+
-                'Logs:\n')
-            Popen(['python','-u', '-m', 'http.server', self.viewer_port, '--directory', path], stdout=f, stderr=f)
-            f.close()
+            try:
+                f.write(
+                    'Starting Web Viewer...\n'+
+                    'Connect on: http://<robot_ip>:<viewer_port>/<creature_type>/#<robot_http_port>\n'+
+                    'By default: http://{}:{}/{}/#8080\n'.format(find_local_ip(), self.viewer_port, self.config.robot.creature)+
+                    'Logs:\n')
+                Popen(['python','-u', '-m', 'http.server', self.viewer_port, '--directory', path], stdout=f, stderr=f)
+                f.close()
+            except:
+                f.write('>> ERROR <<')
+                f.close()
 
     def start_docs(self):
-        self.docs_build = True
+        if self.docs_running:
+            return 'Already Done!'
+
         path='/home/poppy/dev/poppy-docs/'
         with open(self.config.info.docsLog, 'w') as f:
             try:
@@ -226,6 +237,7 @@ class PuppetMaster(object):
                     'Logs:\n')
                 Popen(['gitbook','serve', path, '--port', self.docs_port], stdout=f, stderr=f)
                 f.close()
+                self.docs_running = True
             except:
                 f.write('>> ERROR <<\nGitbook is down!...\nPlease open the pdf version')
                 f.close()

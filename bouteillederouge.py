@@ -122,8 +122,7 @@ def docs():
         try:
             requests.get(docs_source)
         except:
-            if not pm.docs_build:
-                pm.start_docs()
+            pm.start_docs()
             return render_template( 'docs_under_building.html', logs_content="Loading content...")
     return render_template( 'base-iframe.html', iframe_src=docs_source)
 

@@ -5,8 +5,8 @@
 <div class="large-10 row">
   <div class="columns">
     <h1 class="section-title">No internet access!</h1>
-    <h2>Local documentation building.</h2>
-    <h2>Wait build complete and refresh this page.</h2>
+    <h2>Local documentation under building.</h2>
+    <h3>Go Back here in a few minutes and refresh this page.</h3>
   </div>
 </div>
 
@@ -18,17 +18,16 @@ Logs of documentation building <span id="show-switch" style="visibility:hidden" 
     </pre>
   </div>
 </div>
-
 &emsp;
 <div class="large-10 medium-10 row" align="center">
     <div class="large-4 medium-7 small-7 columns">
-        <a class="button button-primary" id="terminal" href="{{ url_for('docs') }}" style="width: 100%;">Refresh this page</a><br>
+        <a class="button button-primary" href="{{ url_for('docs') }}" style="width: 100%;">Refresh this page</a><br>
     </div>
     <div class="large-4 medium-7 small-7 columns">
-        <a class="button button-primary" id="reboot-bot" href="{{ url_for('docs_pdf_en') }}" target="_blank" style="width: 100%;">Open the pdf documentation</a><br>
+        <a class="button button-primary" href="{{ url_for('docs_pdf_en') }}" target="_blank" style="width: 100%;">Open the pdf documentation</a><br>
     </div>
     <div class="large-4 medium-7 small-7 columns">
-        <a class="button button-primary" id="reboot-rasp" href="{{ url_for('docs_pdf_fr') }}" target="_blank" style="width: 100%;">Ouvrir la documentation pdf</a><br>
+        <a class="button button-primary" href="{{ url_for('docs_pdf_fr') }}" target="_blank" style="width: 100%;">Ouvrir la documentation pdf</a><br>
     </div>
 </div>
 &emsp;
@@ -41,6 +40,7 @@ Logs of documentation building <span id="show-switch" style="visibility:hidden" 
 var logsElement = document.getElementById('docs_logs');
 var showSwitch = document.getElementById('show-switch');
 var ContentElement =  document.getElementById('save-logs');
+var char=[/\[0m/g, /\[0;32m/g, /\[0;33m/g, /\[0;36m/g, //g]
 
 function switchShow() {
     if (showSwitch.innerHTML === "(<a>show more logs</a>)") {
@@ -57,12 +57,18 @@ function switchShow() {
 function downloadLogs() {
     ContentElement.download="Building_docs_logs.txt";
     $.get('{{ url_for('docs_log') }}', function(rawLogs) {
-        ContentElement.href="data:text/html," + rawLogs.replace(/#/g,'%23');
+        for (c of char){
+            rawLogs=rawLogs.replace(c,'');
+        }
+        ContentElement.href="data:text/html," + rawLogs;
     });
 }
 
 function refreshLogs() {
   $.get('{{ url_for('docs_log') }}', function(rawLogs) {
+    for (c of char){
+        rawLogs=rawLogs.replace(c,'');
+    }
     logsElement.innerHTML = rawLogs;
     logsElement.scrollTop = logsElement.scrollHeight;
     hljs.highlightBlock(logsElement);
