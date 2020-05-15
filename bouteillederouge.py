@@ -82,14 +82,6 @@ if number>0:
 
 pm.start_viewer()
 
-docs_source='https://docs.poppy-project.org/'
-try:
-    requests.get(docs_source)
-except:
-    pm.start_docs()
-    docs_source='http://{}.local:{}'.format(pm.config.robot.name, pm.docs_port)
-
-
 @app.context_processor
 def inject_robot_config():
     return dict(robot=pm.config.robot,
@@ -118,14 +110,41 @@ def end_opening():
     pm.update_config('robot.firstPage', False)
     return render_template('index.html')
 
-@app.route('/Docs')
-def Docs():
+@app.route('/docs')
+def docs():
+    docs_source='https://docs.poppy-project.org/'
+    #testing the online resources
     try:
         requests.get(docs_source)
     except:
-        path=app.root_path.replace('/puppet-master','/poppy-docs/')
-        return send_from_directory(path, 'The Documentation.pdf')
+        docs_source='http://{}.local:{}'.format(pm.config.robot.name, pm.docs_port)
+        #testing if the doc is build
+        try:
+            requests.get(docs_source)
+        except:
+            if not pm.docs_build:
+                pm.start_docs()
+            return render_template( 'docs_under_building.html', logs_content="Loading content...")
     return render_template( 'base-iframe.html', iframe_src=docs_source)
+
+@app.route('/docs_log')
+def docs_log():
+    try:
+        with open(pm.config.info.docsLog) as f:
+            content = f.read()
+            f.close()
+    except IOError:
+        content = 'No log found...'
+    return Response(content, mimetype='text/plain')
+
+@app.route('/docs_pdf_fr')
+def docs_pdf_fr():
+    path=app.root_path.replace('/puppet-master','/poppy-docs/')
+    return send_from_directory(path, 'La Documentation.pdf')
+@app.route('/docs_pdf_en')
+def docs_pdf_en():
+    path=app.root_path.replace('/puppet-master','/poppy-docs/')
+    return send_from_directory(path, 'The Documentation.pdf')
 
 @app.route('/monitoring')
 def monitoring():

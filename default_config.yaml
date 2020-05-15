@@ -11,6 +11,7 @@ info:
   logfile: /tmp/puppet-master.log
   virtualBotLog: /tmp/virtual-bot.log
   viewerLog: /tmp/viewerLog.log
+  docsLog: /tmp/docsLog.log
   configMotorLog: /tmp/motor-config.log
   serviceNetwork: rpi-access-point
   serviceJupiter: jupyter-notebook.service

@@ -32,6 +32,7 @@ class PuppetMaster(object):
         self._updating = False
         self.nb_clone = 0
         self.viewer_port = '8000'
+        self.docs_build = False
         self.docs_port = '4000'
 
 
@@ -214,15 +215,20 @@ class PuppetMaster(object):
             f.close()
 
     def start_docs(self):
+        self.docs_build = True
         path='/home/poppy/dev/poppy-docs/'
-        with open('/tmp/docs_server.log', 'w') as f:
-            f.write(
-                'Starting Docs...\n'+
-                'Please wait (one or two minutes)\n'+
-                'Comming soon on: http://{}:{}\n'.format(find_local_ip(), self.docs_port)+
-                'Logs:\n')
-            Popen(['gitbook','serve', path, '--port', self.docs_port], stdout=f, stderr=f)
-            f.close()
+        with open(self.config.info.docsLog, 'w') as f:
+            try:
+                f.write(
+                    'Starting Docs...\n'+
+                    'Please wait (one or two minutes)\n'+
+                    'Comming soon on: http://{}:{}\n'.format(find_local_ip(), self.docs_port)+
+                    'Logs:\n')
+                Popen(['gitbook','serve', path, '--port', self.docs_port], stdout=f, stderr=f)
+                f.close()
+            except:
+                f.write('>> ERROR <<\nGitbook is down!...\nPlease open the pdf version')
+                f.close()
 
     def reboot(self):
         try:
