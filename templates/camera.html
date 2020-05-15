@@ -2,13 +2,25 @@
 
 {% block content %}
 
-<div class="row" align="middle" >
-     <h3>&emsp;</h3>
+<div class="large-6  medium-6 small-6 row" style="display: flex; align-items: baseline;" align="right">
+  <div class="large-7 medium-7 small-7 columns">
+    <h1>Camera &emsp;
+      <div class="switch il">
+        <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch" onclick="refreshForMsg('{{ url_for('switch_camera') }}')" {% if robot.camera %} checked{% endif %}>
+        <label class="switch-paddle" for="camera-switch">
+          <span class="show-for-sr">Toggle Camera</span>
+        </label>
+      </div>
+    </h1>
+  </div>
+  <div class="large-5 medium-5 small-5 columns">
+      <p>FPS  <input type="range" id="fps" min="1" max="11" value="{{ FPS }}" style="height: 10px;"> <span id="print_fps"> {{ FPS }} f/s</span></p>
+  </div>
+  &ensp;
 </div>
 
 <div class="large-6 row" align="middle" >
      <div class="large-12 columns">
-        <span>FPS  <input type="range" id="fps" min="1" max="11" value="{{ FPS }}" style="height: 10px;"> <span id="print_fps"> {{ FPS }} f/s </span>  </span>
         <div class="callout" align='middle'>
           <img src="{{ source }}" id="frame" alt="No Frame Found. Check Logs"><br>
         </div>
