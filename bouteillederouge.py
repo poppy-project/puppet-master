@@ -110,21 +110,9 @@ def end_opening():
     pm.update_config('robot.firstPage', False)
     return render_template('index.html')
 
-@app.route('/docs')
-def docs():
-    docs_source='https://docs.poppy-project.org/'
-    #testing the online resources
-    try:
-        requests.get(docs_source)
-    except:
-        docs_source='http://{}.local:{}'.format(pm.config.robot.name, pm.docs_port)
-        #testing if the doc is build
-        try:
-            requests.get(docs_source)
-        except:
-            pm.start_docs()
-            return render_template( 'docs_under_building.html', logs_content="Loading content...")
-    return render_template( 'base-iframe.html', iframe_src=docs_source)
+@app.route('/docs/<path:filename>')
+def docs(filename):
+    return send_from_directory(app.root_path + '/docs/', filename)
 
 @app.route('/docs_log')
 def docs_log():
@@ -162,6 +150,7 @@ def monitor():
             filename='{}.html'.format(pm.config.robot.creature)
         )
     )
+  
 @app.route('/monitoring/monitor/<path:filename>')
 def base_static_monitor(filename):
     path=app.root_path.replace('/puppet-master','')
