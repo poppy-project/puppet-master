@@ -14,9 +14,11 @@ pip install -r requirements.txt
 
 * You need to download [snap](http://snap.berkeley.edu) and unzip it in the main folder (i.e. alongside the *static* folder as *snap*).
 
-* You also have to download [poppy-monitor](https://github.com/poppy-project/poppy-monitor) and unzip it in the same folder as *monitor*.
+* You need to download [poppy-monitor](https://github.com/poppy-project/poppy-monitor) and unzip it in the same folder as *monitor*.
 
-* You also need to have [Jupyter](http://jupyter.org) installed and launched. The interface simply redirects to the default jupyter url (using the 8888 port).
+* You need to download a compiled version of [poppy-docs](https://github.com/poppy-project/poppy-docs/releases/latest) and unzip the docbook in the same folder as *docs*.
+
+* You need to have [Jupyter](http://jupyter.org) installed and launched. The interface simply redirects to the default jupyter url (using the 8888 port).
 
 
 ## Usage
