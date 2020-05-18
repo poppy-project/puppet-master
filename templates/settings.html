@@ -202,12 +202,12 @@
   </div>
 </div>
 &emsp;
-<div class="large-10 medium-10 row" align="center">
+<div class="large-8 medium-8 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open an Terminal</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="reboot-bot" onclick="refreshForMsg('{{ url_for('APIreset') }}')" style="width: 100%;">Reboot robot software</a><br>
+        <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Reboot robot services</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="reboot-rasp" onclick="refreshForMsg('{{ url_for('reboot') }}')" style="width: 100%;">Reboot  {{ info.board }}</a><br>

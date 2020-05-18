@@ -7,21 +7,11 @@ robot:
   virtualBot: 0
 
 info:
-  version: 1.0
+  version: dev_gen2
   logfile: /tmp/puppet-master.log
-  virtualBotLog: /tmp/virtual-bot.log
-  viewerLog: /tmp/viewerLog.log
-  docsLog: /tmp/docsLog.log
-  configMotorLog: /tmp/motor-config.log
-  serviceNetwork: rpi-access-point
-  serviceJupiter: jupyter-notebook.service
-  servicePuppetMaster: puppet-master.service
+  serviceNetwork: rpi-access-point.service
+  updateURL: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
   board: $board
-
-update:
-  url: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
-  logfile: $home/.install.log
-  lockfile: /tmp/poppy-update-pid.lock
 
 hotspot:
   start: on
@@ -34,3 +24,27 @@ wifi:
   confFile: /etc/wpa_supplicant/wpa_supplicant.conf
   ssid: Poppy-Router
   psk: poppyproject
+
+services:
+  PuppetMaster: puppet-master.service
+  JupyterNotebook: jupyter-notebook.service
+  PoppyDocs: poppy-docs.service
+  PoppyViewer: poppy-viewer.service
+
+poppyLog:
+  puppetMaster: /tmp/puppet-master.log
+  jupyter: /tmp/jupyter.log
+  update: /tmp/poppy-update.log
+  docs: /tmp/poppy-docs.log
+  viewer: /tmp/poppy-viewer.log
+  virtualBot: /tmp/virtual-bot.log
+  configMotor: /tmp/motor-config.log
+
+poppyPort:
+  puppetMaster: 2280
+  jupyter: 8888
+  docs: 4000
+  viewer: 8000
+  http: 8080
+  snap: 6969
+  ws: 9009

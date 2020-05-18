@@ -77,7 +77,7 @@ Logs for virtual instance number {{ nb }} > show in <a id="viewer_{{ nb }}" href
     <div class="row">
       <div class="columns">
         &emsp;
-        <a class="button button-primary" style="width: 215px;" id="launch-viewer" href='{{ url_for('visualisator') }}'>Open the Web Viewer</a>
+        <a class="button button-primary" style="width: 215px;" id="open-viewer" href='{{ url_for('visualisator') }}'>Open the Web Viewer</a>
       </div>
     </div>
     &emsp;
@@ -91,13 +91,55 @@ Logs for web viewer <span id="show-switch_-1" style="visibility:hidden" onclick=
     </div>
   </div>
 </div>
+<div class="large-10 medium-10 row">
+  <div class="callout">
+    <div class="row">
+      <div class="columns">
+        <h3>> Docs service</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns">
+        &emsp;
+        <a class="button button-primary" style="width: 215px;" id="open-docs" href='{{ url_for('docs') }}'>Open the Documentations</a>
+      </div>
+    </div>
+    &emsp;
+    <div class="row">
+      <div class="large-12 columns">
+        <pre>
+Logs for docs service <span id="show-switch_-2" style="visibility:hidden" onclick="switchShow(-2)">(<a>show more logs</a>)</span>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_-2" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-2" onclick="downloadLogs(-2)">Save this logs</a>
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="large-10 medium-10 row">
+  <div class="callout">
+    <div class="row">
+      <div class="columns">
+        <h3>> Jupyter service</h3>
+      </div>
+    </div>
+    &emsp;
+    <div class="row">
+      <div class="large-12 columns">
+        <pre>
+Logs for jupyter service <span id="show-switch_-3" style="visibility:hidden" onclick="switchShow(-3)">(<a>show more logs</a>)</span>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_-3" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-3" onclick="downloadLogs(-3)">Save this logs</a>
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
 &emsp;
 <div class="large-10 medium-10 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open an Terminal</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="reboot-bot" onclick="refreshForMsg('{{ url_for('APIreset') }}')" style="width: 100%;">Reboot robot software</a><br>
+        <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Reboot robot services</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="reboot-rasp" onclick="refreshForMsg('{{ url_for('reboot') }}')" style="width: 100%;">Reboot  {{ info.board }}</a><br>
@@ -114,7 +156,7 @@ Logs for web viewer <span id="show-switch_-1" style="visibility:hidden" onclick=
 var timeOut;
 
 function refreshLogs() {
-  for (i = -1; i < {{ clone+1 }} ; i++) {
+  for (i = -3; i < {{ clone+1 }} ; i++) {
       getLogs(i);
   };
   startTimeout();

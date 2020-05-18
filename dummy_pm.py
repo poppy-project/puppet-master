@@ -47,9 +47,9 @@ class PuppetMaster(pm.PuppetMaster):
 
     def log(self, msg, erase=False):
         if erase:
-            os.remove(self.config.info.logfile)
+            os.remove(self.config.poppyLog.puppetMaster)
 
-        with open(self.config.info.logfile, 'a') as f:
+        with open(self.config.poppyLog.puppetMaster, 'a') as f:
             f.write('{}\n'.format(msg))
 
     def start(self):
@@ -67,18 +67,18 @@ class PuppetMaster(pm.PuppetMaster):
     def self_update(self):
         self._updating = True
 
-        if os.path.exists(self.config.update.logfile):
-            os.remove(self.config.update.logfile)
+        if os.path.exists(self.config.poppyLog.update):
+            os.remove(self.config.poppyLog.update)
 
         while True:
-            with open(self.config.update.logfile, 'a') as f:
+            with open(self.config.poppyLog.update, 'a') as f:
                 f.write('Faking some install...\n')
             time.sleep(random.random() * 2)
 
             if random.random() < 0.1:
                 break
 
-        with open(self.config.update.logfile, 'a') as f:
+        with open(self.config.poppyLog.update, 'a') as f:
             f.write('Your robot is now up-to-date!\n')
 
         self._updating = False

@@ -80,8 +80,6 @@ number=int(pm.config.robot.virtualBot)
 if number>0:
     pm.clone(number)
 
-pm.start_viewer()
-
 @app.context_processor
 def inject_robot_config():
     return dict(robot=pm.config.robot,
@@ -112,38 +110,17 @@ def end_opening():
 
 @app.route('/docs')
 def docs():
-    docs_source='https://docs.poppy-project.org/'
-    #testing the online resources
-    try:
-        requests.get(docs_source)
-    except:
-        docs_source='http://{}.local:{}'.format(pm.config.robot.name, pm.docs_port)
-        #testing if the doc is build
-        try:
-            requests.get(docs_source)
-        except:
-            pm.start_docs()
-            return render_template( 'docs_under_building.html', logs_content="Loading content...")
-    return render_template( 'base-iframe.html', iframe_src=docs_source)
+    return render_template( 'base-iframe.html', iframe_src='http://{}:{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.docs))
 
 @app.route('/docs_log')
 def docs_log():
     try:
-        with open(pm.config.info.docsLog) as f:
+        with open(pm.config.poppyLog.docs) as f:
             content = f.read()
             f.close()
     except IOError:
         content = 'No log found...'
     return Response(content, mimetype='text/plain')
-
-@app.route('/docs_pdf_fr')
-def docs_pdf_fr():
-    path=app.root_path.replace('/puppet-master','/poppy-docs/')
-    return send_from_directory(path, 'La Documentation.pdf')
-@app.route('/docs_pdf_en')
-def docs_pdf_en():
-    path=app.root_path.replace('/puppet-master','/poppy-docs/')
-    return send_from_directory(path, 'The Documentation.pdf')
 
 @app.route('/monitoring')
 def monitoring():
@@ -168,19 +145,19 @@ def base_static_monitor(filename):
     return send_from_directory(path + '/poppy-monitor/', filename)
 
 @app.route('/monitoring/visualisator')
-def visualisator(http_port='8080'):
+def visualisator():
     if not pm.running:
         flash(Markup('> API is <b>not running</b>, start before use web viewer. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
-        iframe_src='http://{}:{}/{}/#{}'.format(find_local_ip(urlparse(request.url_root).hostname), pm.viewer_port, pm.config.robot.creature, http_port)
+        iframe_src='http://{}:{}/{}/#{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.viewer, pm.config.robot.creature, pm.config.poppyPort.http)
     )
 
 @app.route('/monitoring/camera')
 def camera():
     if not pm.running:
         flash(Markup('> API is <b>not running</b>, start before use web camera. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
-    return render_template('camera.html', source='http://{}:6969/frame.png'.format(find_local_ip(urlparse(request.url_root).hostname)), FPS=6)
+    return render_template('camera.html', source='http://{}:{}/frame.png'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.snap), FPS=6)
 
 @app.route('/programming')
 def programming():
@@ -205,7 +182,7 @@ def jupyter():
         flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template(
         'base-iframe.html',
-        iframe_src= 'http://{}:8888/notebooks/My%20Documents/Python%20notebooks/Discover%20your%20Poppy%20Ergo%20Jr.ipynb'.format(urlparse(request.url_root).hostname)
+        iframe_src= 'http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Discover%20your%20Poppy%20Ergo%20Jr.ipynb'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter)
     )
 
 @app.route('/programming/other')
@@ -214,12 +191,12 @@ def AnotherLanguage():
         flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template(
         'base-iframe.html',
-        iframe_src='http://{}:8888/tree/My%20Documents/Tuto/Another%20language.ipynb'.format(urlparse(request.url_root).hostname)
+        iframe_src='http://{}:{}/tree/My%20Documents/Tuto/Another%20language.ipynb'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter)
     )
 
 @app.route('/MyDocuments')
 def MyDoc():
-    return render_template('base-iframe.html', iframe_src='http://{}:8888/tree/My%20Documents'.format(urlparse(request.url_root).hostname))
+    return render_template('base-iframe.html', iframe_src='http://{}:{}/tree/My%20Documents'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter))
 
 @app.route('/settings')
 def settings():
@@ -266,7 +243,7 @@ def terminal():
         pm.stop()
     return render_template(
         'base-iframe.html',
-        iframe_src='http://{}:8888/terminals/poppy'.format(urlparse(request.url_root).hostname)
+        iframe_src='http://{}:{}/terminals/poppy'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter)
     )
 
 @app.route('/reboot')
@@ -284,12 +261,16 @@ def logs():
 @app.route('/settings/update-logs')
 def update_logs():
     try:
-        with open(pm.config.update.logfile) as f:
+        with open(pm.config.poppyLog.update) as f:
             content = f.read()
     except IOError:
         content = 'No log found...'
     return render_template('update.html', update_logs_content=content)
 
+@app.route('/restart_services')
+def restart_services():
+    pm.restart_services()
+    return render_template('index.html')
 
 @app.route('/APIreset')
 def APIreset():
@@ -370,7 +351,7 @@ def clone():
 def configure_motors():
     # Remove old poppy-configure output to avoid user confusion
     try:
-        os.remove(pm.config.info.configMotorLog)
+        os.remove(pm.config.poppyLog.configMotor)
     except OSError:
         pass
     return render_template('motor-configuration.html', motors=pm._get_robot_motor_list())
@@ -382,7 +363,7 @@ def call_poppy_configure():
     pm.update_config('robot.motors', motor)
     return ('', 204)
 
-
+'''
 @app.route('/ready-to-roll')
 def ready_to_roll():
     with open(pm.config.info.logfile) as f:
@@ -399,7 +380,7 @@ def ready_to_roll():
         pass
 
     return 'KO'
-
+'''
 
 @app.route('/shutdown')
 def shutdown():
@@ -411,11 +392,15 @@ def shutdown():
 def raw_logs():
     id=int(request.form['id'])
     if id > 0:
-        file= pm.config.info.virtualBotLog.replace('.log', '_{}.log'.format(request.form['id']))
+        file= pm.config.poppyLog.virtualBot.replace('.log', '_{}.log'.format(request.form['id']))
+    elif id == -3:
+        file= pm.config.poppyLog.jupyter
+    elif id == -2:
+        file= pm.config.poppyLog.docs
     elif id == -1:
-        file= pm.config.info.viewerLog
+        file= pm.config.poppyLog.viewer
     else:
-        file= pm.config.info.logfile
+        file= pm.config.poppyLog.puppetMaster
     try:
         with open(file) as f:
             content = f.read()
@@ -427,7 +412,7 @@ def raw_logs():
 @app.route('/api/update_raw_logs')
 def update_raw_logs():
     try:
-        with open(pm.config.update.logfile) as f:
+        with open(pm.config.poppyLog.update) as f:
             content = f.read()
     except IOError:
         content = 'No log found...'
@@ -437,7 +422,7 @@ def update_raw_logs():
 @app.route('/api/configure_motors_logs')
 def poppy_config_logs():
     try:
-        with open(pm.config.info.configMotorLog) as f:
+        with open(pm.config.poppyLog.configMotor) as f:
             content = f.read()
     except IOError:
         content = ''
@@ -451,4 +436,4 @@ def get_host():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=2280)
+    app.run(host='0.0.0.0', port=int(pm.config.poppyPort.puppetMaster))

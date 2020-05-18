@@ -15,7 +15,7 @@ class PuppetMaster(object):
     def __init__(self, DaemonCls, configfile, pidfile):
         self.configfile = os.path.abspath(configfile)
         self.pidfile = os.path.abspath(pidfile)
-        self.logfile = self.config.info.logfile
+        self.logfile = self.config.poppyLog.puppetMaster
 
         self.daemon = DaemonCls(self.configfile, self.pidfile)
 
@@ -31,10 +31,6 @@ class PuppetMaster(object):
         }
         self._updating = False
         self.nb_clone = 0
-        self.viewer_port = '8000'
-        self.docs_running = False
-        self.docs_port = '4000'
-
 
     def start(self):
         self.daemon.start()
@@ -82,8 +78,8 @@ class PuppetMaster(object):
         else:
             flag=False
 
-        if os.path.exists(self.config.update.logfile):
-            os.remove(self.config.update.logfile)
+        if os.path.exists(self.config.poppyLog.update):
+            os.remove(self.config.poppyLog.update)
         success = check_call(['poppy-update'])
 
         if flag: self.start()
@@ -122,7 +118,7 @@ class PuppetMaster(object):
             flag=False
 
         creature = self.config.robot.creature.split('poppy-')[1]
-        with open(self.config.info.configMotorLog,"wb") as f:
+        with open(self.config.poppyLog.configMotor,"wb") as f:
             check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
             f.close()
 
@@ -176,8 +172,8 @@ class PuppetMaster(object):
             except OSError:
                 pass
 
-    def clone(self, number=1, http=8080, snap=6969, ws=9009):
-        # port http, snap and ws, are hard coded in pypot for real robot
+    def clone(self, number=1):
+        http, snap, ws = int(self.config.poppyPort.http), int(self.config.poppyPort.snap), int(self.config.poppyPort.ws)
         nb_try = 0
         status = 'occuped'
         while status == 'occuped':
@@ -186,11 +182,11 @@ class PuppetMaster(object):
             snap+=1
             ws+=1
             try:
-                requests.get('http://{}:{}'.format(self.config.robot.name,http))
+                requests.get('http://localhost:{}'.format(http))
             except:
                 status = 'free'
         for nb in range (number):
-            with open(self.config.info.virtualBotLog.replace('.log', '_{}.log'.format(nb+nb_try)), 'wb') as f:
+            with open(self.config.poppyLog.virtualBot.replace('.log', '_{}.log'.format(nb+nb_try)), 'wb') as f:
                 try:
                     Popen(['poppy-services', '--poppy-simu', '--no-browser',
                            '--http', '--http-port', str(http),
@@ -208,39 +204,13 @@ class PuppetMaster(object):
             snap+=1
             ws+=1
 
-    def start_viewer(self):
-        path='/home/poppy/dev/poppy-viewer/'
-        with open(self.config.info.viewerLog, 'w') as f:
-            try:
-                f.write(
-                    'Starting Web Viewer...\n'+
-                    'Connect on: http://<robot_ip>:<viewer_port>/<creature_type>/#<robot_http_port>\n'+
-                    'By default: http://{}:{}/{}/#8080\n'.format(find_local_ip(), self.viewer_port, self.config.robot.creature)+
-                    'Logs:\n')
-                Popen(['python','-u', '-m', 'http.server', self.viewer_port, '--directory', path], stdout=f, stderr=f)
-                f.close()
-            except:
-                f.write('>> ERROR <<')
-                f.close()
-
-    def start_docs(self):
-        if self.docs_running:
-            return 'Already Done!'
-
-        path='/home/poppy/dev/poppy-docs/'
-        with open(self.config.info.docsLog, 'w') as f:
-            try:
-                f.write(
-                    'Starting Docs...\n'+
-                    'Please wait (one or two minutes)\n'+
-                    'Comming soon on: http://{}:{}\n'.format(find_local_ip(), self.docs_port)+
-                    'Logs:\n')
-                Popen(['gitbook','serve', path, '--port', self.docs_port], stdout=f, stderr=f)
-                f.close()
-                self.docs_running = True
-            except:
-                f.write('>> ERROR <<\nGitbook is down!...\nPlease open the pdf version')
-                f.close()
+    def restart_services(self):
+        services=[s.split(': ') for s in str(self.config.services).replace('\'','').split(',')]
+        cmd=['sudo','systemctl','restart']
+        for name, service in services:
+            service=service.replace('{','').replace('}','')
+            cmd.append(service)
+        Popen(cmd)
 
     def reboot(self):
         try:
@@ -274,12 +244,12 @@ class PuppetMaster(object):
         Thread(target=delayed_halt).start()
 
     def get_motors(self, alias='motors'):
-        r = requests.get('http://localhost:8080/motor/{}/list.json'.format(alias)).json()
+        r = requests.get('http://localhost:{}/motor/{}/list.json'.format(self.config.poppyPort.http, alias)).json()
         return r[alias]
 
     def send_value(self, motor, register, value):
-        url = 'http://localhost:8080/motor/{}/register/{}/value.json'
-        r = requests.post(url.format(motor, register), json=value)
+        url = 'http://localhost:{}/motor/{}/register/{}/value.json'
+        r = requests.post(url.format(self.config.poppyPort.http, motor, register), json=value)
         return r
 
 

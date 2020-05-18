@@ -75,7 +75,7 @@ class PoppyDaemon(Daemon):
         with open(self.configfile) as f:
             config = yaml.load(f, Loader=yaml.SafeLoader)
 
-        Daemon.__init__(self, pidfile, config['info']['logfile'])
+        Daemon.__init__(self, pidfile, config['poppyLog']['puppetMaster'])
 
     def get_command(self):
         with open(self.configfile) as f:
@@ -84,10 +84,10 @@ class PoppyDaemon(Daemon):
         cmd = [
             'poppy-services',
             config['robot']['creature'],
-            '--http',
-            '--snap',
-            '--no-browser',
-            '--ws'
+            '--http', '--http-port', str(config['poppyPort']['http']),
+            '--snap', '--snap-port', str(config['poppyPort']['snap']),
+            '--ws', '--ws-port', str(config['poppyPort']['ws']),
+            '--no-browser'
         ]
 
         if not config['robot']['camera']:
