@@ -210,7 +210,7 @@ def MyDoc():
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html')
+    return render_template(pm.config.info.langage+'/settings.html')
 
 
 @app.route('/settings/settings_update', methods=['POST'])

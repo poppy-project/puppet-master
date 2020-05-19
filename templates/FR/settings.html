@@ -4,7 +4,7 @@
 
 <div class="large-8 medium-8 row">
   <div class="columns">
-    <h1 class="section-title">Configure your robot</h1>
+    <h1 class="section-title">Configure ton robot</h1>
   </div>
 </div>
 
@@ -14,7 +14,7 @@
       &emsp;
       <div class="row">
         <div class="large-6 columns">
-          <h2>Configure Langage</h2>
+          <h2>Configurer la langue</h2>
         </div>
         <div class="large-3 medium-3 small-3 columns">
           <a onclick="setLang('EN')">
@@ -34,7 +34,7 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h2>Configure Network</h2>
+      <h2>Configurer le réseau</h2>
       &emsp;
       <form>
         <div class="row" align="right">
@@ -57,7 +57,7 @@
             <div class="switch il">
               <input class="switch-input" id="hotspot-switch" type="checkbox" name="hotspot-switch"{% if hotspot.start %} checked{% endif %}>
               <label class="switch-paddle" for="hotspot-switch">
-                <span class="show-for-sr">Toggle Hotspot</span>
+                <span class="show-for-sr">Hotspot, bascule</span>
               </label>
             </div>
           </div>
@@ -82,7 +82,7 @@
             <div class="switch il">
               <input class="switch-input" id="wifi-switch" type="checkbox" name="wifi-switch"{% if wifi.start %} checked{% endif %}>
               <label class="switch-paddle" for="wifi-switch">
-                <span class="show-for-sr">Toggle Wifi</span>
+                <span class="show-for-sr">Wifi, bascule</span>
               </label>
             </div>
           </div>
@@ -102,10 +102,10 @@
         &emsp;
         <div class="row" align="right">
           <div class="large-7 columns" id="wait-update-network">
-            <h4>Please wait</h4>
+            <h4>Attendez, s'il vous plaît.</h4>
           </div>
           <div class="large-5 columns" >
-            <button id="update-network" type="button" class="button" style="width: 100%;">Update Network Configuration</button>
+            <button id="update-network" type="button" class="button" style="width: 100%;">Mettre à jour la configuration réseau</button>
           </div>
         </div>
       </form>
@@ -116,45 +116,45 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout" align='right'>
-      <h2 align="left">Configure Starting</h2>
+      <h2 align="left">Configurer le démarrage</h2>
         <div class="large-10 columns">
           <h3>
-            First connection page
+            Page de première connexion
           </h3>
         </div>
         <div class="large-2 columns">
           <div class="switch il">
             <input class="switch-input" id="first-switch" type="checkbox" name="first-switch"{% if robot.firstPage %} checked{% endif %}>
             <label class="switch-paddle" for="first-switch">
-              <span class="show-for-sr">Toggle First page connection</span>
+              <span class="show-for-sr">Page de première connexion, bascule</span>
             </label>
           </div>
         </div>
         &emsp;
         <div class="large-10 columns">
           <h3>
-            Real robot API auto-start
+            Démarrage automatique de l'API du robot
           </h3>
         </div>
         <div class="large-2 columns">
           <div class="switch il">
             <input class="switch-input" id="autostart-switch" type="checkbox" name="autostart-switch"{% if robot.autoStart %} checked{% endif %}>
             <label class="switch-paddle" for="autostart-switch">
-              <span class="show-for-sr">Toggle API autostart</span>
+              <span class="show-for-sr">API autostart, bascule</span>
             </label>
           </div>
       </div>
       <div  id="camera">
         <div class="large-10 columns">
           <h4>
-            with camera ?
+            avec la camera ?
           </h4>
         </div>
         <div class="large-2 columns">
           <div class="switch il">
             <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch"{% if robot.camera %} checked{% endif %}>
             <label class="switch-paddle" for="camera-switch">
-              <span class="show-for-sr">Toggle Camera</span>
+              <span class="show-for-sr">Camera, bascule</span>
             </label>
           </div>
         </div>
@@ -163,7 +163,7 @@
       &emsp;
         <div class="row" align="right">
           <div class="large-10 columns">
-              <h3>How many virtual bot ?</h3>
+              <h3>Combien de robots virtuels ?</h3>
           </div>
           <div class="large-2 columns">
             <div class="input-group">
@@ -175,10 +175,10 @@
         &emsp;
         <div class="row" align="right">
           <div class="large-7 columns" id="wait-update-starting">
-            <h4>Please wait</h4>
+            <h4>Attendez, s'il vous plaît.</h4>
           </div>
           <div class="large-5 columns">
-            <button id="update-starting" type="button" class="button" style="width: 100%;">Update Starting Configuration</button>
+            <button id="update-starting" type="button" class="button"  style="width: 100%;">Mettre à jour la configuration de départ</button>
           </div>
         </div>
       </form>
@@ -193,11 +193,11 @@
 
       <div class="row">
         <div class="large-9 columns">
-          <h2>Configure your motors</h2>
+          <h2>Configurez vos moteurs</h2>
         </div>
         <div class="large-3 columns">
           <a href={{ url_for('configure_motors') }}>
-            <button type="button" class="button"  style="width: 100%;">Go to Motors configuration</button>
+            <button type="button" class="button" style="width: 100%;">Aller à la page de<br>configuration moteurs</button>
           </a>
         </div>
       </div>
@@ -208,16 +208,16 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h2>Upgrade {{ robot.creature }} softwares</h2>
+      <h2>Mettre à jour les logiciels {{ robot.creature }}</h2>
       <div class="row">
         <div class="large-9 columns">
           <div class="callout primary" style="width: 100%;">
-            <p>Make sure your robot is connected to internet.</p>
+            <p>Assurez-vous que votre robot est connecté à Internet.</p>
           </div>
         </div>
         <div class="large-3 columns">
           <a href={{ url_for('update') }}>
-            <button type="button" class="button"  style="width: 100%;">Start the software update NOW</button>
+            <button type="button" class="button" style="width: 100%;">Démarrez<br>la mise à jour </button>
           </a>
         </div>
       </div>
@@ -227,16 +227,16 @@
 &emsp;
 <div class="large-8 medium-8 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open an Terminal</a><br>
+        <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Ouvrir<br>un Terminal</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Reboot robot services</a><br>
+        <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Redémarrez<br>les services</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="reboot-rasp" onclick="refreshForMsg('{{ url_for('reboot') }}')" style="width: 100%;">Reboot  {{ info.board }}</a><br>
+        <a class="button button-primary" id="reboot-rasp" onclick="refreshForMsg('{{ url_for('reboot') }}')" style="width: 100%;">Redémarrez<br>la {{ info.board }}</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="shutdown" onclick="refreshForMsg('{{ url_for('shutdown') }}')" style="width: 100%;">Halt  {{ info.board }}</a><br>
+        <a class="button button-primary" id="shutdown" onclick="refreshForMsg('{{ url_for('shutdown') }}')" style="width: 100%;">Éteindre<br>la {{ info.board }}</a><br>
     </div>
 </div>
 &emsp;
