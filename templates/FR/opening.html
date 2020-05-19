@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row columns" style="max-width: 600px; margin: auto">
+  <div class="section-title">
+  <h1>Bienvenue dans</h1>
+  <h2>{{ robot.creature }} Manager</h2>
+  </div>
+  <div class="callout">
+    <p class="lead" align="center">
+        TODO
+    </p>
+  </div>
+  <div class="row" align="center">
+    <a href="{{ url_for('end_opening') }}">
+      <button type="button" class="button">Go to Home</button>
+    </a>
+  </div>
+</div>
+
+{% endblock content %}

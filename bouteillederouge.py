@@ -99,14 +99,24 @@ def cache_buster(response):
 @app.route('/')
 def index():
     if pm.config.robot.firstPage:
-        return render_template('opening.html')
+        return render_template('setLangage.html')
     else:
         return render_template('index.html')
+
+@app.route('/setLangage', methods=['POST'])
+def set_lang():
+    pm.update_config('info.langage', request.form['lang'])
+    return ('',204)
+
+@app.route('/opening/')
+def opening():
+    return render_template(pm.config.info.langage+'/opening.html')
 
 @app.route('/end_opening')
 def end_opening():
     pm.update_config('robot.firstPage', False)
     return render_template('index.html')
+
 
 @app.route('/docs')
 def docs():

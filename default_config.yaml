@@ -12,6 +12,7 @@ info:
   serviceNetwork: rpi-access-point.service
   updateURL: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
   board: $board
+  langage: EN
 
 hotspot:
   start: on
