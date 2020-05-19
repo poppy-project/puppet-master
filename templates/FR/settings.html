@@ -3,8 +3,8 @@
 {% block content %}
 
 <div class="large-8 medium-8 row">
-  <div class="columns">
-    <h1 class="section-title">Configure ton robot</h1>
+  <div class="columns section-title">
+    <h1>Configure ton robot</h1>
   </div>
 </div>
 
@@ -14,7 +14,7 @@
       &emsp;
       <div class="row">
         <div class="large-6 columns">
-          <h2>Configurer la langue</h2>
+          <h3>Configurer la langue</h3>
         </div>
         <div class="large-3 medium-3 small-3 columns">
           <a onclick="setLang('EN')">
@@ -34,12 +34,12 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h2>Configurer le réseau</h2>
+      <h3>Configurer le réseau</h3>
       &emsp;
       <form>
         <div class="row" align="right">
           <div class="large-5 columns">
-              <h3>Hostname</h3>
+              <h4>Hostname</h4>
           </div>
           <div class="large-7 columns">
             <div class="input-group">
@@ -51,7 +51,7 @@
         </div>
         <div class="row" align="right">
           <div class="large-5 columns">
-              <h3>Hotspot</h3>
+              <h4>Hotspot</h4>
           </div>
           <div class="large-1 columns">
             <div class="switch il">
@@ -76,7 +76,7 @@
         </div>
         <div class="row" align="right">
           <div class="large-5 columns">
-              <h3>Wifi</h3>
+              <h4>Wifi</h4>
           </div>
           <div class="large-1 columns">
             <div class="switch il">
@@ -116,11 +116,11 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout" align='right'>
-      <h2 align="left">Configurer le démarrage</h2>
+      <h3 align="left">Configurer le démarrage</h3>
         <div class="large-10 columns">
-          <h3>
+          <h4>
             Page de première connexion
-          </h3>
+          </h4>
         </div>
         <div class="large-2 columns">
           <div class="switch il">
@@ -132,9 +132,9 @@
         </div>
         &emsp;
         <div class="large-10 columns">
-          <h3>
+          <h4>
             Démarrage automatique de l'API du robot
-          </h3>
+          </h4>
         </div>
         <div class="large-2 columns">
           <div class="switch il">
@@ -163,7 +163,7 @@
       &emsp;
         <div class="row" align="right">
           <div class="large-10 columns">
-              <h3>Combien de robots virtuels ?</h3>
+              <h4>Combien de robots virtuels ?</h4>
           </div>
           <div class="large-2 columns">
             <div class="input-group">
@@ -193,7 +193,7 @@
 
       <div class="row">
         <div class="large-9 columns">
-          <h2>Configurez vos moteurs</h2>
+          <h3>Configurez vos moteurs</h3>
         </div>
         <div class="large-3 columns">
           <a href={{ url_for('configure_motors') }}>
@@ -208,7 +208,7 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h2>Mettre à jour les logiciels {{ robot.creature }}</h2>
+      <h3>Mettre à jour les logiciels {{ robot.creature }}</h3>
       <div class="row">
         <div class="large-9 columns">
           <div class="callout primary" style="width: 100%;">
