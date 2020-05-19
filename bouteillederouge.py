@@ -270,7 +270,8 @@ def update_logs():
 @app.route('/restart_services')
 def restart_services():
     pm.restart_services()
-    return render_template('index.html')
+    flash('> All services will be restart in few seconds', 'success')
+    return ('', 204)
 
 @app.route('/APIreset')
 def APIreset():

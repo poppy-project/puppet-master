@@ -205,12 +205,15 @@ class PuppetMaster(object):
             ws+=1
 
     def restart_services(self):
-        services=[s.split(': ') for s in str(self.config.services).replace('\'','').split(',')]
+        def delayed_restart_services(command, sec=1):
+            time.sleep(sec)
+            call(command)
+
         cmd=['sudo','systemctl','restart']
-        for name, service in services:
-            service=service.replace('{','').replace('}','')
+        for service in self.config.services.as_dict().values():
             cmd.append(service)
-        Popen(cmd)
+
+        Thread(target=delayed_restart_services(cmd)).start()
 
     def reboot(self):
         try:
