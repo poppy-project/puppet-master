@@ -2,21 +2,154 @@
 
 {% block content %}
 
-<div class="row columns" style="max-width: 600px; margin: auto">
+<div class="row columns" style="max-width: 900px; margin: auto">
+
   <div class="section-title">
-  <h1>Welcome to</h1>
-  <h2>{{ robot.creature }} Manager</h2>
+    <h1>Welcome to {{ robot.creature }} Manager</h1>
   </div>
+
   <div class="callout">
-    <p class="lead" align="center">
-        TODO
-    </p>
+    &emsp;
+    <div class="row columns">
+      <span  class="section-title"><h2>Step 1: Connect</h2></span>
+      <h4>Electronique assemblage and connexion</h4>
+      <p><br>If you are here, this step is already done! Congratulation!<br>If necessary, you can retrieved the instructions here: <a target="_blank" href="{{ url_for('assembly_guides') }}">Assembly Guides</a></p>
+    </div>
   </div>
+
+  <div class="callout">
+    &emsp;
+    <div class="row columns">
+      <span  class="section-title"><h2>Step 2: Build</h2></span>
+      <h4>Mecanique assemblage and motor configuration</h4>
+      <p><br>For mecanique assemblage refere to the documentation: <a target="_blank" href="{{ url_for('assembly_guides') }}">Assembly Guides</a></p>
+      <p>For motor configuration, use module below:</p>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Don't plug 2 motors in a same time</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Plug only 1 motor for configuration</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="callout">
+            <h4>
+              Which motor do you want to configure?
+            </h4>
+            {% if motors | length > 1 %}
+              <form>
+                <div class="row">
+                  <div class="large-9 columns">
+                    <select id="motor">
+                      {% for m in motors %}
+                        <option value="{{ m }}">{{ m }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="large-3 columns">
+                    <button id="configure-motor" onclick="showLog()" type="button" class="button">Configure</button>
+                  </div>
+                </div>
+              </form>
+            {% else %}
+              <p>No Poppy creature seems to be installed on the robot.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="logs">
+        <div class="large-12 columns">
+          <div class="callout">
+            <pre>> Start configuration...
+              <code id="robot-logs" class="accesslog hljs"></code>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    &emsp;
+    <div class="row columns">
+      <span  class="section-title"><h2>Step 3: Use</h2></span>
+      <h4>Use Puppet Master interface</h4>
+      <div class="columns large-6" align="center">
+        <div class="callout">
+          <p>First, start API and wait few second</p>
+          <a class="button button-primary" style="width: 100%;" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
+        </div>
+      </div>
+      <div class="columns large-6" align="center">
+        <div class="callout">
+          <p>Second, test if all right</p>
+          <a class="button button-primary" style="width: 100%;" id="open-viewer" href='{{ url_for('visualisator') }}' target="_blank">Open the Web Viewer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row" align="center">
+    <h1>Finaly</h1>
     <a href="{{ url_for('end_opening') }}">
-      <button type="button" class="button">Go to Home</button>
+      <button type="button" class="button" style="min-width: 200px">Go to Home</button>
     </a>
   </div>
+  &emsp;
 </div>
 
 {% endblock content %}
+{% block endscript %}
+<script>
+
+document.getElementById("logs").style.display = "none";
+var timeOut;
+timeOut=10000;
+
+// when configure button are click
+function showLog() {
+  document.getElementById('logs').style.display = 'inline';
+  timeOut=500;
+}
+
+// /api/configure_motors_logs
+function refreshLogs() {
+  $.get('{{ url_for('poppy_config_logs') }}', function (rawLogs) {
+    var logsElement = document.getElementById('robot-logs');
+
+    logsElement.innerHTML = rawLogs;
+    hljs.highlightBlock(logsElement);
+
+    startTimeout();
+  });
+}
+function startTimeout() {
+  logTimeOut = window.setTimeout(refreshLogs, timeOut);
+}
+startTimeout();
+
+$('#configure-motor').click(function () {
+  motor_to_configure = $('#motor').val().trim();
+  $.post('{{ url_for('call_poppy_configure') }}', {motor: motor_to_configure});
+});
+
+</script>
+{% endblock endscript %}

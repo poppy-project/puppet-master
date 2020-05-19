@@ -110,19 +110,29 @@ def set_lang():
 
 @app.route('/opening/')
 def opening():
-    return render_template(pm.config.info.langage+'/opening.html')
+    return render_template(pm.config.info.langage+'/opening.html', motors=pm._get_robot_motor_list())
 
-@app.route('/end_opening')
+@app.route('/opening/end')
 def end_opening():
     pm.update_config('robot.firstPage', False)
     return render_template('index.html')
 
-
 @app.route('/docs')
 def docs():
-    return render_template( 'base-iframe.html', iframe_src='http://{}:{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.docs))
+    return render_template( 'base-iframe.html', iframe_src='http://{}:{}/{}/'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.docs,  str(pm.config.info.langage).lower()))
 
-@app.route('/docs_log')
+@app.route('/docs/assembly-guides')
+def assembly_guides():
+    return render_template(
+        'base-iframe.html',
+        iframe_src='http://{}:{}/{}/getting-started/build.html'.format(
+            urlparse(request.url_root).hostname,
+            pm.config.poppyPort.docs,
+            str(pm.config.info.langage).lower()
+        )
+    )
+
+@app.route('/docs/log')
 def docs_log():
     try:
         with open(pm.config.poppyLog.docs) as f:
