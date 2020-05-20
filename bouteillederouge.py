@@ -99,22 +99,14 @@ def cache_buster(response):
 @app.route('/')
 def index():
     if pm.config.robot.firstPage:
-        return render_template('setLangage.html')
+        return render_template(pm.config.info.langage+'/opening.html', motors=pm._get_robot_motor_list())
     else:
         return render_template('index.html')
-
-@app.route('/setLangage', methods=['POST'])
-def set_lang():
-    pm.update_config('info.langage', request.form['lang'])
-    return ('',204)
-
-@app.route('/opening/')
-def opening():
-    return render_template(pm.config.info.langage+'/opening.html', motors=pm._get_robot_motor_list())
 
 @app.route('/opening/end')
 def end_opening():
     pm.update_config('robot.firstPage', False)
+    pm.update_config('robot.autoStart', True)
     return render_template('index.html')
 
 @app.route('/docs')
@@ -165,7 +157,7 @@ def base_static_monitor(filename):
     return send_from_directory(path + '/poppy-monitor/', filename)
 
 @app.route('/monitoring/visualisator')
-def visualisator():
+def viewer():
     if not pm.running:
         flash(Markup('> API is <b>not running</b>, start before use web viewer. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
@@ -257,6 +249,11 @@ def restart_network():
     flash('> Network service was restarted', 'success')
     return redirect(goback)
 
+@app.route('/settings/setLangage', methods=['POST'])
+def set_lang():
+    pm.update_config('info.langage', request.form['lang'])
+    return ('',204)
+
 @app.route('/terminal')
 def terminal():
     if pm.running:
@@ -301,8 +298,13 @@ def APIreset():
     flash('> Your robot\'s API has been restarted.', 'success')
     return ('', 204)
 
-@app.route('/APIstart')
+@app.route('/APIstart', methods=['GET', 'POST'])
 def APIstart():
+    if request.method == 'POST':
+        if request.form['dialog'] == 'quiet':
+            if not pm.running:
+                pm.start()
+            return ('', 204)
     if pm.running:
         flash('> Your robot\'s API has already started.', 'warning')
     else:

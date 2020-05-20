@@ -2,21 +2,300 @@
 
 {% block content %}
 
-<div class="row columns" style="max-width: 600px; margin: auto">
+<div class="row columns" style="max-width: 1000px; margin: auto">
+
   <div class="section-title">
-  <h1>Bienvenue dans</h1>
-  <h2>{{ robot.creature }} Manager</h2>
+    <h1>Bienvenue dans le {{ robot.creature }} Manager</h1>
   </div>
   <div class="callout">
-    <p class="lead" align="center">
-        TODO
-    </p>
+      <div class="row columns" align="center">
+          <span  class="section-title"><h2>Setup language</h2></span>
+          <a onclick="setLang('EN')">
+          <button type="button" class="button" style="width: 40%;">English</button>
+          </a>
+          <a onclick="setLang('FR')">
+          <button type="button" class="button" style="width: 40%;">Français</button>
+          </a>
+      </div>
   </div>
-  <div class="row" align="center">
-    <a href="{{ url_for('end_opening') }}">
-      <button type="button" class="button">Go to Home</button>
-    </a>
+  <div id="getting-started">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h2>Step 1: Connect</h2></span>
+      <h4>Electronique assemblage and connexion</h4>
+      <p><br>If you are here, this step is already done! Congratulation!<br>If necessary, you can retrieved the instructions here: <a target="_blank" href="{{ url_for('assembly_guides') }}">Assembly Guides</a></p>
+    </div>
   </div>
-</div>
 
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h2>Step 2: Build</h2></span>
+      <h4>Mecanique assemblage and motor configuration &ensp;<span id="openButton2" onclick="openStep(2)"><a>&#8690;</a></span></h4>
+      <div id="step2">
+      <p><br>For mecanique assemblage refere to the documentation: <a target="_blank" href="{{ url_for('assembly_guides') }}">Assembly Guides</a></p>
+      <p>For motor configuration, use module below:</p>
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Don't plug 2 motors in a same time</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Plug only 1 motor for configuration</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="callout">
+            <h4>
+              Which motor do you want to configure?
+            </h4>
+            {% if motors | length > 1 %}
+              <form>
+                <div class="row">
+                  <div class="large-9 columns">
+                    <select id="motor">
+                      {% for m in motors %}
+                        <option value="{{ m }}">{{ m }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="large-3 columns">
+                    <button id="configure-motor" type="button" class="button" style="width: 100%;">Configure</button>
+                  </div>
+                </div>
+              </form>
+            {% else %}
+              <p>No Poppy creature seems to be installed on the robot.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="row" id="config-Logs">
+        <div class="large-12 columns">
+          <div class="callout">
+            <pre>> Start configuration...
+              <code id="configlogs" class="accesslog hljs"></code>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h2>Step 3: Run and Test</h2></span>
+      <h4>Use Puppet Master interface &ensp;<span id="openButton3" onclick="openStep(3)"><a>&#8690;</a></span></h4>
+      <div class='row' id="step3">
+      <div class="columns large-12" align="center">
+        <div class="callout">
+          <p>First, start API and wait few second</p>
+          <a class="button button-primary" style="width: 100%;" id="start-api" >Start Robot API</a>
+            <div class="row">
+              <div class="large-12 columns" align="left">
+                <pre><code style="max-height:125px; overflow-y:hidden;" id="api-Logs" class="accesslog hljs">{{ logs_content }}</code><span id="show-switch" style="visibility:hidden" onclick="moreLogs()">(<a>show more logs</a>)</span></pre>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="columns large-12" align="center">
+        <div class="callout">
+          <p>Second, test if all right</p>
+          <a class="button button-primary" style="width: 100%;" id="start-viewer">Open the Web Viewer</a>
+          <a class="button button success" style="width: 100%;" id="start-prim" onclick="dance(1)">START DANCE</a>
+          <a class="button button alert" style="width: 100%;" id="stop-prim" onclick="dance(0)">STOP DANCE</a>
+          <iframe id="viewer" class="tall-iframe" src=""></iframe>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h2>Advance step...</h2></span>
+      <h4>More configuring, monitoring and programming &ensp;<span id="openButton4" onclick="openStep(4)"><a>&#8690;</a></span></h4>
+      <div class='row wrap' id="step4"  data-equalizer data-equalize-on="medium" align="center">
+      <div class="large-6 medium-6 columns menu-tile">
+        <p>For setup more option, go to settings page</p>
+        <a href="{{ url_for('settings') }}" target="_blank" data-equalizer-watch>
+          <h3>
+            <svg class="pp-icon pp-icon-build">
+              <title>Settings</title>
+              <use xlink:href="#pp-icon-build"></use>
+            </svg>
+          </h3>
+          <p>Configure the robot</p>
+        </a>
+      </div>
+      <div class="large-6 medium-6 columns menu-tile">
+        <p>For hacking robot, show robot source-code</p>
+        <a href="{{ url_for('MyDoc') }}" target="_blank" data-equalizer-watch>
+          <h3>
+            <svg class="pp-icon pp-icon-folder">
+              <title>My Documents</title>
+              <use xlink:href="#pp-icon-folder"></use>
+            </svg>
+          </h3>
+          <p>My Documents</p>
+        </a>
+      </div>
+      <div class="large-6 medium-6 columns menu-tile">
+        <p>For use more pre-install applications</p>
+        <a href="{{ url_for('monitoring') }}" target="_blank" data-equalizer-watch>
+          <h3>
+            <svg class="pp-icon pp-icon-stats">
+              <title>Monitor</title>
+              <use xlink:href="#pp-icon-stats"></use>
+            </svg>
+          </h3>
+          <p>Monitor and Control</p>
+        </a>
+      </div>
+      <div class="large-6 medium-6 columns menu-tile">
+        <p>For programming the robot!</p>
+        <a href="{{ url_for('programming') }}" target="_blank" data-equalizer-watch>
+          <h3>
+            <svg class="pp-icon pp-icon-computer">
+              <title>Programming</title>
+              <use xlink:href="#pp-icon-computer"></use>
+            </svg>
+          </h3>
+          <p>Programming</p>
+        </a>
+      </div>
+      <h4 align="center">You can retrived all this tabs in Robot Home Page</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="row columns" align="center">
+      <span  class="section-title"><h1>Finaly: Use</h1></span>
+      <a href="{{ url_for('end_opening') }}" onclick="return confirm('Are you sure? For return here, re-active «first connection page» in a settings tab.')">
+        <button type="button" class="button large" style="width: 50%;">Go to Home</button>
+      </a>
+    </div>
+  </div>
+  &emsp;
+</div>
+</div>
+{% include 'defs-svg.html' %}
 {% endblock content %}
+{% block endscript %}
+<script>
+document.getElementById("step2").style.display = "none";
+document.getElementById("config-Logs").style.display = "none";
+
+document.getElementById("step3").style.display = "none";
+document.getElementById('api-Logs').style.display = 'none';
+document.getElementById('viewer').style.display = 'none';
+document.getElementById('start-prim').style.display = 'none';
+document.getElementById('stop-prim').style.display = 'none';
+
+document.getElementById("step4").style.display = "none";
+
+var timeOut=1000;
+function setLang(val){
+    $.post('{{ url_for('set_lang') }}', {lang:val}, function() {
+        window.location = '{{ url_for('index') }}';
+    });
+}
+function openStep(id) {
+    var showSwitch = document.getElementById('openButton'+id);
+    var showElement = document.getElementById('step'+id);
+    if (showSwitch.innerHTML == "<a>⇲</a>") {
+        showElement.style.display = 'block';
+        showSwitch.innerHTML = "<a>&#8689;</a>";
+    } else {
+        showElement.style.display = 'none';
+        showSwitch.innerHTML = "<a>&#8690;</a>";
+    };
+}
+function configLogs() {
+  var logsElement = document.getElementById('configlogs');
+  $.get('{{ url_for('poppy_config_logs') }}', function (rawLogs) {
+    logsElement.innerHTML = rawLogs;
+    hljs.highlightBlock(logsElement);
+  });
+  refreshConfigLogs();
+}
+function refreshConfigLogs() {
+  window.setTimeout(configLogs, timeOut);
+}
+function apiLogs() {
+  var logsElement = document.getElementById('api-Logs');
+  $.post('{{ url_for('raw_logs') }}', {id:0}, function(rawLogs) {
+      logsElement.innerHTML = rawLogs;
+      hljs.highlightBlock(logsElement);
+  });
+  if (logsElement.scrollHeight > 125) {
+      document.getElementById('show-switch').style.visibility = "visible";
+  } else {
+      document.getElementById('show-switch').style.visibility = "hidden";
+  };
+  refreshApiLogs()
+}
+function refreshApiLogs() {
+  window.setTimeout(apiLogs, timeOut);
+}
+function moreLogs() {
+    var showSwitch = document.getElementById('show-switch');
+    var showElement = document.getElementById('api-Logs');
+    if (showSwitch.innerHTML === "(<a>show more logs</a>)") {
+        showElement.style.maxHeight = "none";
+        showElement.style.overflowY = "auto";
+        showSwitch.innerHTML = "(<a>show less logs</a>)";
+    } else {
+        showElement.style.maxHeight = "125px";
+        showElement.style.overflowY = "hidden";
+        showSwitch.innerHTML = "(<a>show more logs</a>)";
+    };
+}
+function dance(state) {
+    if (state == 1){
+        document.getElementById('start-prim').style.display = 'none';
+        document.getElementById('stop-prim').style.display = 'block';
+        $.get("http://{{ robot.name }}.local:6969/primitive/dance/start");
+    } else {
+        document.getElementById('start-prim').style.display = 'block';
+        document.getElementById('stop-prim').style.display = 'none';
+        $.get("http://{{ robot.name }}.local:6969/primitive/dance/stop");
+    };
+}
+$('#configure-motor').click(function () {
+  document.getElementById('config-Logs').style.display = 'block';
+  motor_to_configure = $('#motor').val().trim();
+  $.post('{{ url_for('call_poppy_configure') }}', {motor: motor_to_configure});
+  refreshConfigLogs();
+});
+$('#start-api').click(function () {
+  document.getElementById('api-Logs').style.display = 'block';
+  $.post( '{{ url_for('APIstart') }}', {dialog: 'quiet'} );
+  refreshApiLogs();
+});
+$('#start-viewer').click(function () {
+  document.getElementById('start-viewer').style.display = 'none';
+  document.getElementById('start-prim').style.display = 'block';
+  document.getElementById('viewer').style.display = 'block';
+  document.getElementById('viewer').src = '{{ url_for( 'viewer') }}';
+});
+</script>
+{% endblock endscript %}
