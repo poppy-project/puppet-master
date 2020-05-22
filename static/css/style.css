@@ -72,7 +72,9 @@
   color: #2199e8;
 }
 .section-title h1 {
-  color: #2199e8;
+  padding: 2rem 0;
+}
+.section-title h3 {
   padding: 2rem 0;
 }
 
