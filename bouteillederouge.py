@@ -86,6 +86,9 @@ def inject_robot_config():
                 info=pm.config.info,
                 wifi=pm.config.wifi,
                 hotspot=pm.config.hotspot,
+                port=pm.config.poppyPort,
+                log=pm.config.poppyLog,
+                services=pm.config.services,
                 clone=pm.nb_clone)
 
 @app.after_request
@@ -108,6 +111,36 @@ def end_opening():
     pm.update_config('robot.firstPage', False)
     pm.update_config('robot.autoStart', True)
     return render_template('index.html')
+
+@app.route('/infos')
+def infos():
+    from platform import platform as platform_version
+    from pypot import __version__ as pypot_version
+    creature_version = getattr(__import__(pm.config.robot.creature.replace('-','_')), '__version__')
+    web_access=True
+    try:
+        requests.get('https://www.poppy-project.org/')
+    except:
+        web_access=False
+    def service_running(service):
+        if os.system('sudo systemctl is-active {}'.format(service)) == 0:
+            return True
+        else:
+            return False
+    return render_template(
+        'infos.html',
+        ip=find_local_ip(),
+        platform_version=platform_version().replace('-',' '),
+        python_version=sys.version.replace('\n',''),
+        pypot_version=pypot_version,
+        creature_version=creature_version,
+        web_access=web_access,
+        api_running=pm.running,
+        pm_running=service_running(pm.config.services.PuppetMaster),
+        jupyter_running=service_running(pm.config.services.JupyterNotebook),
+        docs_running=service_running(pm.config.services.PoppyDocs),
+        viewer_running=service_running(pm.config.services.PoppyViewer)
+    )
 
 @app.route('/docs')
 def docs():

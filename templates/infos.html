@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row columns" style="max-width: 900px; margin: auto">
+  <div class="section-title">
+    <h3>Puppet-Master interface infos</h3>
+  </div>
+  <div id="creature">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h4>Creature &emsp;<span id="openButton-creature" onclick="openStep('creature')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <div id="step-creature" style="display : none;">
+      <table>
+        <tr><th>Name</th><th>{{ robot.name }}</th></tr>
+        <tr><th>Creature Type</th><th>{{ robot.creature }}</th></tr>
+          <tr><th>Settings</th><th><a href="{{ url_for('settings')}}" target="_blank">settings page</a></th></tr>
+        <tr><td>&emsp;- Langage</td><td>{{ info.langage }}</td></tr>
+        <tr><td>&emsp;- API auto-start</td><td>{{ robot.autoStart }}</td></tr>
+        <tr><td>&emsp;- First page</td><td>{{ robot.firstPage }}</td></tr>
+        <tr><th>Versions</th><th><a href="{{ url_for('update')}}" target="_blank">update now</a></th></tr>
+        <tr><td>&emsp;- Creature version</td><td>{{ creature_version }}</td></tr>
+        <tr><td>&emsp;- Pypot version</td><td>{{ pypot_version }}</td></tr>
+        <tr><td>&emsp;- Puppet-master version</td><td>{{ info.version }}</td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="system">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h4>System &emsp;<span id="openButton-system" onclick="openStep('system')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <div id="step-system" style="display : none;">
+      <table>
+        <tr><th>Board Type</th><th> {{ info.board }}</th></tr>
+        <tr><th>OS version</th><th>{{ platform_version }}</th></tr>
+        <tr><th>Python version</th><th>{{ python_version }}</th></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="network">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h4>Network &emsp;<span id="openButton-network" onclick="openStep('network')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <div id="step-network" style="display : none;">
+      <table>
+        <tr><th>Hostname</th><th>{{ robot.name }}</th></tr>
+        <tr><th>IP</th><th>{{ ip }}</th></tr>
+        <tr><th>Service</th><th>{{ info.serviceNetwork }}</th></tr>
+        <tr><th>Web access</th><th>{{ web_access }}</th></tr>
+        <tr><th>Wifi</th><th>{{ wifi.start }}</th></tr>
+        <tr><td>&emsp;- Config File</td><td>{{ wifi.confFile }}</td></tr>
+        <tr><td>&emsp;- SSID</td><td>{{ wifi.ssid }}</td></tr>
+        <tr><td>&emsp;- PSK</td><td>{{ wifi.psk }}</td></tr>
+        <tr><th>Hotspot</th><th>{{ hotspot.start }}</th></tr>
+        <tr><td>&emsp;- Config File</td><td>{{ hotspot.confFile }}</td></tr>
+        <tr><td>&emsp;- SSID</td><td>{{ hotspot.ssid }}</td></tr>
+        <tr><td>&emsp;- PSK</td><td>{{ hotspot.psk }}</td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="servers">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h4>Servers &emsp;<span id="openButton-servers" onclick="openStep('servers')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <div id="step-servers" style="display : none;">
+      <table>
+        <tr><th>Services launcher</th><th>{{ services.PuppetMaster }}</th><th></th></tr>
+        <tr><td>&emsp;- Main file</td><td><a href="http://poppy.local:8888/edit/My%20Documents/Poppy%20Source-code/puppet-master/bouteillederouge.py" target="_blank">/puppet-master/bouteillederouge.py</a></td></tr>
+        <tr><td>&emsp;- Service port</td><td>{{ port.puppetMaster }}</td></tr>
+        <tr><th>API is running</th><th>{{ api_running }}</th></tr>
+        <tr><td>&emsp;- Main folder</td><td><a href="http://poppy.local:8888/tree/My%20Documents/Poppy%20Source-code/pypot/server" target="_blank">/pypot/servers</a></td></tr>
+        <tr><td>&emsp;- Snap server port</td><td>{{ port.snap }}</td></tr>
+        <tr><td>&emsp;- Http server port</td><td>{{ port.http }}</td></tr>
+        <tr><td>&emsp;- Ws server port</td><td>{{ port.ws }}</td></tr>
+        <tr><th>Number of virtual instance running</th><th>{{ clone }}</th></tr>
+        <tr><td>&emsp;- Whose with auto-start</td><td>{{ robot.virtualBot }}</td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="services">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h4>Services &emsp;<span id="openButton-services" onclick="openStep('services')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <div id="step-services" style="display : none;">
+      <table>
+        <tr><th>{{ services.PuppetMaster }} is running</th><th>{{ pm_running }}</th></tr>
+        <tr><td>&emsp;- URL</td><td><a href="http://{{ robot.name }}.local:{{ port.puppetMaster }}" target="_blank">http://{{ robot.name }}.local:{{ port.puppetMaster }}</a></td></tr>
+        <tr><td>&emsp;- Service port</td><td>{{ port.puppetMaster }}</td></tr>
+        <tr><td>&emsp;- Log file</td><td>{{ log.puppetMaster }}</td></tr>
+        <tr><th>{{ services.JupyterNotebook }} is running</th><th>{{ jupyter_running }}</th></tr>
+        <tr><td>&emsp;- URL</td><td><a href="http://{{ robot.name }}.local:{{ port.jupyter }}" target="_blank">http://{{ robot.name }}.local:{{ port.jupyter }}</a></td></tr>
+        <tr><td>&emsp;- Service port</td><td>{{ port.jupyter }}</td></tr>
+        <tr><td>&emsp;- Log file</td><td>{{ log.jupyter }}</td></tr>
+        <tr><th>{{ services.PoppyDocs }} is running</th><th>{{ docs_running }}</th></tr>
+        <tr><td>&emsp;- URL</td><td><a href="http://{{ robot.name }}.local:{{ port.docs }}" target="_blank">http://{{ robot.name }}.local:{{ port.docs }}</a></td></tr>
+        <tr><td>&emsp;- Service port</td><td>{{ port.docs }}</td></tr>
+        <tr><td>&emsp;- Log file</td><td>{{ log.docs }}</td></tr>
+        <tr><th>{{ services.PoppyViewer }} is running</th><th>{{ viewer_running }}</th></tr>
+        <tr><td>&emsp;- URL</td><td><a href="http://{{ robot.name }}.local:{{ port.viewer }}/{{ robot.creature }}/#{{ port.http }}" target="_blank">http://{{ robot.name }}.local:{{ port.viewer }}/{{ robot.creature }}</a></td></tr>
+        <tr><td>&emsp;- Service port</td><td>{{ port.viewer }}</td></tr>
+        <tr><td>&emsp;- Log file</td><td>{{ log.viewer }}</td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="links">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h4>Web Links &emsp;<span id="openButton-links" onclick="openStep('links')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <div id="step-links" style="display : none;">
+      <table>
+        <tr>
+          <th>Poppy Project website</th>
+          <th><a href="https://www.poppy-project.org/" target="_blank">www.poppy-project.org</a></th>
+        </tr>
+        <tr>
+          <th>Poppy Education website</th>
+          <th><a href="https://www.poppy-education.org/" target="_blank">www.poppy-education.org</a></th>
+        </tr>
+        <tr>
+          <th>Poppy Station website</th>
+          <th><a href="https://www.poppy-station.org/" target="_blank">www.poppy-station.org</a></th>
+        </tr>
+        <tr>
+          <th>Poppy Project Forum</th>
+          <th><a href="https://poppy.discourse.group/" target="_blank">forum.poppy-project.org</a></th>
+        </tr>
+        <tr>
+          <th>Poppy Project Docs</th>
+          <th><a href="https://docs.poppy-project.org" target="_blank">docs.poppy-project.org</a></th>
+        </tr>
+        <tr><th>Poppy Project github</th><th><a href="https://github.com/poppy-project" target="_blank">github.com/poppy-project</a></th></tr>
+        <tr><td>&emsp;- pypot</td>
+          <td><a href="https://github.com/poppy-project/pypot" target="_blank">github.com/poppy-project/pypot</a></td></tr>
+        <tr><td>&emsp;- {{ robot.creature }}</td>
+          <td><a href="https://github.com/poppy-project/{{ robot.creature }}" target="_blank">github.com/poppy-project/{{ robot.creature }}</a></td></tr>
+        <tr><td>&emsp;- puppet-master</td>
+          <td><a href="https://github.com/poppy-project/puppet-master" target="_blank">github.com/poppy-project/puppet-master</a></td></tr>
+        <tr><td>&emsp;- poppy-docs</td>
+          <td><a href="https://github.com/poppy-project/poppy-docs" target="_blank">github.com/poppy-project/poppy-docs</a></td></tr>
+        <tr><td>&emsp;- poppy-viewer</td>
+          <td><a href="https://github.com/poppy-project/poppy-simu" target="_blank">github.com/poppy-project/poppy-simu</a></td></tr>
+        <tr><td>&emsp;- poppy-monitor</td>
+          <td><a href="https://github.com/poppy-project/poppy-monitor" target="_blank">github.com/poppy-project/poppy-monitor</a></td></tr>
+        <tr><td>&emsp;- notebooks</td>
+          <td><a href="https://github.com/poppy-project/community-notebooks" target="_blank">github.com/poppy-project/community-notebooks</a></td></tr>
+        <tr><td>&emsp;- raspoppyfication</td>
+          <td><a href="https://github.com/poppy-project/raspoppy" target="_blank">github.com/poppy-project/raspoppy</a></td></tr>
+        <tr><th>Poppy Project on the Net</th><th></th></tr>
+        <tr><td>&emsp;- twitter, Poppy Project</td>
+          <td><a href="https://twitter.com/poppy_project" target="_blank">twitter.com/poppy_project</a></td></tr>
+        <tr><td>&emsp;- twitter, Poppy Education</td>
+          <td><a href="https://twitter.com/PoppyEducation" target="_blank">twitter.com/PoppyEducation</a></td></tr>
+        <tr><td>&emsp;- twitter, Poppy Station</td>
+          <td><a href="https://twitter.com/PoppyStation" target="_blank">twitter.com/PoppyStation</a></td></tr>
+        <tr><td>&emsp;- facebook</td>
+          <td><a href="https://www.facebook.com/poppycommunity" target="_blank">www.facebook.com/poppycommunity</a></td></tr>
+        <tr><td>&emsp;- youtube</td>
+          <td><a href="https://www.youtube.com/PoppyProjectOrgVideos" target="_blank">www.youtube.com/PoppyProjectOrgVideos</a></td></tr>
+        <tr><td>&emsp;- vimeo</td>
+          <td><a href="https://vimeo.com/poppyproject" target="_blank">vimeo.com/poppyproject</a></td></tr>
+        <tr><td>&emsp;- flick</td>
+          <td><a href="https://www.flickr.com/photos/poppy-project/albums" target="_blank">www.flickr.com/photos/poppy-project</a></td></tr>
+        <tr><td>&emsp;- thingiverse</td>
+          <td><a href="https://www.thingiverse.com/poppy_project/" target="_blank">www.thingiverse.com/poppy_project</a></td></tr>
+      </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="licence">
+  <div class="callout">
+    <div class="row columns">
+      <span  class="section-title"><h4>Licences &emsp;<span id="openButton-licence" onclick="openStep('licence')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <div id="step-licence" style="display : none;">
+        <p>All the technological developments made in the Poppy project are freely available under open source licenses. Only the use of the name “Poppy” is restricted and protected as an international trademark to protect its identity. Please feel free to contact us (on <a href="https://poppy.discourse.group/" target="_blank">forum</a>) for more information.</p>
+        <h4>Hardware</h4>
+          <img width="17%" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="creativecommons by-sa logo">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons BY-SA 4.0</a>
+          <p>&emsp;</p>
+        <h4>Software</h4>
+          <img width="17%" src="http://www.gnu.org/graphics/gplv3-127x51.png" alt="GPL v3 logo">
+          <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPL v3</a>
+          <p>&emsp;</p>
+        <h4>Credit</h4>
+          <p>Poppy Project Team: Matthieu Lapeyre, Pierre Rouanet, Jonathan Grizou, Nicolas Rabault. </p>
+          <p>Poppy Education Team: Stéphanie Noirpoudre, Thibault Desprez, Théo Segonds, Damien Caselli. </p>
+          <p>Poppy Station Team: Yoan Mollard, Jean-Luc Charles. </p>
+          <p>Folwers lab. Inria-BSO: Pierre-Yves Oudeyer, Didier Roy. </p>
+        <h4>Special thanks</h4>
+          <p>Volunteer contributor, anonyme contributor, all users, teachers, students, parents, children ...  </p>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="section-title" align="center">
+    <h4>Share your experience!</h4>
+    <a href="https://poppy.discourse.group/" target="_blank">
+      <button type="button" class="button" style="width: 50%;">Post an message on a Forum</button>
+    </a>
+  </div>
+  &emsp;
+</div>
+{% endblock content %}
+{% block endscript %}
+<script>
+function openStep(name) {
+    var showSwitch = document.getElementById('openButton-'+name);
+    var showElement = document.getElementById('step-'+name);
+    if (showSwitch.innerHTML == "<a>⇲</a>") {
+        showElement.style.display = 'block';
+        showSwitch.innerHTML = "<a>&#8689;</a>";
+    } else {
+        showElement.style.display = 'none';
+        showSwitch.innerHTML = "<a>&#8690;</a>";
+    };
+}
+</script>
+{% endblock endscript %}

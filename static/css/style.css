@@ -5,6 +5,17 @@
   display: inline;
 }
 
+table tbody th {
+  text-align: left;
+  font-weight: normal;
+  padding: 1rem 1rem 0rem 0rem;
+}
+table tbody td {
+  text-align: left;
+  font-size: small;
+  padding: 0rem 1rem;
+}
+
 /*
   Specific
  */
