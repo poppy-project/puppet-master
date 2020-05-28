@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if clone < 3 %}{% set cell_height = 84 %} {% elif clone > 4 %}{% set cell_height = 28 %} {% else %}{% set cell_height = 42 %} {% endif %}
+<div class="row wrap" data-equalizer data-equalize-on="medium">
+  {%- for nb in range(1,clone+1) %}
+    <div class="columns large-6 medium-12 small-12 callout" style="height: {{ cell_height }}vh; margin:0;">
+      <iframe class="tall-iframe" style="width:100%; height:100%" src="http://{{ robot.name }}.local:{{ port.viewer }}/{{ robot.creature }}/#{{ nb + port.http }}"></iframe>
+    </div>
+  {%- endfor %}
+</div>
+{% endblock content %}

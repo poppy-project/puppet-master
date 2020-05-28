@@ -198,6 +198,10 @@ def viewer():
         iframe_src='http://{}:{}/{}/#{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.viewer, pm.config.robot.creature, pm.config.poppyPort.http)
     )
 
+@app.route('/monitoring/visualisator/multiview')
+def multiview():
+    return render_template('multiview.html')
+
 @app.route('/monitoring/camera')
 def camera():
     if not pm.running:
@@ -392,10 +396,11 @@ def switch_camera():
         pm.restart()
     return ('', 204)
 
-@app.route('/clone')
+@app.route('/clone', methods=['POST'])
 def clone():
-    pm.clone()
-    flash('> One more instance was launched', 'success')
+    nb=int(request.form['nb'])
+    pm.clone(nb)
+    flash('> {} more instance was launched'.format(nb), 'success')
     return ('', 204)
 
 @app.route('/settings/configure-motors')

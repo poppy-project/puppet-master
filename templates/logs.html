@@ -15,11 +15,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="large-9 medium-9 small-6 columns">
+      <div class="large-6 medium-9 small-9 columns">
         &emsp;
-        <a class="button button-primary" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
-        <a class="button button-primary" id="APIreset" onclick="refreshForMsg('{{ url_for('APIreset') }}')">Reboot Robot API</a>
-        <a class="button button-primary" id="APIstop" onclick="refreshForMsg('{{ url_for('APIstop') }}')">Stop Robot API</a>
+        <a class="button button-primary" style="width: 30%;" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
+        <a class="button button-primary" style="width: 30%;" id="APIreset" onclick="refreshForMsg('{{ url_for('APIreset') }}')">Reboot Robot API</a>
+        <a class="button button-primary" style="width: 30%;" id="APIstop" onclick="refreshForMsg('{{ url_for('APIstop') }}')">Stop Robot API</a>
       </div>
       <div class="large-3 medium-3 small-3 columns" align="right">
         <h4>Toggle camera</h4>
@@ -50,8 +50,21 @@ Logs for real robot <span id="show-switch_0" style="visibility:hidden" onclick="
     </div>
     <div class="row">
       <div class="columns">
-        &emsp;
-        <a class="button button-primary" style="width: 215px;" id="launch-clone" onclick="refreshForMsg('{{ url_for('clone') }}')">Launch one more instance</a>
+        <div class="input-group" style="width: 500px;">
+          &emsp;
+          <span class="button button-primary input-group-button" type="button" onclick="clone()" style="width: 215px;">Launch</span>
+          <input id="new_clone" type="number"  min="1" class="input-group-field" placeholder="1" style="text-align:center">
+          <span class="input-group-label">additional instance(s)</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns">
+        <div class="input-group" style="width: 500px;">
+          &emsp;
+          <span class="input-group-button"><a class="button button-primary"  style="width: 215px;" id="open-multiview" href='{{ url_for('multiview') }}'>Open the MultiViewer</a></span>
+          <span class="input-group-label">{{ clone }} instance(s) are already running</span>
+        </div>
       </div>
     </div>
     &emsp;
@@ -211,6 +224,12 @@ function startTimeout() {
 }
 
 startTimeout();
+
+function clone() {
+    var new_clone =  document.getElementById('new_clone').value;
+    if (new_clone == ''){new_clone=1};
+    $.post('{{ url_for('clone') }}', {nb:new_clone}, function() {window.location.reload();})
+}
 
 </script>
 {% endblock endscript %}
