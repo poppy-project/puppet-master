@@ -189,6 +189,12 @@ def base_static_monitor(filename):
     path=app.root_path.replace('/puppet-master','')
     return send_from_directory(path + '/poppy-monitor/', filename)
 
+@app.route('/monitoring/recorder')
+def move_recorder():
+    if not pm.running:
+        flash(Markup('> API is <b>not running</b>, start before use these tools. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+    return render_template('move-revorder.html')
+
 @app.route('/monitoring/visualisator')
 def viewer():
     if not pm.running:

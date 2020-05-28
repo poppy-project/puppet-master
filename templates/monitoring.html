@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="large-10 medium-10 row wrap" data-equalizer data-equalize-on="medium">
+<div class="large-10 medium-10 row">
   <div class="large-12 medium-12 columns section-title">
     <h3>Monitor and control</h3>
   </div>
@@ -11,7 +11,7 @@
 
 <div class="large-10 medium-10 row wrap" data-equalizer data-equalize-on="medium">
 
-  <div class="large-4 medium-6 columns menu-tile">
+  <div class="large-6 medium-6 columns menu-tile">
     <a href="{{ url_for('monitor') }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-stats">
@@ -23,7 +23,19 @@
     </a>
   </div>
 
-  <div class="large-4 medium-6 columns menu-tile">
+  <div class="large-6 medium-6 columns menu-tile">
+    <a href="{{ url_for('move_recorder') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-play">
+          <title>Recorder</title>
+          <use xlink:href="#pp-icon-play"></use>
+        </svg>
+      </h3>
+      <p>Move recorder</p>
+    </a>
+  </div>
+
+  <div class="large-6 medium-6 columns menu-tile">
     <a href="{{ url_for('viewer') }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-eye">
@@ -35,7 +47,7 @@
     </a>
   </div>
 
-  <div class="large-4 medium-6 columns menu-tile">
+  <div class="large-6 medium-6 columns menu-tile">
     <a href="{{ url_for('camera') }}" data-equalizer-watch>
       <h3>
         <svg class="pp-icon pp-icon-camera">
@@ -52,4 +64,3 @@
 {% include 'defs-svg.html' %}
 
 {% endblock content %}
-
