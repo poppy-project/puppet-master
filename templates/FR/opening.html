@@ -30,7 +30,7 @@
   <div class="callout">
     <div class="row columns">
       <span  class="section-title"><h2>Step 2: Build</h2></span>
-      <h4>Mecanique assemblage and motor configuration &ensp;<span id="openButton2" onclick="openStep(2)"><a>&#8690;</a></span></h4>
+      <h4>Mecanique assemblage and motor configuration &ensp;<span id="openButton2" onclick="openStep(2)"><a>&#8690;</a></span> <span id="info-2" style="font-size: 50%">click to expand</span></h4>
       <div id="step2">
       <p><br>For mecanique assemblage refere to the documentation: <a target="_blank" href="{{ url_for('assembly_guides') }}">Assembly Guides</a></p>
       <p>For motor configuration, use module below:</p>
@@ -60,9 +60,9 @@
       <div class="row">
         <div class="large-12 columns">
           <div class="callout">
-            <h4>
+            <h5>
               Which motor do you want to configure?
-            </h4>
+            </h5>
             {% if motors | length > 1 %}
               <form>
                 <div class="row">
@@ -102,7 +102,7 @@
   <div class="callout">
     <div class="row columns">
       <span  class="section-title"><h2>Step 3: Run and Test</h2></span>
-      <h4>Use Puppet Master interface &ensp;<span id="openButton3" onclick="openStep(3)"><a>&#8690;</a></span></h4>
+      <h4>Use Puppet Master interface &ensp;<span id="openButton3" onclick="openStep(3)"><a>&#8690;</a></span> <span id="info-3" style="font-size: 50%">click to expand</span></h4>
       <div class='row' id="step3">
       <div class="columns large-12" align="center">
         <div class="callout">
@@ -131,7 +131,7 @@
   <div class="callout">
     <div class="row columns">
       <span  class="section-title"><h2>Advance step...</h2></span>
-      <h4>More configuring, monitoring and programming &ensp;<span id="openButton4" onclick="openStep(4)"><a>&#8690;</a></span></h4>
+      <h4>More configuring, monitoring and programming &ensp;<span id="openButton4" onclick="openStep(4)"><a>&#8690;</a></span> <span id="info-4" style="font-size: 50%">click to expand</span></h4>
       <div class='row wrap' id="step4"  data-equalizer data-equalize-on="medium" align="center">
       <div class="large-6 medium-6 columns menu-tile">
         <p>For setup more option, go to settings page</p>
@@ -219,6 +219,7 @@ function setLang(val){
     });
 }
 function openStep(id) {
+    document.getElementById("info-"+id).style.display = "none";
     var showSwitch = document.getElementById('openButton'+id);
     var showElement = document.getElementById('step'+id);
     if (showSwitch.innerHTML == "<a>⇲</a>") {
