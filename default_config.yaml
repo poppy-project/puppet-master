@@ -2,12 +2,12 @@ robot:
   name: $name
   creature: $creature
   firstPage: on
-  autoStart: on
+  autoStart: off
   camera: off
   virtualBot: 0
 
 info:
-  version: dev_gen2
+  version: 2alpha
   logfile: /tmp/puppet-master.log
   serviceNetwork: rpi-access-point.service
   updateURL: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
