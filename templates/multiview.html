@@ -2,11 +2,34 @@
 
 {% block content %}
 {% if clone < 3 %}{% set cell_height = 84 %} {% elif clone > 4 %}{% set cell_height = 28 %} {% else %}{% set cell_height = 42 %} {% endif %}
-<div class="row wrap" data-equalizer data-equalize-on="medium">
+<div class="row wrap" data-equalizer data-equalize-on="medium" align="center">
+  {% if clone > 1 %}
   {%- for nb in range(1,clone+1) %}
     <div class="columns large-6 medium-12 small-12 callout" style="height: {{ cell_height }}vh; margin:0;">
       <iframe class="tall-iframe" style="width:100%; height:100%" src="http://{{ robot.name }}.local:{{ port.viewer }}/{{ robot.creature }}/#{{ nb + port.http }}"></iframe>
     </div>
   {%- endfor %}
+  {% else %}
+  <div class="row columns  section-title">
+    <h3> Please launch more instances of robot</h3>
+  </div>
+  <div class="row columns">
+    <div class="input-group" style="width: 500px;">
+      &emsp;
+      <span class="button button-primary input-group-button" type="button" onclick="clone()" style="width: 215px;">Launch</span>
+      <input id="new_clone" type="number"  min="1" class="input-group-field" placeholder="1" style="text-align:center">
+      <span class="input-group-label">additional instance(s)</span>
+    </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock content %}
+{% block endscript %}
+<script>
+function clone() {
+    var new_clone =  document.getElementById('new_clone').value;
+    if (new_clone == ''){new_clone=1};
+    $.post('{{ url_for('clone') }}', {nb:new_clone}, function() {window.location.reload();})
+}
+</script>
+{% endblock endscript %}
