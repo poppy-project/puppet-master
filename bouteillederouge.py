@@ -69,6 +69,8 @@ pm = PuppetMaster(DaemonCls=PoppyDaemon,
 if os.path.exists(pidfile):
     pm.force_clean()
 
+pm.update_config('version.creature', getattr(__import__(pm.config.robot.creature.replace('-','_')), '__version__'))
+
 if pm.config.robot.autoStart:
     pm.start()
 else:
@@ -89,6 +91,7 @@ def inject_robot_config():
                 port=pm.config.poppyPort,
                 log=pm.config.poppyLog,
                 services=pm.config.services,
+                version=pm.config.version,
                 clone=pm.nb_clone)
 
 @app.after_request
@@ -115,13 +118,13 @@ def end_opening():
 @app.route('/infos')
 def infos():
     from platform import platform as platform_version
-    from pypot import __version__ as pypot_version
-    creature_version = getattr(__import__(pm.config.robot.creature.replace('-','_')), '__version__')
+    from notebook import __version__ as notebook_version
     web_access=True
     try:
         requests.get('https://www.poppy-project.org/')
     except:
         web_access=False
+    check_version()
     def service_running(service):
         if os.system('sudo systemctl is-active {}'.format(service)) == 0:
             return True
@@ -132,8 +135,7 @@ def infos():
         ip=find_local_ip(),
         platform_version=platform_version().replace('-',' '),
         python_version=sys.version.replace('\n',''),
-        pypot_version=pypot_version,
-        creature_version=creature_version,
+        notebook_version=notebook_version,
         web_access=web_access,
         api_running=pm.running,
         pm_running=service_running(pm.config.services.PuppetMaster),
@@ -374,6 +376,7 @@ def update():
 
     flash('> Your robot is currently updating. Please do not turn it off before it\'s done!', 'warning')
 
+    check_version()
     if not pm.is_updating:
         Thread(target=update_in_bg).start()
 
@@ -496,6 +499,12 @@ def get_host():
     host = host if host == 'localhost' else '{}.local'.format(host)
     return host
 
+def check_version():
+    pm.update_config('version.pypot', getattr(__import__('pypot'), '__version__'))
+    pm.update_config('version.creature', getattr(__import__(pm.config.robot.creature.replace('-','_')), '__version__'))
+    pm.update_config('version.snap', 'TODO')
+    pm.update_config('version.viewer', 'TODO')
+    pm.update_config('version.docs', 'TODO')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(pm.config.poppyPort.puppetMaster))

@@ -17,9 +17,12 @@
         <tr><td>&emsp;- API auto-start</td><td>{{ robot.autoStart }}</td></tr>
         <tr><td>&emsp;- First page</td><td>{{ robot.firstPage }}</td></tr>
         <tr><th>Versions</th><th><a href="{{ url_for('update')}}" target="_blank">update now</a></th></tr>
-        <tr><td>&emsp;- Creature version</td><td>{{ creature_version }}</td></tr>
-        <tr><td>&emsp;- Pypot version</td><td>{{ pypot_version }}</td></tr>
-        <tr><td>&emsp;- Puppet-master version</td><td>{{ info.version }}</td></tr>
+        <tr><td>&emsp;- {{ robot.creature }}</td><td>{{ version.creature }}</td></tr>
+        <tr><td>&emsp;- pypot</td><td>{{ version.pypot }}</td></tr>
+        <tr><td>&emsp;- puppet-master</td><td>{{ version.puppetMaster }}</td></tr>
+        <tr><td>&emsp;- <i>Snap!</i></td><td>{{ version.snap }}</td></tr>
+        <tr><td>&emsp;- poppy-viewer</td><td>{{ version.viewer }}</td></tr>
+        <tr><td>&emsp;- poppy-docs</td><td>{{ version.docs }}</td></tr>
       </table>
       </div>
     </div>
@@ -34,6 +37,7 @@
         <tr><th>Board Type</th><th> {{ info.board }}</th></tr>
         <tr><th>OS version</th><th>{{ platform_version }}</th></tr>
         <tr><th>Python version</th><th>{{ python_version }}</th></tr>
+        <tr><th>Jupyter Notebook version</th><th>{{ notebook_version }}</th></tr>
       </table>
       </div>
     </div>

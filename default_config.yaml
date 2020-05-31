@@ -7,7 +7,6 @@ robot:
   virtualBot: 0
 
 info:
-  version: 2alpha
   logfile: /tmp/puppet-master.log
   serviceNetwork: rpi-access-point.service
   updateURL: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
@@ -49,3 +48,11 @@ poppyPort:
   http: 8080
   snap: 6969
   ws: 9009
+
+version:
+  puppetMaster: 2alpha
+  creature: None
+  pypot: None
+  snap: TODO
+  viewer: TODO
+  docs: TODO
