@@ -7,7 +7,7 @@
   <div id="creature">
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h4>Creature &emsp;<span id="openButton-creature" onclick="openStep('creature')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <span  class="section-title"><a onclick="openStep('creature')"><h4>Creature &emsp;<span id="openButton-creature" style="font-size: 80%">&#8690;</span></h4></a></span>
       <div id="step-creature" style="display : none;">
       <table>
         <tr><th>Name</th><th>{{ robot.name }}</th></tr>
@@ -23,6 +23,7 @@
         <tr><td>&emsp;- <i>Snap!</i></td><td>{{ version.snap }}</td></tr>
         <tr><td>&emsp;- poppy-viewer</td><td>{{ version.viewer }}</td></tr>
         <tr><td>&emsp;- poppy-docs</td><td>{{ version.docs }}</td></tr>
+        <tr><td>&emsp;- poppy-monitor</td><td>{{ version.monitor }}</td></tr>
       </table>
       </div>
     </div>
@@ -31,7 +32,7 @@
   <div id="system">
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h4>System &emsp;<span id="openButton-system" onclick="openStep('system')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <span  class="section-title"><a onclick="openStep('system')"><h4>System &emsp;<span id="openButton-system" style="font-size: 80%">&#8690;</span></h4></a></span>
       <div id="step-system" style="display : none;">
       <table>
         <tr><th>Board Type</th><th> {{ info.board }}</th></tr>
@@ -46,7 +47,7 @@
   <div id="network">
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h4>Network &emsp;<span id="openButton-network" onclick="openStep('network')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <span  class="section-title"><a onclick="openStep('network')"><h4>Network &emsp;<span id="openButton-network" style="font-size: 80%">&#8690;</span></h4></a></span>
       <div id="step-network" style="display : none;">
       <table>
         <tr><th>Hostname</th><th>{{ robot.name }}</th></tr>
@@ -69,7 +70,7 @@
   <div id="servers">
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h4>Servers &emsp;<span id="openButton-servers" onclick="openStep('servers')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <span  class="section-title"><a onclick="openStep('servers')"><h4>Servers &emsp;<span id="openButton-servers" style="font-size: 80%">&#8690;</span></h4></a></span>
       <div id="step-servers" style="display : none;">
       <table>
         <tr><th>Services launcher</th><th>{{ services.PuppetMaster }}</th><th></th></tr>
@@ -90,7 +91,7 @@
   <div id="services">
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h4>Services &emsp;<span id="openButton-services" onclick="openStep('services')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <span  class="section-title"><a onclick="openStep('services')"><h4>Services &emsp;<span id="openButton-services" style="font-size: 80%">&#8690;</span></h4></a></span>
       <div id="step-services" style="display : none;">
       <table>
         <tr><th>{{ services.PuppetMaster }} is running</th><th>{{ pm_running }}</th></tr>
@@ -117,7 +118,7 @@
   <div id="links">
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h4>Web Links &emsp;<span id="openButton-links" onclick="openStep('links')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <span  class="section-title"><a onclick="openStep('links')"><h4>Web Links &emsp;<span id="openButton-links" style="font-size: 80%">&#8690;</span></h4></a></span>
       <div id="step-links" style="display : none;">
       <table>
         <tr>
@@ -182,7 +183,7 @@
   <div id="licence">
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h4>Licences &emsp;<span id="openButton-licence" onclick="openStep('licence')" style="font-size: 80%"><a>&#8690;</a></span></h4></span>
+      <span  class="section-title"><a onclick="openStep('licence')"><h4>Licences &emsp;<span id="openButton-licence" style="font-size: 80%">&#8690;</span></h4></a></span>
       <div id="step-licence" style="display : none;">
         <p>All the technological developments made in the Poppy project are freely available under open source licenses. Only the use of the name “Poppy” is restricted and protected as an international trademark to protect its identity. Please feel free to contact us (on <a href="https://poppy.discourse.group/" target="_blank">forum</a>) for more information.</p>
         <h4>Hardware</h4>
@@ -218,12 +219,12 @@
 function openStep(name) {
     var showSwitch = document.getElementById('openButton-'+name);
     var showElement = document.getElementById('step-'+name);
-    if (showSwitch.innerHTML == "<a>⇲</a>") {
+    if (showSwitch.innerHTML == "⇲") {
         showElement.style.display = 'block';
-        showSwitch.innerHTML = "<a>&#8689;</a>";
+        showSwitch.innerHTML = "&#8689;";
     } else {
         showElement.style.display = 'none';
-        showSwitch.innerHTML = "<a>&#8690;</a>";
+        showSwitch.innerHTML = "&#8690;";
     };
 }
 </script>

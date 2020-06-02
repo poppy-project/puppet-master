@@ -4,26 +4,22 @@
 
 <div class="large-8 medium-8 row">
   <div class="columns section-title">
-    <h1>Configure your robot</h1>
+    <h3>Configure your robot</h3>
   </div>
 </div>
 
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      &emsp;
-      <div class="row">
-        <div class="large-6 columns">
-          <h3>Configure Langage</h3>
-        </div>
-        <div class="large-3 medium-3 small-3 columns">
+      <span  class="section-title"><a onclick="openStep('Langage')"><h4>Configure Langage &emsp;<span id="openButton-Langage" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Langage" style="display : none;">
+        &emsp;
+        <div class="row columns" align="center">
           <a onclick="setLang('EN')">
-          <button type="button" class="button" style="width: 100%;">English</button>
+          <button type="button" class="button" style="width: 25%;">English</button>
           </a>
-        </div>
-        <div class="large-3 medium-3 small-3 columns">
           <a onclick="setLang('FR')">
-          <button type="button" class="button" style="width: 100%;">Français</button>
+          <button type="button" class="button" style="width: 25%;">Français</button>
           </a>
         </div>
       </div>
@@ -34,7 +30,8 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h3>Configure Network</h3>
+      <span  class="section-title"><a onclick="openStep('Network')"><h4>Configure Network &emsp;<span id="openButton-Network" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Network" style="display : none;">
       &emsp;
       <form>
         <div class="row" align="right">
@@ -109,6 +106,7 @@
           </div>
         </div>
       </form>
+      </div>
     </div>
   </div>
 </div>
@@ -116,7 +114,8 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout" align='right'>
-      <h3 align="left">Configure Starting</h3>
+      <span  class="section-title" align="left"><a onclick="openStep('Starting')"><h4>Configure Starting &emsp;<span id="openButton-Starting" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Starting" style="display : none;">
         <div class="large-10 columns">
           <h4>
             First connection page
@@ -182,24 +181,6 @@
           </div>
         </div>
       </form>
-    </div>
-  </div>
-</div>
-
-<div class="large-8 medium-8 row">
-  <div class="large-12 columns">
-    <div class="callout">
-      &emsp;
-
-      <div class="row">
-        <div class="large-9 columns">
-          <h3>Configure your motors</h3>
-        </div>
-        <div class="large-3 columns">
-          <a href={{ url_for('configure_motors') }}>
-            <button type="button" class="button"  style="width: 100%;">Go to Motors configuration</button>
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -208,7 +189,83 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h3>Upgrade {{ robot.creature }} softwares</h3>
+    <div class="row columns">
+      <span  class="section-title"><a onclick="openStep('Motors')"><h4>Configure Motors &ensp;<span id="openButton-Motors" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Motors" style="display : none;">
+
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Don't plug 2 motors in a same time</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Plug only 1 motor for configuration</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="callout">
+            <h5>
+              Which motor do you want to configure?
+            </h5>
+            {% if motors | length > 1 %}
+              <form>
+                <div class="row">
+                  <div class="large-9 columns">
+                    <select id="motor">
+                      {% for m in motors %}
+                        <option value="{{ m }}">{{ m }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="large-3 columns">
+                    <button id="configure-motor" type="button" class="button" style="width: 100%;">Configure</button>
+                  </div>
+                </div>
+              </form>
+            {% else %}
+              <p>No Poppy creature seems to be installed on the robot.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="row" id="config-Logs" style="display : none;">
+        <div class="large-12 columns">
+          <div class="callout">
+            <pre>> Start configuration...
+              <code id="configlogs" class="accesslog hljs"></code>
+            </pre>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="large-8 medium-8 row">
+  <div class="large-12 columns">
+    <div class="callout">
+      <span  class="section-title"><a onclick="openStep('Upgrade')"><h4>Upgrade {{ robot.creature }} softwares &ensp;<span id="openButton-Upgrade" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Upgrade" style="display : none;">
       <div class="row">
         <div class="large-9 columns">
           <div class="callout primary" style="width: 100%;">
@@ -222,10 +279,10 @@
           </a>
         </div>
       </div>
+      </div>
     </div>
   </div>
 </div>
-&emsp;
 <div class="large-8 medium-8 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open an Terminal</a><br>
@@ -240,18 +297,28 @@
         <a class="button button-primary" id="shutdown" onclick="refreshForMsg('{{ url_for('shutdown') }}')" style="width: 100%;">Halt  {{ info.board }}</a><br>
     </div>
 </div>
-&emsp;
 {% endblock content %}
 
 {% block endscript %}
 <script>
+var timeOut=1000;
 
 function setLang(val){
     $.post('{{ url_for('set_lang') }}', {lang:val}, function() {
         window.location = '{{ url_for('settings') }}';
     });
 }
-
+function openStep(name) {
+    var showSwitch = document.getElementById('openButton-'+name);
+    var showElement = document.getElementById('step-'+name);
+    if (showSwitch.innerHTML == "⇲") {
+        showElement.style.display = 'block';
+        showSwitch.innerHTML = "&#8689;";
+    } else {
+        showElement.style.display = 'none';
+        showSwitch.innerHTML = "&#8690;";
+    };
+}
 // config network
 $('#hotspot-switch').change(function() {
     if (document.getElementById("hotspot-switch").checked === true &&
@@ -301,6 +368,26 @@ $('#autostart-switch').change(function() {
 
 document.getElementById("wait-update-starting").style.visibility = "hidden";
 
+// config motors
+$('#configure-motor').click(function () {
+  document.getElementById('config-Logs').style.display = 'block';
+  motor_to_configure = $('#motor').val().trim();
+  $.post('{{ url_for('call_poppy_configure') }}', {motor: motor_to_configure});
+  refreshConfigLogs();
+});
+function configLogs() {
+  var logsElement = document.getElementById('configlogs');
+  $.get('{{ url_for('poppy_config_logs') }}', function (rawLogs) {
+    logsElement.innerHTML = rawLogs;
+    hljs.highlightBlock(logsElement);
+  });
+  refreshConfigLogs();
+}
+function refreshConfigLogs() {
+  window.setTimeout(configLogs, timeOut);
+}
+
+//update
 $('#update-starting').click(function() {
     document.getElementById("wait-update-starting").style.visibility = "visible";
     $.post("{{ url_for('settings_update') }}", {

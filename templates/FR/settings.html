@@ -4,26 +4,22 @@
 
 <div class="large-8 medium-8 row">
   <div class="columns section-title">
-    <h1>Configure ton robot</h1>
+    <h3>Configure ton robot</h3>
   </div>
 </div>
 
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      &emsp;
-      <div class="row">
-        <div class="large-6 columns">
-          <h3>Configurer la langue</h3>
-        </div>
-        <div class="large-3 medium-3 small-3 columns">
+      <span  class="section-title"><a onclick="openStep('Langage')"><h4>Configurer la langue &emsp;<span id="openButton-Langage" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Langage" style="display : none;">
+        &emsp;
+        <div class="row columns" align="center">
           <a onclick="setLang('EN')">
-          <button type="button" class="button" style="width: 100%;">English</button>
+          <button type="button" class="button" style="width: 25%;">English</button>
           </a>
-        </div>
-        <div class="large-3 medium-3 small-3 columns">
           <a onclick="setLang('FR')">
-          <button type="button" class="button" style="width: 100%;">Français</button>
+          <button type="button" class="button" style="width: 25%;">Français</button>
           </a>
         </div>
       </div>
@@ -34,7 +30,8 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h3>Configurer le réseau</h3>
+      <span  class="section-title"><a onclick="openStep('Network')"><h4>Configurer le réseau &emsp;<span id="openButton-Network" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Network" style="display : none;">
       &emsp;
       <form>
         <div class="row" align="right">
@@ -109,6 +106,7 @@
           </div>
         </div>
       </form>
+      </div>
     </div>
   </div>
 </div>
@@ -116,7 +114,8 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout" align='right'>
-      <h3 align="left">Configurer le démarrage</h3>
+      <span  class="section-title" align="left"><a onclick="openStep('Starting')"><h4>Configurer le démarrage &emsp;<span id="openButton-Starting" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Starting" style="display : none;">
         <div class="large-10 columns">
           <h4>
             Page de première connexion
@@ -126,7 +125,7 @@
           <div class="switch il">
             <input class="switch-input" id="first-switch" type="checkbox" name="first-switch"{% if robot.firstPage %} checked{% endif %}>
             <label class="switch-paddle" for="first-switch">
-              <span class="show-for-sr">Page de première connexion, bascule</span>
+              <span class="show-for-sr">Toggle First page connection</span>
             </label>
           </div>
         </div>
@@ -178,28 +177,10 @@
             <h4>Attendez, s'il vous plaît.</h4>
           </div>
           <div class="large-5 columns">
-            <button id="update-starting" type="button" class="button"  style="width: 100%;">Mettre à jour la configuration de départ</button>
+            <button id="update-starting" type="button" class="button" style="width: 100%;">Mettre à jour la configuration de départ</button>
           </div>
         </div>
       </form>
-    </div>
-  </div>
-</div>
-
-<div class="large-8 medium-8 row">
-  <div class="large-12 columns">
-    <div class="callout">
-      &emsp;
-
-      <div class="row">
-        <div class="large-9 columns">
-          <h3>Configurez vos moteurs</h3>
-        </div>
-        <div class="large-3 columns">
-          <a href={{ url_for('configure_motors') }}>
-            <button type="button" class="button" style="width: 100%;">Aller à la page de<br>configuration moteurs</button>
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -208,7 +189,83 @@
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
     <div class="callout">
-      <h3>Mettre à jour les logiciels {{ robot.creature }}</h3>
+    <div class="row columns">
+      <span  class="section-title"><a onclick="openStep('Motors')"><h4>Configurez les moteurs &ensp;<span id="openButton-Motors" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Motors" style="display : none;">
+
+      <div class="row">
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Ne pas brancher 2 moteurs en même temps</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="large-6 medium-6 columns">
+          <div class="callout">
+            <div class="row">
+              <div class="large-12 columns">
+                <p>Brancher 1 seul moteur pour le configurer</p>
+                <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="How to plug a motor">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="callout">
+            <h5>
+              Quel moteur souhaitez-vous configurer?
+            </h5>
+            {% if motors | length > 1 %}
+              <form>
+                <div class="row">
+                  <div class="large-9 columns">
+                    <select id="motor">
+                      {% for m in motors %}
+                        <option value="{{ m }}">{{ m }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="large-3 columns">
+                    <button id="configure-motor" type="button" class="button" style="width: 100%;">Configurer</button>
+                  </div>
+                </div>
+              </form>
+            {% else %}
+              <p>Aucune creature Poppy ne semble être installé sur le robot.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="row" id="config-Logs" style="display : none;">
+        <div class="large-12 columns">
+          <div class="callout">
+            <pre>> Démarage configuration...
+              <code id="configlogs" class="accesslog hljs"></code>
+            </pre>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="large-8 medium-8 row">
+  <div class="large-12 columns">
+    <div class="callout">
+      <span  class="section-title"><a onclick="openStep('Upgrade')"><h4>Mettre à jour les logiciels {{ robot.creature }} &ensp;<span id="openButton-Upgrade" style="font-size: 80%">&#8690;</span></h4></a></span>
+      <div id="step-Upgrade" style="display : none;">
       <div class="row">
         <div class="large-9 columns">
           <div class="callout primary" style="width: 100%;">
@@ -216,16 +273,16 @@
           </div>
         </div>
         <div class="large-3 columns">
-          <a onclick="alert('Désolé, fonctionnalité non prête ... bientôt disponible!')">
+          <a onclick="alert('Sorry, feature not ready... coming soon!')">
           <!-- <a href={{ url_for('update') }} -->
-            <button type="button" class="button" style="width: 100%;">Démarrez<br>la mise à jour </button>
+            <button type="button" class="button"  style="width: 100%;">Démarrez<br>la mise à jour </button>
           </a>
         </div>
+      </div>
       </div>
     </div>
   </div>
 </div>
-&emsp;
 <div class="large-8 medium-8 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Ouvrir<br>un Terminal</a><br>
@@ -240,18 +297,28 @@
         <a class="button button-primary" id="shutdown" onclick="refreshForMsg('{{ url_for('shutdown') }}')" style="width: 100%;">Éteindre<br>la {{ info.board }}</a><br>
     </div>
 </div>
-&emsp;
 {% endblock content %}
 
 {% block endscript %}
 <script>
+var timeOut=1000;
 
 function setLang(val){
     $.post('{{ url_for('set_lang') }}', {lang:val}, function() {
         window.location = '{{ url_for('settings') }}';
     });
 }
-
+function openStep(name) {
+    var showSwitch = document.getElementById('openButton-'+name);
+    var showElement = document.getElementById('step-'+name);
+    if (showSwitch.innerHTML == "⇲") {
+        showElement.style.display = 'block';
+        showSwitch.innerHTML = "&#8689;";
+    } else {
+        showElement.style.display = 'none';
+        showSwitch.innerHTML = "&#8690;";
+    };
+}
 // config network
 $('#hotspot-switch').change(function() {
     if (document.getElementById("hotspot-switch").checked === true &&
@@ -301,6 +368,26 @@ $('#autostart-switch').change(function() {
 
 document.getElementById("wait-update-starting").style.visibility = "hidden";
 
+// config motors
+$('#configure-motor').click(function () {
+  document.getElementById('config-Logs').style.display = 'block';
+  motor_to_configure = $('#motor').val().trim();
+  $.post('{{ url_for('call_poppy_configure') }}', {motor: motor_to_configure});
+  refreshConfigLogs();
+});
+function configLogs() {
+  var logsElement = document.getElementById('configlogs');
+  $.get('{{ url_for('poppy_config_logs') }}', function (rawLogs) {
+    logsElement.innerHTML = rawLogs;
+    hljs.highlightBlock(logsElement);
+  });
+  refreshConfigLogs();
+}
+function refreshConfigLogs() {
+  window.setTimeout(configLogs, timeOut);
+}
+
+//update
 $('#update-starting').click(function() {
     document.getElementById("wait-update-starting").style.visibility = "visible";
     $.post("{{ url_for('settings_update') }}", {

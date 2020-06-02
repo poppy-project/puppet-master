@@ -252,7 +252,7 @@ def MyDoc():
 
 @app.route('/settings')
 def settings():
-    return render_template(pm.config.info.langage+'/settings.html')
+    return render_template(pm.config.info.langage+'/settings.html', motors=pm._get_robot_motor_list())
 
 
 @app.route('/settings/settings_update', methods=['POST'])
@@ -412,16 +412,6 @@ def clone():
     flash('> {} more instance was launched'.format(nb), 'success')
     return ('', 204)
 
-@app.route('/settings/configure-motors')
-def configure_motors():
-    # Remove old poppy-configure output to avoid user confusion
-    try:
-        os.remove(pm.config.poppyLog.configMotor)
-    except OSError:
-        pass
-    return render_template('motor-configuration.html', motors=pm._get_robot_motor_list())
-
-
 @app.route('/call_poppy_configure', methods=['POST'])
 def call_poppy_configure():
     motor = request.form['motor']
@@ -502,9 +492,10 @@ def get_host():
 def check_version():
     pm.update_config('version.pypot', getattr(__import__('pypot'), '__version__'))
     pm.update_config('version.creature', getattr(__import__(pm.config.robot.creature.replace('-','_')), '__version__'))
-    pm.update_config('version.snap', 'TODO')
-    pm.update_config('version.viewer', 'TODO')
-    pm.update_config('version.docs', 'TODO')
+    #pm.update_config('version.snap', 'TODO')
+    #pm.update_config('version.viewer', 'TODO')
+    #pm.update_config('version.docs', 'TODO')
+    #pm.update_config('version.monitor', 'TODO')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(pm.config.poppyPort.puppetMaster))

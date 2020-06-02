@@ -16,10 +16,9 @@
     </div>
     <div class="row">
       <div class="large-6 medium-9 small-9 columns">
-        &emsp;
-        <a class="button button-primary" style="width: 30%;" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
-        <a class="button button-primary" style="width: 30%;" id="APIreset" onclick="refreshForMsg('{{ url_for('APIreset') }}')">Reboot Robot API</a>
-        <a class="button button-primary" style="width: 30%;" id="APIstop" onclick="refreshForMsg('{{ url_for('APIstop') }}')">Stop Robot API</a>
+        <a class="button button-primary" style="width: 30%; min-width:150px" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
+        <a class="button button-primary" style="width: 30%; min-width:150px" id="APIreset" onclick="refreshForMsg('{{ url_for('APIreset') }}')">Reboot Robot API</a>
+        <a class="button button-primary" style="width: 30%; min-width:150px" id="APIstop" onclick="refreshForMsg('{{ url_for('APIstop') }}')">Stop Robot API</a>
       </div>
       <div class="large-3 medium-3 small-3 columns" align="right">
         <h4>Toggle camera</h4>
@@ -42,29 +41,21 @@ Logs for real robot <span id="show-switch_0" style="visibility:hidden" onclick="
   </div>
 </div>
 <div class="large-10 medium-10 row">
-  <div class="callout">
-    <div class="row">
-      <div class="columns">
-        <h3>> Virtual instance of robot</h3>
+<div class="callout">
+    <div class="row columns">
+        <h3>&gt; Virtual instance of robot</h3>
+      </div>
+    <div class="row columns">
+        <div class="input-group" style="width: 45%; min-width: 300px;">
+          <span class="button button-primary input-group-button" type="button" onclick="clone()" style="width: 40%; min-width:105px">Launch</span>
+          <input id="new_clone" type="number" min="1" class="input-group-field" placeholder="1" style="text-align:right; min-width:40px">
+          <span class="input-group-label" style="text-align:center; width: 45%; font-size:90%">additional instance</span>
       </div>
     </div>
-    <div class="row">
-      <div class="columns">
-        <div class="input-group" style="width: 500px;">
-          &emsp;
-          <span class="button button-primary input-group-button" type="button" onclick="clone()" style="width: 215px;">Launch</span>
-          <input id="new_clone" type="number"  min="1" class="input-group-field" placeholder="1" style="text-align:center">
-          <span class="input-group-label">additional instance(s)</span>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="columns">
-        <div class="input-group" style="width: 500px;">
-          &emsp;
-          <span class="input-group-button"><a class="button button-primary"  style="width: 215px;" id="open-multiview" href='{{ url_for('multiview') }}'>Open the MultiViewer</a></span>
-          <span class="input-group-label">{{ clone }} instance(s) are already running</span>
-        </div>
+    <div class="row columns">
+        <div class="input-group" style="width: 45%; min-width: 300px;">
+            <span style="width: 40%;" class="input-group-button"><a class="button button-primary" style="width: 100%;" id="open-multiview" href="/monitoring/visualisator/multiview">Open Multiview</a></span>
+          <span class="input-group-label" style="width: 60%;">{{ clone }} instance are running</span>
       </div>
     </div>
     &emsp;
@@ -89,8 +80,7 @@ Logs for virtual instance number {{ nb }} > show in <a id="viewer_{{ nb }}" href
     </div>
     <div class="row">
       <div class="columns">
-        &emsp;
-        <a class="button button-primary" style="width: 215px;" id="open-viewer" href='{{ url_for('viewer') }}'>Open the Web Viewer</a>
+        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-viewer" href='{{ url_for('viewer') }}'>Open the Web Viewer</a>
       </div>
     </div>
     &emsp;
@@ -113,8 +103,7 @@ Logs for web viewer <span id="show-switch_-1" style="visibility:hidden" onclick=
     </div>
     <div class="row">
       <div class="columns">
-        &emsp;
-        <a class="button button-primary" style="width: 215px;" id="open-docs" href='{{ url_for('docs') }}'>Open the Documentations</a>
+        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-docs" href='{{ url_for('docs') }}'>Open the Documentations</a>
       </div>
     </div>
     &emsp;
@@ -137,8 +126,7 @@ Logs for docs service <span id="show-switch_-2" style="visibility:hidden" onclic
     </div>
     <div class="row">
       <div class="columns">
-        &emsp;
-        <a class="button button-primary" style="width: 215px;" id="open-jupyter" href='{{ url_for('jupyter') }}'>Open Jupyter Notebook</a>
+        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-jupyter" href='{{ url_for('jupyter') }}'>Open Jupyter Notebook</a>
       </div>
     </div>
     &emsp;
