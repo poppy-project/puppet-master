@@ -235,7 +235,7 @@ def base_static_snap(filename):
 
 @app.route('/programming/jupyter')
 def jupyter():
-    default_notebook= 'http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Discover%20your%20Poppy%20Ergo%20Jr.ipynb'.format( urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter)
+    default_notebook= 'http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Discover%20your%20{}.ipynb'.format( urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter, pm.config.infos.creature.replace('-',' ').title().replace(' ','%20'))
     if pm.running:
         flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template('base-iframe.html', iframe_src=default_notebook)
