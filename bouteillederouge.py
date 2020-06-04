@@ -195,7 +195,17 @@ def base_static_monitor(filename):
 def move_recorder():
     if not pm.running:
         flash(Markup('> API is <b>not running</b>, start before use these tools. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
-    return render_template('move-revorder.html')
+        connect=False
+        source=None
+    else:
+        source='http://{}:{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.snap)
+        try:
+            response = requests.get(source)
+            if response.status_code==200: connect=True
+            else: connect=False
+        except:
+            connect=False
+    return render_template('move-recorder.html', motors=pm._get_robot_motor_list(), source=source, connect=connect)
 
 @app.route('/monitoring/visualisator')
 def viewer():
