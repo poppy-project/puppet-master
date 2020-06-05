@@ -11,6 +11,7 @@ if __name__ == '__main__':
     parser.add_argument('hostname', type=str, help='Hostname of the machine used')
     parser.add_argument('creature', type=str, help='Creature used')
     parser.add_argument('--board', type=str, help='Board used', default='Raspberry Pi')
+    parser.add_argument('--branch', type=str, help='Git branch to update', default='master')
 
     parser.add_argument('--config-path', type=str,
                         default=os.path.expanduser('~/.poppy_config.yaml'),
@@ -24,7 +25,8 @@ if __name__ == '__main__':
 
     s = s.substitute(name=args.hostname, creature=args.creature,
                      home=os.path.expanduser('~'),
-                     board=args.board)
+                     board=args.board,
+                     branch=args.branch)
 
     with open(args.config_path, 'w') as f:
         f.write(s)

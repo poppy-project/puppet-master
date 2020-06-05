@@ -9,7 +9,7 @@ robot:
 info:
   logfile: /tmp/puppet-master.log
   serviceNetwork: rpi-access-point.service
-  updateURL: https://raw.githubusercontent.com/poppy-project/raspoppy/master/auto-update.sh
+  updateURL: https://raw.githubusercontent.com/poppy-project/raspoppy/$branch/auto-update.sh
   board: $board
   langage: EN
 
@@ -17,13 +17,13 @@ hotspot:
   start: on
   confFile: /boot/hotspot.txt
   ssid: Poppy-Hotspot
-  psk: poppyproject
+  psk: poppy-project
 
 wifi:
   start: off
   confFile: /etc/wpa_supplicant/wpa_supplicant.conf
   ssid: Poppy-Router
-  psk: poppyproject
+  psk: poppy-project
 
 services:
   PuppetMaster: puppet-master.service
