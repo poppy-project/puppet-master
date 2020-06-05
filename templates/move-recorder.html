@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="large-10 row">
   <div class="columns section-title">
@@ -11,7 +10,7 @@
   <div class="columns callout">
     <div class="section-title"><h4>ERROR</h4></div>
     <div class="columns">
-      <p>Snap server not ready! If API is running, show <a href="{{ url_for('logs') }}" >logs page</a> or <a onclick="window.location.reload()">refresh</a>, else <a onclick="refreshForMsg('{{ url_for('APIstart') }}')" >start API</a>.</p>
+      <p><strong>Snap server not ready!</strong> If API is running, show <a href="{{ url_for('logs') }}" >Logs page</a> or <a onclick="window.location.reload()">Refresh</a>, else <a onclick="refreshForMsg('{{ url_for('APIstart') }}')" >Start API</a>.</p>
     </div>
   </div>
   {% else %}
@@ -24,8 +23,9 @@
           <div class="row columns">
             <div class="input-group">
               <span class="input-group-label" style="width:50%;">Select motor(s) to set</span>
-              <select class="input-group-field" id="compliant-alias_list" onchange="set_motor_list('compliant')" style="font-size:90%;">
+              <select class="input-group-field" id="compliant-alias_list" onchange="set_motor_list('compliant')" style="font-size:90%;" title="Group preselection">
                 <option value="motors">ALL</option>
+                <option value="none">None</option>
               </select>
             </div>
           </div>
@@ -36,8 +36,8 @@
           </div>
         </form>
         <div align='center'>
-          <a class="button button-primary" style="width: 49%;" id="comlpiant_true" onclick="compliant(true)">Compliant</a>
-          <a class="button button-primary" style="width: 49%;" id="comlpiant_false" onclick="compliant(false)">Stiff</a>
+          <a title="To handle with your hands" class="button button-primary" style="width: 49%;" id="comlpiant_true" onclick="compliant(true)">Compliant</a>
+          <a title="To control through computer" class="button button-primary" style="width: 49%;" id="comlpiant_false" onclick="compliant(false)">Stiff</a>
         </div>
       </div>
     </div>
@@ -49,8 +49,9 @@
           <div class="row columns">
             <div class="input-group">
               <span class="input-group-label" style="width:50%;">Select motor(s) to follow</span>
-              <select class="input-group-field" id="record-alias_list" onchange="set_motor_list('record')" style="font-size:90%;">
+              <select class="input-group-field" id="record-alias_list" onchange="set_motor_list('record')" style="font-size:90%;" title="Group preselection">
                 <option value="motors">ALL</option>
+                <option value="none">None</option>
               </select>
             </div>
           </div>
@@ -63,7 +64,7 @@
         <form>
            <div class="input-group">
               <span class="input-group-label">Record Name</span>
-              <input id="record-move_name" type="text" class="input-group-field" placeholder="move_name" style="font-size:80%">
+              <input title="Give name for record" id="record-move_name" type="text" class="input-group-field" placeholder="move_name" style="font-size:80%">
            </div>
         </form>
         <div>
@@ -83,7 +84,7 @@
           <div class="input-group" id="player_template" style="display:none;">
              <a class="hollow button alert input-group-button" style="width: 10%;" id="close-player_template" title="Del Slot" onclick="">&cross;</a>
              <a class="hollow button input-group-button" style="width: 10%;" id="refresh-player_template" title="Refresh List" onclick="">&olarr;</a>
-            <select  class="input-group-field" id="moves-list_template">
+            <select  title="Available moves" class="input-group-field" id="moves-list_template">
               <option value="wait content">error content</option>
             </select>
             <a class="button success input-group-button" style="width: 15%;" id="button_player_template" title="Play Move" onclick="">&rtrif;</a>
@@ -131,18 +132,22 @@ function get_alias_list(){
       });
 }
 function set_motor_list(target) {
+    var motors = document.getElementById(target+"-motors_list").children;
     var alias = document.getElementById(target+"-alias_list").value;
-    $.get("{{source}}/motors/"+alias, function(motors_ref) {
-        motors_ref=motors_ref.split("/");
-        var motors = document.getElementById(target+"-motors_list").children;
-        for (i = 0; i < motors.length; i++) {
-            if (motors_ref.includes(motors[i].name)) {
-                motors[i].checked = true;
-            } else {
-                motors[i].checked = false;
+    if (alias == 'none') {
+        for (i = 0; i < motors.length; i++) {motors[i].checked = false};
+    } else {
+        $.get("{{source}}/motors/"+alias, function(motors_ref) {
+            motors_ref=motors_ref.split("/");
+            for (i = 0; i < motors.length; i++) {
+                if (motors_ref.includes(motors[i].name)) {
+                    motors[i].checked = true;
+                } else {
+                    motors[i].checked = false;
+                };
             };
-        };
-      });
+          });
+    }
 }
 function set_alias(target) {
     document.getElementById(target+"-alias_list").value = '';
@@ -153,10 +158,6 @@ function state_record(state){
     var name = recordName.value;
     if (name == ''){name='move_name'}
     if (state) {
-        buttonRecord.setAttribute("class", "button alert");
-        buttonRecord.setAttribute("onclick", "state_record(false)");
-        buttonRecord.innerHTML = 'STOP Record';
-        recordName.setAttribute("readonly", 'true');
         var motors = document.getElementById("record-motors_list").children;
         let motors_to_follow=[];
         for (i = 0; i < motors.length; i++) {
@@ -164,7 +165,15 @@ function state_record(state){
                 motors_to_follow.push(motors[i].name);
             };
         };
-        $.get("{{source}}/primitive/MoveRecorder/"+name+"/start/"+motors_to_follow.join(';'));
+        if (motors_to_follow.length == 0) {
+            alert('Please, select at least one motor to follow');
+        } else {
+            buttonRecord.setAttribute("class", "button alert");
+            buttonRecord.setAttribute("onclick", "state_record(false)");
+            buttonRecord.innerHTML = 'STOP Record';
+            recordName.setAttribute("readonly", 'true');
+            $.get("{{source}}/primitive/MoveRecorder/"+name+"/start/"+motors_to_follow.join(';'));
+        };
     } else {
         $.get("{{source}}/primitive/MoveRecorder/"+name+"/stop");
         add_player(name);
