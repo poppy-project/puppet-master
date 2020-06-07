@@ -19,29 +19,29 @@
       </div>
   </div>
   <div id="getting-started">
+  
   <div class="callout">
     <div class="row columns">
-      <span  class="section-title"><h2>Step 1: Connect</h2></span>
-      <h4 style="color: #2199e8;">Electronique assemblage and connexion</h4>
-      <p><br>If you are here, this step is already done! Congratulation!<br>If necessary, you can retrieved the instructions here: <a target="_blank" href="{{ url_for('assembly_guides') }}">Assembly Guides</a></p>
+      <span  class="section-title"><h2>Step 1: Assembly instructions</h2></span>
+      <h4 style="color: #2199e8;">Read the assembly instructions</h4>
+      <p><br>First, consult the assembly instructions of your robot <a target="_blank" href="{{ url_for('assembly_guides') }}">here</a>.</p>
     </div>
   </div>
-
+  
   <div class="callout">
     <div class="row columns">
       <a onclick="openStep(2)">
-      <span  class="section-title"><h2>Step 2: Build</h2></span>
-      <h4>Mecanique assemblage and motor configuration &ensp;<span id="openButton2">&#8690;</span> <span id="info-2" style="font-size: 50%">click to expand</span></h4>
+      <span  class="section-title"><h2>Step 2: Configure the motors</h2></span>
+      <h4>Individual motor configuration &ensp;<span id="openButton2">&#8690;</span> <span id="info-2" style="font-size: 50%">click to expand</span></h4>
       </a>
       <div id="step2">
-      <p><br>For mecanique assemblage refere to the documentation: <a target="_blank" href="{{ url_for('assembly_guides') }}">Assembly Guides</a></p>
-      <p>For motor configuration, use module below:</p>
+      <p>We'll first need to configure each motor its name one after the other: for each motor, connect it alone to the Pixl board, pick a name and click on Configure. Then remember the name you set for this motor, it will have to be mounted at the right location.</p>
       <div class="row">
         <div class="large-6 medium-6 columns">
           <div class="callout">
             <div class="row">
               <div class="large-12 columns">
-                <p>Don't plug 2 motors in a same time</p>
+                <p>Bad: Don't plug several motors at the same time</p>
                 <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
               </div>
             </div>
@@ -51,7 +51,7 @@
           <div class="callout">
             <div class="row">
               <div class="large-12 columns">
-                <p>Plug only 1 motor for configuration</p>
+                <p>Good: Plug only 1 motor before clicking Configure</p>
                 <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="How to plug a motor">
               </div>
             </div>
@@ -104,13 +104,13 @@
   <div class="callout">
     <div class="row columns">
       <a onclick="openStep(3)">
-      <span  class="section-title"><h2>Step 3: Run and Test</h2></span>
-      <h4>Use Puppet Master interface &ensp;<span id="openButton3">&#8690;</span> <span id="info-3" style="font-size: 50%">click to expand</span></h4>
+      <span  class="section-title"><h2>Step 3: Wake up and test your robot</h2></span>
+      <h4>Let's try to wake up and move your robot! &ensp;<span id="openButton3">&#8690;</span> <span id="info-3" style="font-size: 50%">click to expand</span></h4>
       </a>
       <div class='row' id="step3">
       <div class="columns large-12" align="center">
         <div class="callout">
-          <p>First, start API and wait few second</p>
+          <p>First, start the API in order to wake up the robot, wait a bit and check that no error happened:</p>
           <a class="button button-primary" style="width: 100%;" id="start-api" >Start Robot API</a>
             <div class="row">
               <div class="large-12 columns" align="left">
@@ -121,7 +121,7 @@
       </div>
       <div class="columns large-12" align="center">
         <div class="callout">
-          <p>Second, test if all right</p>
+          <p>Second, let's move it to prove it's working:</p>
           <a class="button button-primary" style="width: 100%;" id="start-viewer">Open the Web Viewer</a>
           <a class="button button success" style="width: 100%;" id="start-prim" onclick="dance(1)">START DANCE</a>
           <a class="button button alert" style="width: 100%;" id="stop-prim" onclick="dance(0)">STOP DANCE</a>
@@ -135,12 +135,12 @@
   <div class="callout">
     <div class="row columns">
       <a onclick="openStep(4)">
-      <span  class="section-title"><h2>Advance step...</h2></span>
+      <span  class="section-title"><h2>Optional advanced step</h2></span>
       <h4>More configuring, monitoring and programming &ensp;<span id="openButton4">&#8690;</span> <span id="info-4" style="font-size: 50%">click to expand</span></h4>
       </a>
       <div class='row wrap' id="step4"  data-equalizer data-equalize-on="medium" align="center">
       <div class="large-6 medium-6 columns menu-tile">
-        <p>For setup more option, go to settings page</p>
+        <p>You will find other settings in the settings page</p>
         <a href="{{ url_for('settings') }}" target="_blank" data-equalizer-watch>
           <h3>
             <svg class="pp-icon pp-icon-build">
@@ -195,7 +195,7 @@
   <div class="callout">
     <div class="row columns" align="center">
       <span  class="section-title"><h1>Finaly: Use</h1></span>
-      <a href="{{ url_for('end_opening') }}" onclick="return confirm('Are you sure? For return here, re-active «first connection page» in a settings tab.')">
+      <a href="{{ url_for('end_opening') }}" onclick="return confirm('Are you sure? If you need to come back here later, re-activate «first connection page» in the settings tab.')">
         <button type="button" class="button large" style="width: 50%;">Go to Home</button>
       </a>
     </div>
