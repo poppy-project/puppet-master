@@ -327,11 +327,7 @@ def logs():
 
 @app.route('/settings/update-logs')
 def update_logs():
-    try:
-        with open(pm.config.poppyLog.update) as f:
-            content = f.read()
-    except IOError:
-        content = 'No log found...'
+    content="Loading content..."
     return render_template('update.html', update_logs_content=content)
 
 @app.route('/restart_services')
@@ -378,15 +374,6 @@ def update():
     def update_in_bg():
         success = pm.self_update()
 
-        if success:
-            flash('> Your robot is now up-to-date!', 'success')
-        else:
-            flash('> Update failed, check logs for details!', 'alert')
-        #flash msg probably does not work, check this after fixing updating bug
-
-    flash('> Your robot is currently updating. Please do not turn it off before it\'s done!', 'warning')
-
-    check_version()
     if not pm.is_updating:
         Thread(target=update_in_bg).start()
 

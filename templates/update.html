@@ -11,7 +11,8 @@
 <div class="row">
   <div class="large-12 columns">
     <pre>
-      <code id="robot-logs" class="accesslog hljs">{{ update_logs_content }}</code>
+Updating Logs <span id="show-switch" style="visibility:hidden" onclick="switchShow()">(<a>show more logs</a>)</span>
+<code style="max-height:65vh; overflow-y:hidden;" id="logs" class="accesslog hljs">{{ update_logs_content }}</code><a id="save-logs" onclick="downloadLogs()">Save this logs</a>
     </pre>
   </div>
 </div>
@@ -20,22 +21,52 @@
 
 {% block endscript %}
 <script>
-
-var timeOut;
+var char=[/\[0m/g, /\[33m/g, //g];
+var logsElement = document.getElementById('logs');
+var showSwitch = document.getElementById('show-switch');
+var downloadElement =  document.getElementById('save-logs');
 
 function refreshLogs() {
   $.get('{{ url_for('update_raw_logs') }}', function(rawLogs) {
-    var logsElement = document.getElementById('robot-logs');
-
+    for (c of char){
+        rawLogs=rawLogs.replace(c,'');
+    }
     logsElement.innerHTML = rawLogs;
+    logsElement.scrollTop = logsElement.scrollHeight;
     hljs.highlightBlock(logsElement);
-
-    startTimeout();
   });
+  console.log(logsElement.scrollHeight , logsElement.offsetHeight)
+  if (logsElement.scrollHeight > logsElement.offsetHeight-10) {
+      showSwitch.style.visibility = "visible";
+  } else {
+      showSwitch.style.visibility = "hidden";
+  };
+  startTimeout();
+}
+function switchShow() {
+    if (showSwitch.innerHTML === "(<a>show more logs</a>)") {
+        logsElement.style.maxHeight = "none";
+        logsElement.style.overflowY = "auto";
+        showSwitch.innerHTML = "(<a>show less logs</a>)";
+    } else {
+        logsElement.style.maxHeight = "65vh";
+        logsElement.style.overflowY = "hidden";
+        showSwitch.innerHTML = "(<a>show more logs</a>)";
+    };
+}
+
+function downloadLogs() {
+    downloadElement.download="update_logs.txt";
+    $.get('{{ url_for('update_raw_logs') }}', function(rawLogs) {
+        for (c of char){
+            rawLogs=rawLogs.replace(c,'');
+        }
+        downloadElement.href="data:text/html,"+rawLogs;
+    });
 }
 
 function startTimeout() {
-  logTimeOut = window.setTimeout(refreshLogs, 1000);
+  window.setTimeout(refreshLogs, 1000);
 }
 
 startTimeout();
