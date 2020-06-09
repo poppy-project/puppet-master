@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/github.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock head %}
   </head>
   <body>
 
