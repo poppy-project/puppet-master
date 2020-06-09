@@ -1,8 +1,24 @@
 {% extends "base.html" %}
+{% block head %}
+<style>
+.section-title h4 {
+    margin-bottom:0;
+    line-height: 1;
+}
+.callout {
+    margin: 0 0 0.5rem;
+}
+</style>
+{% endblock head %}
+
 {% block content %}
 <div class="row columns" style="max-width: 900px; margin: auto">
-  <div class="section-title">
-    <h3>Puppet-Master interface infos</h3>
+  <div class="section-title" align="center">
+    <h3 style="line-height:2; padding:0;">Puppet-Master interface infos</h3>
+    <div class="input-group" style="width: 75%;">
+      <span class="input-group-label" style="width: 50%;">Share your experience</span>
+      <a class="button input-group-button" href="https://forum.poppy-project.org" target="_blank" style="width: 50%;">Post a message on the Poppy forum</a>
+    </div>
   </div>
   <div id="creature">
   <div class="callout">
@@ -205,13 +221,6 @@
     </div>
   </div>
   </div>
-  <div class="section-title" align="center">
-    <h4>Share your experience</h4>
-    <a href="https://forum.poppy-project.org" target="_blank">
-      <button type="button" class="button" style="width: 50%;">Post a message on the Poppy forum</button>
-    </a>
-  </div>
-  &emsp;
 </div>
 {% endblock content %}
 {% block endscript %}
