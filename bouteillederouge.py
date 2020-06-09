@@ -314,6 +314,8 @@ def restart_network():
 @app.route('/settings/setLangage', methods=['POST'])
 def set_lang():
     pm.update_config('info.langage', request.form['lang'])
+    if request.form['lang']=='FR':
+        flash('> seules quelques pages sont actuellement traduites, merci de votre compréhension', 'warning')
     return ('',204)
 
 @app.route('/terminal')
