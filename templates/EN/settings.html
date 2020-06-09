@@ -10,19 +10,12 @@
 
 <div class="large-8 medium-8 row">
   <div class="large-12 columns">
-    <div class="callout">
-      <span  class="section-title"><a onclick="openStep('Langage')"><h4>Configure Langage &emsp;<span id="openButton-Langage" style="font-size: 80%">&#8690;</span></h4></a></span>
-      <div id="step-Langage" style="display : none;">
-        &emsp;
-        <div class="row columns" align="center">
-          <a onclick="setLang('EN')">
-          <button type="button" class="button" style="width: 25%;">English</button>
-          </a>
-          <a onclick="setLang('FR')">
-          <button type="button" class="button" style="width: 25%;">Français</button>
-          </a>
-        </div>
-      </div>
+    <div class="input-group" style="width:50%; min-width:250px">
+      <span class="input-group-label" style="width:50%;">Configure Language</span>
+      <select title="Available language" class="input-group-field" id="lang-list" onchange="setLang(this.value)">
+        <option value="EN" {% if info.langage == 'EN' %} selected{% endif %}>English</option>
+        <option value="FR" {% if info.langage == 'FR' %} selected{% endif %}>Français</option>
+      </select>
     </div>
   </div>
 </div>
@@ -40,9 +33,9 @@
           </div>
           <div class="large-7 columns">
             <div class="input-group">
-              <span class="input-group-label">http://</span>
-              <input id="robot-hostname" type="text" class="input-group-field" placeholder={{ robot.name }}>
-              <span class="input-group-label">.local</span>
+              <span class="input-group-label" style="height:2rem">http://</span>
+              <input id="robot-hostname" type="text" class="input-group-field" style="height:2rem" placeholder={{ robot.name }}>
+              <span class="input-group-label" style="height:2rem">.local</span>
             </div>
           </div>
         </div>
@@ -60,14 +53,22 @@
           </div>
           <div class="large-3 columns">
             <div class="input-group">
-              <span class="input-group-label">SSID</span>
-              <input id="robot-hotspot-ssid" type="text" class="input-group-field" placeholder={{ hotspot.ssid }}>
+              <span class="input-group-label" style="height:2rem">
+                <svg class="pp-icon pp-icon-broadcast">
+                  <use xlink:href="#pp-icon-broadcast"></use>
+                </svg>
+              </span>
+              <input id="robot-hotspot-ssid" type="text" class="input-group-field" style="height:2rem" placeholder={{ hotspot.ssid }}>
             </div>
           </div>
           <div class="large-3 columns">
             <div class="input-group">
-              <span class="input-group-label">PSK</span>
-              <input id="robot-hotspot-psk" type="text" class="input-group-field" placeholder={{ hotspot.psk }}>
+              <span class="input-group-label" style="height:2rem">
+                <svg class="pp-icon pp-icon-key">
+                  <use xlink:href="#pp-icon-key"></use>
+                </svg>
+              </span>
+              <input id="robot-hotspot-psk" type="text" class="input-group-field" style="height:2rem" placeholder={{ hotspot.psk }}>
             </div>
           </div>
         </div>
@@ -85,20 +86,28 @@
           </div>
           <div class="large-3 columns">
             <div class="input-group">
-              <span class="input-group-label">SSID</span>
-              <input id="robot-wifi-ssid" type="text" class="input-group-field" placeholder={{ wifi.ssid }}>
+              <span class="input-group-label" style="height:2rem">
+                <svg class="pp-icon pp-icon-wifi">
+                  <use xlink:href="#pp-icon-wifi"></use>
+                </svg>
+              </span>
+              <input id="robot-wifi-ssid" type="text" class="input-group-field" style="height:2rem" placeholder={{ wifi.ssid }}>
             </div>
           </div>
           <div class="large-3 columns">
             <div class="input-group">
-              <span class="input-group-label">PSK</span>
-              <input id="robot-wifi-psk" type="text" class="input-group-field" placeholder={{ wifi.psk }}>
+              <span class="input-group-label" style="height:2rem">
+                <svg class="pp-icon pp-icon-key">
+                  <use xlink:href="#pp-icon-key"></use>
+                </svg>
+              </span>
+              <input id="robot-wifi-psk" type="text" class="input-group-field" style="height:2rem" placeholder={{ wifi.psk }}>
             </div>
           </div>
         </div>
         &emsp;
         <div class="row">
-          <div class="large-7 columns" id="wait-update-network">
+          <div class="large-7 columns" id="wait-update-network" style="visibility: hidden;">
             <h4>Please wait</h4>
           </div>
           <div class="large-5 columns" >
@@ -173,7 +182,7 @@
         </div>
         &emsp;
         <div class="row">
-          <div class="large-7 columns" id="wait-update-starting">
+          <div class="large-7 columns" id="wait-update-starting" style="visibility: hidden;">
             <h4>Please wait</h4>
           </div>
           <div class="large-5 columns">
@@ -195,20 +204,20 @@
 
       <div class="row">
         <div class="large-6 medium-6 columns">
-          <div class="callout">
+          <div class="callout" style="border-color: red;">
             <div class="row">
               <div class="large-12 columns">
-                <p>Don't plug 2 motors in a same time</p>
+                <p style="font-size:90%; text-align:center;"><span style="color:red;">Bad:</span> Plug several motors at the same time</p>
                 <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
               </div>
             </div>
           </div>
         </div>
         <div class="large-6 medium-6 columns">
-          <div class="callout">
+          <div class="callout" style="border-color: green;">
             <div class="row">
               <div class="large-12 columns">
-                <p>Plug only 1 motor for configuration</p>
+                <p style="font-size:90%; text-align:center;"><span style="color:green;">Good:</span> Plug only 1 motor before clicking Configure</p>
                 <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="How to plug a motor">
               </div>
             </div>
@@ -218,7 +227,7 @@
 
       <div class="row">
         <div class="large-12 columns">
-          <div class="callout">
+          <div class="callout" style="border-color: grey;">
             <h5>
               Which motor do you want to configure?
             </h5>
@@ -296,6 +305,8 @@
         <a class="button button-primary" id="shutdown" onclick="refreshForMsg('{{ url_for('shutdown') }}')" style="width: 100%;">Halt  {{ info.board }}</a><br>
     </div>
 </div>
+{% include 'defs-svg.html' %}
+
 {% endblock content %}
 
 {% block endscript %}
@@ -333,8 +344,6 @@ $('#wifi-switch').change(function() {
     };
 });
 
-document.getElementById("wait-update-network").style.visibility = "hidden";
-
 $('#update-network').click(function() {
     document.getElementById("wait-update-network").style.visibility = "visible";
     hostname = ($('#robot-hostname').val().trim() !== '' ?
@@ -364,8 +373,6 @@ $('#autostart-switch').change(function() {
         document.getElementById("camera").style.display = "none";
     }
 });
-
-document.getElementById("wait-update-starting").style.visibility = "hidden";
 
 // config motors
 $('#configure-motor').click(function () {
