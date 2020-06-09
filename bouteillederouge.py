@@ -148,14 +148,26 @@ def infos():
 def docs():
     return render_template( 'base-iframe.html', iframe_src='http://{}:{}/{}/'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.docs,  str(pm.config.info.langage).lower()))
 
-@app.route('/docs/assembly-guides')
-def assembly_guides():
+@app.route('/docs/page/<path:page_path>')
+def docs_page_content(page_path):
+    page_path=page_path.replace('<creature>', pm.config.robot.creature.replace('poppy-',''))
     return render_template(
         'base-iframe.html',
-        iframe_src='http://{}:{}/{}/getting-started/build.html'.format(
+        iframe_src='http://{}:{}/{}/{}'.format(
             urlparse(request.url_root).hostname,
             pm.config.poppyPort.docs,
-            str(pm.config.info.langage).lower()
+            str(pm.config.info.langage).lower(),
+            page_path
+        )
+    )
+@app.route('/docs/img/<path:img_path>')
+def docs_img_content(img_path):
+    img_path=img_path.replace('<creature>', pm.config.robot.creature.replace('poppy-',''))
+    return redirect('http://{}:{}/{}/{}'.format(
+            urlparse(request.url_root).hostname,
+            pm.config.poppyPort.docs,
+            str(pm.config.info.langage).lower(),
+            img_path
         )
     )
 
