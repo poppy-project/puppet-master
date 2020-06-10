@@ -10,7 +10,7 @@
   </div>
   <div class="row columns" align="center">
     <div class="input-group" style="width:50%; min-width:250px">
-      <span class="input-group-label" style="width:50%;">Setup Language</span>
+      <span class="input-group-label" style="width:50%;">Setup the language</span>
       <select title="Available language" class="input-group-field" id="lang-list" onchange="setLang(this.value)">
         <option value="EN" {% if info.langage == 'EN' %} selected{% endif %}>English</option>
         <option value="FR" {% if info.langage == 'FR' %} selected{% endif %}>Français</option>
@@ -23,11 +23,11 @@
   <div class="callout">
     <div class="row columns">
       <a id="linkStep1" onclick="openStep(1)" title="Open Step">
-        <h4 class="section-title">Step 1: Interface connection &ensp;<span id="iconStep1" style="font-size: 75%">&#8690;</span> <span id="info-1" style="font-size: 50%">click to expand</span></h4>
+        <h4 class="section-title">Step 1: Connect to the interface &ensp;<span id="iconStep1" style="font-size: 75%">&#8690;</span> <span id="info-1" style="font-size: 50%">click to expand</span></h4>
       </a>
       <span id="step1" style="display:none;">
       <div class="columns large-8">
-        <h5><a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/electronic-assembly.html' ) }}">Electronique assemblage</a> and <a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/motor-configuration.html#turn-on-the-robot') }}">Connexion</a></h5>
+        <h5><a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/electronic-assembly.html' ) }}">Electronique assemblage</a> and <a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/motor-configuration.html#turn-on-the-robot') }}">Connection</a></h5>
         <p>If you are here, this step is already done! <span style="color:orange;"><svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg> Congratulation! <svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg></span></p>
       </div>
       <div class="columns large-4">
@@ -136,7 +136,7 @@
         <h4 class="section-title">Step 3: Wake up and test your robot &ensp;<span id="iconStep3" style="font-size: 75%">&#8690;</span> <span id="info-3" style="font-size: 50%">click to expand</span></h4>
       </a>
       <div class='columns' id="step3" style="display:none;">
-      <h5><a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/ergo-jr/mechanical-construction.html#step-9---test-your-robot-')}}">Let's try to wake up and move your robot!</a></h5>
+      <h5><a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html#step-9---test-your-robot-')}}">Let's try to wake up and move your robot!</a></h5>
       <div class="row columns wrap" align="center">
         <div class="callout" style="border-color: grey;">
           <p>First, start the API in order to wake up the robot, wait a bit and check that no error happened:</p>
