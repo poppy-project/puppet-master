@@ -12,7 +12,7 @@
   <div class="large-12 columns">
     <div class="input-group" style="width:50%; min-width:250px">
       <span class="input-group-label" style="width:50%;">Configurer la langue</span>
-      <select title="Available language" class="input-group-field" id="lang-list" onchange="setLang(this.value)">
+      <select title="Language disponible" class="input-group-field" id="lang-list" onchange="setLang(this.value)">
         <option value="EN" {% if info.langage == 'EN' %} selected{% endif %}>English</option>
         <option value="FR" {% if info.langage == 'FR' %} selected{% endif %}>Français</option>
       </select>
