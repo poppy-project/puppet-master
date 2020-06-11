@@ -364,6 +364,9 @@ def APIstart():
         if request.form['dialog'] == 'quiet':
             if not pm.running:
                 pm.start()
+            else:
+                pm.stop()
+                pm.start()
             return ('', 204)
     if pm.running:
         flash('> Your robot\'s API has already started.', 'warning')
