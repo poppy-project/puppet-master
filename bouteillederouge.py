@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import requests
 import argparse
 import subprocess
@@ -81,6 +82,8 @@ else:
 number=int(pm.config.robot.virtualBot)
 if number>0:
     pm.clone(number)
+
+flash_msg = json.load(open('multilangue_flash_msg.json', 'r'))
 
 @app.context_processor
 def inject_robot_config():
@@ -184,13 +187,13 @@ def docs_log():
 @app.route('/monitoring')
 def monitoring():
     if not pm.running:
-        flash(Markup('> API is <b>not running</b>, start before use these tools. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('monitor and control', url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template('monitoring.html')
 
 @app.route('/monitoring/monitor')
 def monitor():
     if not pm.running:
-        flash(Markup('> API is <b>not running</b>, start before use monitor. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Primitive manager',url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src=url_for(
@@ -206,7 +209,7 @@ def base_static_monitor(filename):
 @app.route('/monitoring/recorder')
 def move_recorder():
     if not pm.running:
-        flash(Markup('> API is <b>not running</b>, start before use these tools. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('move recorder',url_for('logs'),url_for('APIstart'))), 'alert')
         connect=False
         source=None
     else:
@@ -222,7 +225,7 @@ def move_recorder():
 @app.route('/monitoring/visualisator')
 def viewer():
     if not pm.running:
-        flash(Markup('> API is <b>not running</b>, start before use web viewer. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('web viewer',url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src='http://{}:{}/{}/#{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.viewer, pm.config.robot.creature, pm.config.poppyPort.http)
@@ -235,7 +238,7 @@ def multiview():
 @app.route('/monitoring/camera')
 def camera():
     if not pm.running:
-        flash(Markup('> API is <b>not running</b>, start before use web camera. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('web camera', url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template('camera.html', source='http://{}:{}/frame.png'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.snap), FPS=6)
 
 @app.route('/programming')
@@ -245,7 +248,7 @@ def programming():
 @app.route('/programming/snap')
 def snap():
     if not pm.running:
-        flash(Markup('> API is <b>not running</b>, start before use Snap. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Start</a> now'.format(url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('<i>Snap!</i>', url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src=url_for('base_static_snap', filename='snap.html')
@@ -259,13 +262,13 @@ def base_static_snap(filename):
 def jupyter():
     default_notebook= 'http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Discover%20your%20{}.ipynb'.format( urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter, pm.config.robot.creature.replace('-',' ').title().replace(' ','%20'))
     if pm.running:
-        flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
+        flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format(url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template('base-iframe.html', iframe_src=default_notebook)
 
 @app.route('/programming/AnotherLanguage')
 def AnotherLanguage():
     if pm.running:
-        flash(Markup('> API is <b>already running</b>, stop before instanciate the robot on python. &nbsp; > Show <a href="{}">logs</a> or <a onclick="refreshForMsg(\'{}\')">Stop</a> now'.format(url_for('logs'),url_for('APIstop'))), 'alert')
+        flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format(url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template('base-iframe.html', iframe_src='http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Another%20language.ipynb'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter))
 
 @app.route('/MyDocuments')
@@ -296,11 +299,11 @@ def settings_update():
             elif value == 'off': value = False
             if value != getattr(getattr(pm.config, key[0]), key[1]):
                 pm.update_config('.'.join(key),value)
-                msg+='> {} of {} was changed.'.format(label[key[1]], key[0])
+                msg+= flash_msg['changed'][pm.config.info.langage].format(label[key[1]], key[0])
                 if key[1] == 'name' or key[0] == 'hotspot' or key[0] == 'wifi':
-                    msg+=' <a href="{}">Restart network service</a> to apply (or wait next reboot).'.format(url_for('restart_network'))
+                    msg+= flash_msg['network_need_restart'][pm.config.info.langage].format(url_for('restart_network'))
                 msg+='<br>'
-    if msg == '': flash('> Nothing was changed!', 'warning')
+    if msg == '': flash(flash_msg['no_changed'][pm.config.info.langage], 'warning')
     else: flash(Markup(msg), 'success')
     return ('', 204)
 
@@ -308,14 +311,14 @@ def settings_update():
 def restart_network():
     pm.restart_network()
     goback= request.referrer.replace(urlparse(request.url_root).hostname, pm.config.robot.name+'.local')
-    flash('> Network service was restarted', 'success')
+    flash(flash_msg['network_restart'][pm.config.info.langage], 'success')
     return redirect(goback)
 
 @app.route('/settings/setLangage', methods=['POST'])
 def set_lang():
     pm.update_config('info.langage', request.form['lang'])
-    if request.form['lang']=='FR':
-        flash('> seules quelques pages sont actuellement traduites, merci de votre compréhension', 'warning')
+    if request.form['lang']!='EN':
+        flash(flash_msg['lang'][pm.config.info.langage], 'warning')
     return ('',204)
 
 @app.route('/terminal')
@@ -330,7 +333,7 @@ def terminal():
 @app.route('/reboot')
 def reboot():
     pm.reboot()
-    flash('> Your {} will now be REBOOT in a few seconds.'.format(pm.config.info.board), 'success')
+    flash(flash_msg['rasp'][pm.config.info.langage].format(pm.config.info.board, 'REBOOT'), 'success')
     return ('', 204)
 
 @app.route('/logs')
@@ -347,7 +350,7 @@ def update_logs():
 @app.route('/restart_services')
 def restart_services():
     pm.restart_services()
-    flash('> All services will be restart in few seconds', 'success')
+    flash(flash_msg['services_restart'][pm.config.info.langage], 'success')
     return ('', 204)
 
 @app.route('/APIreset')
@@ -355,7 +358,7 @@ def APIreset():
     if pm.running:
         pm.stop()
     pm.start()
-    flash('> Your robot\'s API has been restarted.', 'success')
+    flash(flash_msg['api_set'][pm.config.info.langage].format('restart'), 'success')
     return ('', 204)
 
 @app.route('/APIstart', methods=['GET', 'POST'])
@@ -369,19 +372,19 @@ def APIstart():
                 pm.start()
             return ('', 204)
     if pm.running:
-        flash('> Your robot\'s API has already started.', 'warning')
+        flash(flash_msg['api_already_set'][pm.config.info.langage].format('start'), 'warning')
     else:
         pm.start()
-        flash('> Your robot\'s API has been started.', 'success')
+        flash(flash_msg['api_set'][pm.config.info.langage].format('start'), 'success')
     return ('', 204)
 
 @app.route('/APIstop')
 def APIstop():
     if pm.running:
         pm.stop()
-        flash('> Your robot\'s API has been stopped.', 'success')
+        flash(flash_msg['api_set'][pm.config.info.langage].format('stop'), 'success')
     else:
-        flash('> Your robot\'s API has already stopped.', 'warning')
+        flash(flash_msg['api_already_set'][pm.config.info.langage].format('stop'), 'warning')
     return ('', 204)
 
 
@@ -404,17 +407,17 @@ def is_updating():
 
 @app.route('/settings/done-updating')
 def done_updating():
-    flash('> Your robot is now up-to-date!', 'success')
+    flash(flash_msg['update'][pm.config.info.langage], 'success')
     return redirect(url_for('index'))
 
 @app.route('/switch_camera')
 def switch_camera():
     if pm.config.robot.camera:
         pm.update_config('robot.camera', False)
-        flash('> Your robot camera is now turned off!', 'success')
+        flash(flash_msg['camera_set'][pm.config.info.langage].format('off'), 'success')
     else:
         pm.update_config('robot.camera', True)
-        flash('> Your robot camera is now turned on!', 'success')
+        flash(flash_msg['camera_set'][pm.config.info.langage].format('on'), 'success')
     if pm.running:
         pm.restart()
     return ('', 204)
@@ -423,7 +426,7 @@ def switch_camera():
 def clone():
     nb=int(request.form['nb'])
     pm.clone(nb)
-    flash('> {} more instance was launched'.format(nb), 'success')
+    flash(flash_msg['clone_launch'][pm.config.info.langage].format(nb), 'success')
     return ('', 204)
 
 @app.route('/call_poppy_configure', methods=['POST'])
@@ -454,7 +457,7 @@ def ready_to_roll():
 @app.route('/shutdown')
 def shutdown():
     pm.shutdown()
-    flash('> Your {} will now be HALTED in a few seconds.'.format(pm.config.info.board), 'success')
+    flash(flash_msg['rasp'][pm.config.info.langage].format(pm.config.info.board, 'HALTED'), 'success')
     return ('', 204)
 
 @app.route('/api/raw_logs', methods=['POST'])

@@ -205,7 +205,7 @@ class PuppetMaster(object):
             ws+=1
 
     def restart_services(self):
-        def delayed_restart_services(command, sec=1):
+        def delayed_restart_services(command, sec=2):
             time.sleep(sec)
             call(command)
 

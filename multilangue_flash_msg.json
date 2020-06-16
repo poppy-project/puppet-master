@@ -1,0 +1,58 @@
+{
+    "api_is_start" : {
+        "FR" : "> L'API est <b>déjà démarrée</b>! Stoppée la avant d'utiliser {}.<br>> Consulter <a href=\"{}\">les logs</a> ou <a onclick=\"refreshForMsg(\"{}\")\">Stoppée la</a> maintenant.",
+        "EN" : "> API is <b>already running</b>! Stop before instanciate the robot on python. &nbsp; > Show <a href=\"{}\">logs</a> or <a onclick=\"refreshForMsg(\"{}\")\">Stop</a> now."
+        },
+    "api_is_stop" : {
+        "FR" : "> L'API <b>n'est pas démarrée</b>! Démarrée la avant d'utiliser {}.<br>> Consulter <a href=\"{}\">les logs</a> ou <a onclick=\"refreshForMsg(\"{}\")\">Démarrée la</a> maintenant.",
+        "EN" : "> API is <b>not running</b>! Start before use {}. &nbsp; > Show <a href=\"{}\">logs</a> or <a onclick=\"refreshForMsg(\"{}\")\">Start</a> now."
+        },
+    "api_set" : {
+        "FR" : "> L'API du robot a été <i>{}</i>.",
+        "EN" : "> Your robot's API has been {}ed."
+        },
+    "api_already_set" : {
+        "FR" : "> L'API du robot est déjà <i>{}</i>.",
+        "EN" : "> Your robot's API has already {}ed."
+        },
+    "camera_set" : {
+        "FR" : "> La camera du robot est maintenant en mode {}!",
+        "EN" : "> Your robot camera is now turned {}!"
+        },
+    "clone_launch" : {
+        "FR" : "> {} instance(s) suplémentaire ont été lancées",
+        "EN" : "> {} more instance(s) was launched"
+        },
+    "lang" : {
+        "FR" : "> Seules quelques pages sont actuellement traduites. Merci de votre compréhension.",
+        "EN" : "None"
+        },
+    "changed" : {
+        "FR" : "> {} de {} a changé.",
+        "EN" : "> {} of {} was changed."
+        },
+    "no_changed" : {
+        "FR" : "> Rien n'a été modifié!",
+        "EN" : "> Nothing was changed!"
+        },
+    "network_need_restart" : {
+        "FR" : " <a href=\"{}\">Redémarré le service réseau</a> pour appliquer (ou attendé le prochain redémarrage).",
+        "EN" : " <a href=\"{}\">Restart network service</a> to apply (or wait next reboot)."
+        },
+    "network_restart" : {
+        "FR" : "> Le service réseau a été redémarré",
+        "EN" : "> Network service was restarted"
+        },
+    "services_restart" : {
+        "FR" : "> Tout les services vont être redémarrés dans quelques secondes",
+        "EN" : "> All services will be restart in few seconds"
+        },
+    "rasp" : {
+        "FR" : "> Votre {} va maintenant être <i>{}</i> dans quelques secondes",
+        "EN" : "> Your {} will now be {} in a few seconds."
+        },
+    "update" : {
+        "FR" : "> Votre robot est maintenant à jour",
+        "EN" : "> Your robot is now up-to-date!"
+        }
+}
