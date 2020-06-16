@@ -41,13 +41,13 @@
         </div>
         <div class="row">
           <div class="large-5 columns">
-              <h4>Hotspot</h4>
+              <h4>Wifi Hotspot</h4>
           </div>
           <div class="large-1 columns">
             <div class="switch il">
               <input class="switch-input" id="hotspot-switch" type="checkbox" name="hotspot-switch"{% if hotspot.start %} checked{% endif %}>
               <label class="switch-paddle" for="hotspot-switch">
-                <span class="show-for-sr">Toggle Hotspot</span>
+                <span class="show-for-sr">Toggle Wifi Hotspot</span>
               </label>
             </div>
           </div>
@@ -134,14 +134,14 @@
           <div class="switch il">
             <input class="switch-input" id="first-switch" type="checkbox" name="first-switch"{% if robot.firstPage %} checked{% endif %}>
             <label class="switch-paddle" for="first-switch">
-              <span class="show-for-sr">Toggle First page connection</span>
+              <span class="show-for-sr">Toggle First connection page</span>
             </label>
           </div>
         </div>
         &emsp;
         <div class="large-10 columns">
           <h4>
-            Real robot API auto-start
+            Real robot API autostart
           </h4>
         </div>
         <div class="large-2 columns">
@@ -155,7 +155,7 @@
       <div  id="camera">
         <div class="large-10 columns">
           <h4>
-            with camera ?
+            Enable camera?
           </h4>
         </div>
         <div class="large-2 columns">
@@ -171,12 +171,12 @@
       &emsp;
         <div class="row">
           <div class="large-10 columns">
-              <h4>How many virtual bot ?</h4>
+              <h4>How many virtual robots?</h4>
           </div>
           <div class="large-2 columns">
             <div class="input-group">
               <input id="nb-bot" type="text" class="input-group-field" placeholder={{ robot.virtualBot }}>
-              <span class="input-group-label">bot</span>
+              <span class="input-group-label">robots</span>
             </div>
           </div>
         </div>
@@ -207,7 +207,7 @@
           <div class="callout" style="border-color: red;">
             <div class="row">
               <div class="large-12 columns">
-                <p style="font-size:90%; text-align:center;"><span style="color:red;">Bad:</span> Plug several motors at the same time</p>
+                <p style="font-size:90%; text-align:center;"><span style="color:red;">Bad:</span> Don't plug several motors at the same time</p>
                 <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="How to plug a motor">
               </div>
             </div>
@@ -290,7 +290,7 @@
 </div>
 <div class="large-8 medium-8 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open an Terminal</a><br>
+        <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open a Terminal</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Reboot robot services</a><br>

@@ -28,10 +28,10 @@
       <span id="step1" style="display:none;">
       <div class="columns large-8">
         <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/electronic-assembly.html' ) }}">Assemblage électronique</a> et <a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/motor-configuration.html#turn-on-the-robot') }}">Connexion</a></h5>
-        <p>Si vous êtes ici, cette étape est déjà terminée! <span style="color:orange;"><svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg> Félicitations! <svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg></span></p>
+        <p>Si vous êtes ici, cette étape est déjà terminée ! <span style="color:orange;"><svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg> Félicitations ! <svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg></span></p>
       </div>
       <div class="columns large-4">
-        <h1><svg class="pp-icon pp-icon-trophy" title="Félicitations!" style="color:yellow; width:100%;"><use stroke="black" xlink:href="#pp-icon-trophy"></use></svg></h1>
+        <h1><svg class="pp-icon pp-icon-trophy" title="Félicitations !" style="color:yellow; width:100%;"><use stroke="black" xlink:href="#pp-icon-trophy"></use></svg></h1>
       </div>
       </span>
     </div>
@@ -51,7 +51,7 @@
           <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/<creature>/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="building robot gif">
         </div>
         <div class="large-8 medium-7 columns">
-          <span>Consultez la documentation de votre robot pour des instructions pas à pas.</span>
+          <span>Consultez la documentation de votre robot pour suivre les instructions pas-à-pas.</span>
           <div class="large-8 medium-7 row columns menu-tile" align="center">
             <a target="_blank" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html')}}" title="Documentations d'assemblage mécanique" data-equalizer-watch>
               <h3>
@@ -67,13 +67,13 @@
         </div>
 
       <h5><a target="_blank" title="afficher la documentation" href="http://poppy.local:4000/en/assembly-guides/ergo-jr/motor-configuration.html">Configuration du moteur</a></h5>
-      <p>Nous devrons d'abord configurer chaque moteur l'un après l'autre: pour chaque moteur, connectez-le à la carte Pixl, choisissez son nom et cliquez sur Configurer. Rappelez-vous ensuite le nom que vous avez défini pour ce moteur, il devra être monté au bon endroit.</p>
+      <p>Nous devrons d'abord configurer chaque moteur l'un après l'autre : pour chaque moteur, connectez-le seul à la carte Pixl, choisissez son nom et cliquez sur Configurer. Rappelez-vous ensuite le nom que vous avez défini pour ce moteur, il devra être monté au bon endroit.</p>
       <div class="row">
         <div class="large-6 medium-6 columns">
           <div class="callout" style="border-color: red;">
             <div class="row">
               <div class="large-12 columns">
-                <p style="font-size:85%; text-align:center;"><span style="color:red;">Ne pas faire:</span> branchez plusieurs moteurs en même temps pendant la configuration.</p>
+                <p style="font-size:85%; text-align:center;"><span style="color:red;">Ne pas faire :</span> ne pas brancher plusieurs moteurs en même temps pendant la configuration.</p>
                 <img width="600" src="{{ url_for('static', filename='img/motor_no_double.jpg') }}" alt="Comment brancher un moteur">
               </div>
             </div>
@@ -83,7 +83,7 @@
           <div class="callout" style="border-color: green;">
             <div class="row">
               <div class="large-12 columns">
-                <p style="font-size:85%; text-align:center;"><span style="color:green;">Ce qu'il faut faire:</span> branchez un seul moteur avant de cliquer sur le bouton Configurer.</p>
+                <p style="font-size:85%; text-align:center;"><span style="color:green;">Ce qu'il faut faire :</span> brancher un seul moteur avant de cliquer sur le bouton Configurer.</p>
                 <img width="600" src="{{ url_for('static', filename='img/motor_only_one.jpg') }}" alt="Comment brancher un moteur">
               </div>
             </div>
@@ -95,7 +95,7 @@
         <div class="large-12 columns">
           <div class="callout" style="border-color: grey;">
             <h5>
-              Quel moteur voulez-vous configurer?
+              Quel moteur voulez-vous configurer ?
             </h5>
             {% if motors | length > 1 %}
               <form>
@@ -117,7 +117,7 @@
             {% endif %}
             <div class="row" id="config-Logs" style="display:none;">
               <div class="large-12 columns">
-                <pre>> Démarage de la configuration...
+                <pre>> Démarage de la configuration ...
                   <code id="configlogs" class="accesslog hljs"></code>
                 </pre>
               </div>
@@ -136,10 +136,10 @@
         <h4 class="section-title">Étape 3: Réveillez et testez votre robot &ensp;<span id="iconStep3" style="font-size: 75%">&#8690;</span> <span id="info-3" style="font-size: 50%">Cliquez pour agrandir</span></h4>
       </a>
       <div class='columns' id="step3" style="display:none;">
-      <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html#step-9---test-your-robot-')}}">Essayons de réveiller et de déplacer votre robot!</a></h5>
+      <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html#step-9---test-your-robot-')}}">Essayons de réveiller et de déplacer votre robot !</a></h5>
       <div class="row columns wrap" align="center">
         <div class="callout" style="border-color: grey;">
-          <p>Tout d'abord, démarrez l'API pour réveiller le robot, attendez un peu et vérifiez qu'aucune erreur ne s'est produite:</p>
+          <p>Tout d'abord, démarrez l'API pour réveiller le robot, attendez un peu et vérifiez qu'aucune erreur ne se produit :</p>
           <a class="button button-primary" style="width: 100%;" id="start-api" >Démarrer l'API du Robot</a>
             <div class="row">
               <div class="large-12 columns" align="left">
@@ -150,10 +150,10 @@
       </div>
       <div class="row columns" align="center">
         <div class="callout" style="border-color: grey;">
-          <p>Ensuite, déplaçons-le pour vérifier que cela a fonctionné:</p>
-          <a class="button button-primary" style="width: 100%;" id="start-viewer">Ouvrez le Web Viewer</a>
-          <a class="button button success" style="width: 100%; display:none;" id="start-prim" onclick="dance(1)">START DANCE</a>
-          <a class="button button alert" style="width: 100%; display:none;" id="stop-prim" onclick="dance(0)">STOP DANCE</a>
+          <p>Ensuite, déplaçons-le pour vérifier que cela a fonctionné :</p>
+          <a class="button button-primary" style="width: 100%;" id="start-viewer">Ouvrez le visualisateur Web</a>
+          <a class="button button success" style="width: 100%; display:none;" id="start-prim" onclick="dance(1)">Demarrer une danse</a>
+          <a class="button button alert" style="width: 100%; display:none;" id="stop-prim" onclick="dance(0)">Arrêter la danse</a>
           <iframe id="viewer" style="display:none;" class="tall-iframe" src=""></iframe>
         </div>
       </div>
@@ -174,11 +174,11 @@
         <a href="{{ url_for('settings') }}" target="_blank">
           <h3>
             <svg class="pp-icon pp-icon-build">
-              <title>Settings</title>
+              <title>Configuration</title>
               <use xlink:href="#pp-icon-build"></use>
             </svg>
           </h3>
-          <p>Configure the robot</p>
+          <p>Configurer le robot</p>
         </a>
       </div>
       <div class="large-6 medium-6 columns menu-tile">
@@ -186,45 +186,45 @@
         <a href="{{ url_for('MyDoc') }}" target="_blank">
           <h3>
             <svg class="pp-icon pp-icon-folder">
-              <title>My Documents</title>
+              <title>Mes Documents</title>
               <use xlink:href="#pp-icon-folder"></use>
             </svg>
           </h3>
-          <p>My Documents</p>
+          <p>Mes Documents</p>
         </a>
       </div>
       <div class="large-6 medium-6 columns menu-tile">
-        <p>Pour utiliser plus d'applications pré-installation</p>
+        <p>Pour utiliser plus d'applications pré-installées</p>
         <a href="{{ url_for('monitoring') }}" target="_blank">
           <h3>
             <svg class="pp-icon pp-icon-stats">
-              <title>Monitor</title>
+              <title>Moniteur</title>
               <use xlink:href="#pp-icon-stats"></use>
             </svg>
           </h3>
-          <p>Monitor and Control</p>
+          <p>Monitorer et contrôler</p>
         </a>
       </div>
       <div class="large-6 medium-6 columns menu-tile">
-        <p>Pour programmer le robot!</p>
+        <p>Pour programmer le robot !</p>
         <a href="{{ url_for('programming') }}" target="_blank">
           <h3>
             <svg class="pp-icon pp-icon-computer">
-              <title>Programming</title>
+              <title>Programmation</title>
               <use xlink:href="#pp-icon-computer"></use>
             </svg>
           </h3>
-          <p>Programming</p>
+          <p>Programmation</p>
         </a>
       </div>
-      <h5 align="center">Vous pouvez retrouver tous ces onglets dans la page d'accueil de Robot</h5>
+      <h5 align="center">Vous pouvez retrouver tous ces onglets dans la page d'accueil du robot</h5>
       </div>
       </span>
     </div>
   </div>
 
   <div class="row columns" align="center">
-    <a class="button" style="width:35%; min-width:250px" align="center" href="{{ url_for('end_opening') }}" onclick="return confirm('Êtes-vous sûr? Si vous voulez revenir ici plus tard, réactivez la «page de première connexion» dans l\'onglet Paramètres.')">Enfin, utilisez! Aller à la page d'accueil</a>
+    <a class="button" style="width:35%; min-width:250px" align="center" href="{{ url_for('end_opening') }}" onclick="return confirm('Êtes-vous sûr ? Si vous voulez revenir ici plus tard, réactivez la « page de première connexion » dans l\'onglet Paramètres.')">Enfin, utilisez votre robot ! Aller à la page d'accueil</a>
   </div>
 
 </div>

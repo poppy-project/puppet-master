@@ -43,19 +43,19 @@ Logs for real robot <span id="show-switch_0" style="visibility:hidden" onclick="
 <div class="large-10 medium-10 row">
 <div class="callout">
     <div class="row columns">
-        <h3>&gt; Virtual instance of robot</h3>
+        <h3>&gt; Virtual instances of robot</h3>
       </div>
     <div class="row columns">
         <div class="input-group" style="width: 45%; min-width: 300px;">
           <span class="button button-primary input-group-button" type="button" onclick="clone()" style="width: 40%; min-width:105px">Launch</span>
           <input id="new_clone" type="number" min="1" class="input-group-field" placeholder="1" style="text-align:right; min-width:40px">
-          <span class="input-group-label" style="text-align:center; width: 45%; font-size:90%">additional instance</span>
+          <span class="input-group-label" style="text-align:center; width: 45%; font-size:90%">additional instance(s)</span>
       </div>
     </div>
     <div class="row columns">
         <div class="input-group" style="width: 45%; min-width: 300px;">
             <span style="width: 40%;" class="input-group-button"><a class="button button-primary" style="width: 100%;" id="open-multiview" href="/monitoring/visualisator/multiview">Open Multiview</a></span>
-          <span class="input-group-label" style="width: 60%;">{{ clone }} instance are running</span>
+          <span class="input-group-label" style="width: 60%;">{{ clone }} instances are running</span>
       </div>
     </div>
     &emsp;
@@ -63,8 +63,8 @@ Logs for real robot <span id="show-switch_0" style="visibility:hidden" onclick="
     <div class="row">
       <div class="large-12 columns">
         <pre>
-Logs for virtual instance number {{ nb }} > show in <a id="viewer_{{ nb }}" href='http://{{ robot.name }}.local:8000/{{ robot.creature }}/#{{ nb + 8080 }}' target="_blank">web viewer</a> <span id="show-switch_{{ nb }}" style="visibility:hidden" onclick="switchShow({{ nb }})">(<a>show more logs</a>)</span>
-<code style="max-height:145px; overflow-y:hidden;" id="logs_{{ nb }}" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_{{ nb }}" onclick="downloadLogs({{ nb }})">Save this logs</a>
+Logs for virtual instance #{{ nb }} > show in <a id="viewer_{{ nb }}" href='http://{{ robot.name }}.local:8000/{{ robot.creature }}/#{{ nb + 8080 }}' target="_blank">web viewer</a> <span id="show-switch_{{ nb }}" style="visibility:hidden" onclick="switchShow({{ nb }})">(<a>show more logs</a>)</span>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_{{ nb }}" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_{{ nb }}" onclick="downloadLogs({{ nb }})">Save this log</a>
         </pre>
       </div>
     </div>
@@ -88,7 +88,7 @@ Logs for virtual instance number {{ nb }} > show in <a id="viewer_{{ nb }}" href
       <div class="large-12 columns">
         <pre>
 Logs for web viewer <span id="show-switch_-1" style="visibility:hidden" onclick="switchShow(-1)">(<a>show more logs</a>)</span>
-<code style="max-height:145px; overflow-y:hidden;" id="logs_-1" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-1" onclick="downloadLogs(-1)">Save this logs</a>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_-1" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-1" onclick="downloadLogs(-1)">Save this log</a>
         </pre>
       </div>
     </div>
@@ -111,7 +111,7 @@ Logs for web viewer <span id="show-switch_-1" style="visibility:hidden" onclick=
       <div class="large-12 columns">
         <pre>
 Logs for docs service <span id="show-switch_-2" style="visibility:hidden" onclick="switchShow(-2)">(<a>show more logs</a>)</span>
-<code style="max-height:145px; overflow-y:hidden;" id="logs_-2" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-2" onclick="downloadLogs(-2)">Save this logs</a>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_-2" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-2" onclick="downloadLogs(-2)">Save this log</a>
         </pre>
       </div>
     </div>
@@ -134,7 +134,7 @@ Logs for docs service <span id="show-switch_-2" style="visibility:hidden" onclic
       <div class="large-12 columns">
         <pre>
 Logs for jupyter service <span id="show-switch_-3" style="visibility:hidden" onclick="switchShow(-3)">(<a>show more logs</a>)</span>
-<code style="max-height:145px; overflow-y:hidden;" id="logs_-3" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-3" onclick="downloadLogs(-3)">Save this logs</a>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_-3" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-3" onclick="downloadLogs(-3)">Save this log</a>
         </pre>
       </div>
     </div>
@@ -143,7 +143,7 @@ Logs for jupyter service <span id="show-switch_-3" style="visibility:hidden" onc
 &emsp;
 <div class="large-10 medium-10 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open an Terminal</a><br>
+        <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open a Terminal</a><br>
     </div>
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Reboot robot services</a><br>
