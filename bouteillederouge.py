@@ -110,13 +110,13 @@ def index():
     if pm.config.robot.firstPage:
         return render_template(pm.config.info.langage+'/opening.html', motors=pm._get_robot_motor_list())
     else:
-        return render_template('index.html')
+        return render_template(pm.config.info.langage+'/index.html')
 
 @app.route('/opening/end')
 def end_opening():
     pm.update_config('robot.firstPage', False)
     pm.update_config('robot.autoStart', True)
-    return render_template('index.html')
+    return render_template(pm.config.info.langage+'/index.html')
 
 @app.route('/infos')
 def infos():
@@ -186,7 +186,7 @@ def docs_log():
 def monitoring():
     if not pm.running:
         flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('monitor and control', url_for('logs'),url_for('APIstart'))), 'alert')
-    return render_template('monitoring.html')
+    return render_template(pm.config.info.langage+'/monitoring.html')
 
 @app.route('/monitoring/monitor')
 def monitor():
@@ -218,7 +218,7 @@ def move_recorder():
             else: connect=False
         except:
             connect=False
-    return render_template('move-recorder.html', motors=pm._get_robot_motor_list(), source=source, connect=connect)
+    return render_template(pm.config.info.langage+'/move-recorder.html', motors=pm._get_robot_motor_list(), source=source, connect=connect)
 
 @app.route('/monitoring/visualisator')
 def viewer():
@@ -241,7 +241,7 @@ def camera():
 
 @app.route('/programming')
 def programming():
-    return render_template('programming.html')
+    return render_template(pm.config.info.langage+'/programming.html')
 
 @app.route('/programming/snap')
 def snap():

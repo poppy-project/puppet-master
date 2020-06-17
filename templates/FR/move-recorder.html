@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="large-10 row">
+  <div class="columns section-title">
+    <h3 style="padding: 1rem 0;">Enregistreur de mouvements</h3>
+  </div>
+</div>
+<div class="large-10 row">
+  {% if connect == False %}
+  <div class="columns callout">
+    <div class="section-title"><h4>Erreur</h4></div>
+    <div class="columns">
+      <p><strong>Serveur Snap non prêt !</strong> S'il l'API est en marche, consultez <a href="{{ url_for('logs') }}" >le journal</a>, ou <a onclick="window.location.reload()">réessayez</a>. Sinon, <a onclick="refreshForMsg('{{ url_for('APIstart') }}')" >démarrez l'API</a>.</p>
+    </div>
+  </div>
+  {% else %}
+  <div class="large-6 columns" data-equalizer>
+
+    <div class="columns callout">
+      <div class="section-title"><h4>Etat des moteurs</h4></div>
+      <div class="columns">
+        <form>
+          <div class="row columns">
+            <div class="input-group">
+              <span class="input-group-label" style="width:50%;">Sélectionnez les moteurs</span>
+              <select class="input-group-field" id="compliant-alias_list" onchange="set_motor_list('compliant')" style="font-size:90%;" title="Group preselection">
+                <option value="motors">TOUS</option>
+                <option value="none">Aucun</option>
+              </select>
+            </div>
+          </div>
+          <div id="compliant-motors_list">
+          {%- for motor in motors %}
+            <input id="compliant-{{motor}}" name="{{motor}}" type="checkbox" checked onchange="set_alias('compliant')"><label for="compliant-{{motor}}">{{motor}}</label>
+          {%- endfor %}
+          </div>
+        </form>
+        <div>
+          <a title="To handle with your hands" class="button button-primary" style="width: 49%;" id="comlpiant_true" onclick="compliant(true)">Compliant</a>
+          <a title="To control through computer" class="button button-primary" style="width: 49%;" id="comlpiant_false" onclick="compliant(false)">Rigide</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns callout">
+      <div class="section-title"><h4>Enregistreur</h4></div>
+      <div class="columns">
+        <form>
+          <div class="row columns">
+            <div class="input-group">
+              <span class="input-group-label" style="width:50%;">Sélectionnez les moteurs à suivre</span>
+              <select class="input-group-field" id="record-alias_list" onchange="set_motor_list('record')" style="font-size:90%;" title="Group preselection">
+                <option value="motors">TOUS</option>
+                <option value="none">Aucun</option>
+              </select>
+            </div>
+          </div>
+          <div id="record-motors_list">
+          {%- for motor in motors %}
+            <input id="record-{{motor}}" name="{{motor}}" type="checkbox" checked onchange="set_alias('record')"><label for="record-{{motor}}">{{motor}}</label>
+          {%- endfor %}
+          </div>
+        </form>
+        <form>
+           <div class="input-group">
+              <span class="input-group-label">Nom du mouvement</span>
+              <input title="Give name for record" id="record-move_name" type="text" class="input-group-field" placeholder="move_name" style="font-size:80%">
+           </div>
+        </form>
+        <div>
+          <a class="button success" style="width: 100%;" id="record" onclick="state_record(true)">Démarrer l'enregistrement</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="large-6 columns" data-equalizer>
+    <div class="columns callout">
+      <div class="section-title"><h4>Rejeu</h4></div>
+      <div class="columns" id="move-player">
+        <form>
+          <label><h5>Sélectionnez des mouvements</h5></label>
+          <!-- template player start-->
+          <div class="input-group" id="player_template" style="display:none;">
+             <a class="hollow button alert input-group-button" style="width: 10%;" id="close-player_template" title="Del Slot" onclick="">&cross;</a>
+             <a class="hollow button input-group-button" style="width: 10%;" id="refresh-player_template" title="Refresh List" onclick="">&olarr;</a>
+            <select  title="Available moves" class="input-group-field" id="moves-list_template">
+              <option value="wait content">Erreur</option>
+            </select>
+            <a class="button success input-group-button" style="width: 15%;" id="button_player_template" title="Rejouer" onclick="">&rtrif;</a>
+          </div>
+          <!-- template player end-->
+        </form>
+        <div>
+          <a class="button button-primary" style="width: 100%;" onclick="add_player()">Ajouter un mouvement</a>
+          <a class="button success" style="width: 100%;" onclick="play_all(true)">Rejouer tous les mouvements</a>
+          <a class="button alert" style="width: 100%;" onclick="play_all(false)">Arrêter tous les mouvements</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}
+{% block endscript %}
+<script>
+get_alias_list();
+let list_id_player=[]
+function compliant(state){
+    if (state) {state=1; opposite=0} else {state=0; opposite=1};
+    var motors = document.getElementById("compliant-motors_list").children;
+    for (i = 0; i < motors.length; i++) {
+        if (motors[i].hasAttribute("name")) {
+            if (motors[i].checked) {
+                $.get("{{source}}/motor/"+motors[i].name+"/set/compliant/"+state);
+            } else {
+                $.get("{{source}}/motor/"+motors[i].name+"/set/compliant/"+opposite);
+            };
+        };
+    };
+}
+function get_alias_list(){
+    $.get("{{source}}/motors/alias", function(alias_list) {
+        alias=alias_list.split("/");
+        for (alia in alias) {
+            opt = document.createElement("option");
+            opt.value = alias[alia];
+            opt.text= alias[alia];
+            document.getElementById("record-alias_list").appendChild(opt.cloneNode(true));
+            document.getElementById("compliant-alias_list").appendChild(opt.cloneNode(true));
+        };
+      });
+}
+function set_motor_list(target) {
+    var motors = document.getElementById(target+"-motors_list").children;
+    var alias = document.getElementById(target+"-alias_list").value;
+    if (alias == 'none') {
+        for (i = 0; i < motors.length; i++) {motors[i].checked = false};
+    } else {
+        $.get("{{source}}/motors/"+alias, function(motors_ref) {
+            motors_ref=motors_ref.split("/");
+            for (i = 0; i < motors.length; i++) {
+                if (motors_ref.includes(motors[i].name)) {
+                    motors[i].checked = true;
+                } else {
+                    motors[i].checked = false;
+                };
+            };
+          });
+    }
+}
+function set_alias(target) {
+    document.getElementById(target+"-alias_list").value = '';
+}
+function state_record(state){
+    var recordName=document.getElementById("record-move_name");
+    var buttonRecord=document.getElementById("record");
+    var name = recordName.value;
+    if (name == ''){name='move_name'}
+    if (state) {
+        var motors = document.getElementById("record-motors_list").children;
+        let motors_to_follow=[];
+        for (i = 0; i < motors.length; i++) {
+            if (motors[i].checked) {
+                motors_to_follow.push(motors[i].name);
+            };
+        };
+        if (motors_to_follow.length == 0) {
+            alert('Please, select at least one motor to follow');
+        } else {
+            buttonRecord.setAttribute("class", "button alert");
+            buttonRecord.setAttribute("onclick", "state_record(false)");
+            buttonRecord.innerHTML = 'Arrêter l\'enregistrement';
+            recordName.setAttribute("readonly", 'true');
+            $.get("{{source}}/primitive/MoveRecorder/"+name+"/start/"+motors_to_follow.join(';'));
+        };
+    } else {
+        $.get("{{source}}/primitive/MoveRecorder/"+name+"/stop");
+        add_player(name);
+        buttonRecord.setAttribute("class", "button success");
+        buttonRecord.setAttribute("onclick", "state_record(true)");
+        buttonRecord.innerHTML = 'Démarrer l\'enregistrement';
+        recordName.setAttribute("placeholder", "Nom identique à écraser");
+        recordName.value = '';
+        recordName.removeAttribute("readonly");
+    };
+}
+function refresh_moves_list(id, ref=''){
+    $.get("{{source}}/primitive/MovePlayer", function(moves_list) {
+        $('#moves-list_'+id).empty();
+        moves=moves_list.split("/");
+        for (move in moves) {
+            opt = document.createElement("option");
+            opt.value = moves[move];
+            opt.text= moves[move];
+            if (moves[move] == ref) {opt.selected="selected"};
+            document.getElementById("moves-list_"+id).appendChild(opt);
+        }
+      });
+}
+function close_player(id) {
+    document.getElementById('player_'+id).remove();
+    list_id_player.splice(list_id_player.indexOf(id),1);
+}
+function state_player(id, state, send=true){
+    var player = document.getElementById("button_player_"+id);
+    var move = document.getElementById("moves-list_"+id);
+    if (state && player.title=='Rejouer') {
+        $('#close-player_'+id).attr('disabled', true);
+        $('#refresh-player_'+id).attr('disabled', true);
+        move.setAttribute('disabled', true);
+        player.title="Arrêter";
+        player.innerHTML = '&FilledSmallSquare;';
+        player.setAttribute("class", "button alert input-group-button");
+        player.setAttribute("onclick", `state_player(${id}, false)`);
+        var speed = 1;
+        $.get("{{source}}/primitive/MovePlayer/"+move.value+"/start/"+speed);
+        player_running(id, move.value);
+    } else if (!(state) && player.title=='Arrêter') {
+        $('#close-player_'+id).attr('disabled', false);
+        $('#refresh-player_'+id).attr('disabled', false);
+        move.removeAttribute('disabled');
+        player.title="Rejouer";
+        player.innerHTML = '&rtrif;';
+        player.setAttribute("class", "button success input-group-button");
+        player.setAttribute("onclick", `state_player(${id}, true)`);
+        if (send) {$.get("{{source}}/primitive/MovePlayer/"+move.value+"/stop")};
+    };
+}
+function player_running(target, move_lock){
+    move = `_${move_lock}_player`;
+    $.get("{{source}}/primitives/running", function(moves_running) {
+        moves=moves_running.split("/");
+        console.log(moves);
+        console.log(move);
+        if (moves.includes(move)) {
+            setTimeout(player_running, 250, target, move_lock);
+        } else {
+            state_player(target, false, false);
+        };
+      });
+}
+function add_player(ref=""){
+    if (list_id_player.length == 0){
+        var id = 0;
+    } else {
+        var id = Math.max(...list_id_player)+1;
+    };
+    var original = document.getElementById('player_template');
+    var clone = original.cloneNode(true);
+    clone.id = "player_" + id;
+    clone.style.display = 'table';
+    original.parentNode.appendChild(clone);
+    list_id_player.push(id)
+    var children = clone.children;
+    for (i = 0; i < children.length; i++) {
+        children[i].id = children[i].id.replace("template", id);
+    };
+    children[0].setAttribute("onclick", `close_player(${id})`);
+    children[1].setAttribute("onclick", `refresh_moves_list(${id})`);
+    children[3].setAttribute("onclick", `state_player(${id}, true)`);
+    refresh_moves_list(id, ref);
+}
+function play_all(state){
+    for (id of list_id_player.values()) {
+        state_player(id, state);
+    };
+}
+</script>
+{% endblock endscript %}

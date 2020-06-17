@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="large-10 medium-10 row">
+  <div class="large-12 medium-12 columns section-title">
+    <h3>Monitorer et contrôler</h3>
+  </div>
+</div>
+
+<div class="large-10 medium-10 row wrap" data-equalizer data-equalize-on="medium">
+
+  <div class="large-6 medium-6 columns menu-tile">
+    <a href="{{ url_for('monitor') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-stats">
+          <title>Monitorer</title>
+          <use xlink:href="#pp-icon-stats"></use>
+        </svg>
+      </h3>
+      <p>Gestionnaire de primitives</p>
+    </a>
+  </div>
+
+  <div class="large-6 medium-6 columns menu-tile">
+    <a href="{{ url_for('move_recorder') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-play">
+          <title>Enregistreur</title>
+          <use xlink:href="#pp-icon-play"></use>
+        </svg>
+      </h3>
+      <p>Enregistreur de mouvements</p>
+    </a>
+  </div>
+
+  <div class="large-6 medium-6 columns menu-tile">
+    <a href="{{ url_for('viewer') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-eye">
+          <title>visualisator</title>
+          <use xlink:href="#pp-icon-eye"></use>
+        </svg>
+      </h3>
+      <p>Visualisateur Web</p>
+    </a>
+  </div>
+
+  <div class="large-6 medium-6 columns menu-tile">
+    <a href="{{ url_for('camera') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-camera">
+          <title>Caméra</title>
+          <use xlink:href="#pp-icon-camera"></use>
+        </svg>
+      </h3>
+      <p>Caméra</p>
+    </a>
+  </div>
+
+</div>
+
+{% include 'defs-svg.html' %}
+
+{% endblock content %}

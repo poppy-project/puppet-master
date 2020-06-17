@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="row wrap" data-equalizer data-equalize-on="medium">
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('monitoring') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-stats">
+          <title>Moniteur</title>
+          <use xlink:href="#pp-icon-stats"></use>
+        </svg>
+      </h3>
+      <p>Monitorer et contrôler</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('programming') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-computer">
+          <title>Programming</title>
+          <use xlink:href="#pp-icon-computer"></use>
+        </svg>
+      </h3>
+      <p>Programmation</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('MyDoc') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-folder">
+          <title>My Documents</title>
+          <use xlink:href="#pp-icon-folder"></use>
+        </svg>
+      </h3>
+      <p>Mes Documents</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('settings') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-build">
+          <title>Settings</title>
+          <use xlink:href="#pp-icon-build"></use>
+        </svg>
+      </h3>
+      <p>Configurer le robot</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('docs') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-doc">
+          <title>Docs</title>
+          <use xlink:href="#pp-icon-doc"></use>
+        </svg>
+      </h3>
+      <p>Documentation</p>
+    </a>
+  </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('logs') }}" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-assignment">
+          <title>Logs</title>
+          <use xlink:href="#pp-icon-assignment"></use>
+        </svg>
+      </h3>
+      <p>Que s'est-il passé ?</p>
+    </a>
+  </div>
+
+  <div class="large-4 large-offset-4 end medium-6 columns menu-tile">
+    <a onclick="refreshForMsg('{{ url_for('shutdown') }}')" data-equalizer-watch>
+      <h3>
+        <svg class="pp-icon pp-icon-power">
+          <title>Shutdown</title>
+          <use xlink:href="#pp-icon-power"></use>
+        </svg>
+      </h3>
+      <p>Eteindre la {{ info.board }}</p>
+    </a>
+  </div>
+
+</div>
+
+{% include 'defs-svg.html' %}
+
+{% endblock content %}

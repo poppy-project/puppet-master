@@ -8,7 +8,7 @@
       <div class="switch il">
         <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch" onclick="refreshForMsg('{{ url_for('switch_camera') }}')" {% if robot.camera %} checked{% endif %}>
         <label class="switch-paddle" for="camera-switch">
-          <span class="show-for-sr">Toggle Camera</span>
+          <span class="show-for-sr">Camera ON/OFF</span>
         </label>
       </div>
     </h1>
@@ -24,7 +24,7 @@
         <div class="callout" align='middle'>
           <img src="{{ source }}" id="frame" alt="No Frame Found. Check Logs"><br>
         </div>
-        <a class="button button-primary" id="snapshot" href="{{ source }}/saved_in_my_documents" target="_blank" >Take SnapShot</a><br>
+        <a class="button button-primary" id="snapshot" href="{{ source }}/saved_in_my_documents" target="_blank" >Capture</a><br>
     </div>
 </div>
 
