@@ -5,7 +5,7 @@
 <div class="row columns" style="max-width: 1000px; margin: auto">
 
   <div class="section-title" align="center">
-    <h2 style="line-height:2">Bienvenue dans le {{ robot.creature }} Manager</h2>
+    <h2 style="line-height:2">Bienvenue dans le manager de {{ robot.creature | replace("-", " ") | capitalize }}</h2>
     <h4>Configurez votre robot</h4>
   </div>
   <div class="row columns" align="center">
@@ -18,6 +18,7 @@
     </div>
   </div>
 
+  {% if robot.creature == "poppy-ergo-jr" %}
   <div id="getting-started">
 
   <div class="callout">
@@ -48,12 +49,12 @@
 
         <div class="row" align="center">
         <div class="large-4 medium-5 columns">
-          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/<creature>/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="building robot gif">
+          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/<creature>/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="Assemblez votre robot">
         </div>
         <div class="large-8 medium-7 columns">
           <span>Consultez la documentation de votre robot pour suivre les instructions pas-à-pas.</span>
           <div class="large-8 medium-7 row columns menu-tile" align="center">
-            <a target="_blank" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html')}}" title="Documentations d'assemblage mécanique" data-equalizer-watch>
+            <a target="_blank" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html')}}" title="Documentation d'assemblage mécanique" data-equalizer-watch>
               <h3>
               <svg class="pp-icon pp-icon-doc">
                 <title>Docs</title>
@@ -117,7 +118,7 @@
             {% endif %}
             <div class="row" id="config-Logs" style="display:none;">
               <div class="large-12 columns">
-                <pre>> Démarrage de la configuration ...
+                <pre> Démarrage de la configuration ...
                   <code id="configlogs" class="accesslog hljs"></code>
                 </pre>
               </div>
@@ -222,6 +223,7 @@
       </span>
     </div>
   </div>
+  {% endif %}
 
   <div class="row columns" align="center">
     <a class="button" style="width:35%; min-width:250px" align="center" href="{{ url_for('end_opening') }}" onclick="return confirm('Êtes-vous sûr ? Si vous voulez revenir ici plus tard, réactivez la « page de première connexion » dans l\'onglet Paramètres.')">Enfin, amusez-vous ! Aller à la page d'accueil</a>
