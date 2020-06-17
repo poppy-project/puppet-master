@@ -28,7 +28,7 @@
       </a>
       <span id="step1" style="display:none;">
       <div class="columns large-8">
-        <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/electronic-assembly.html' ) }}">Assemblage électronique</a> et <a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/motor-configuration.html#turn-on-the-robot') }}">Connexion</a></h5>
+        <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/electronic-assembly.html' ) }}">Assemblage électronique</a> et <a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/motor-configuration.html#turn-on-the-robot') }}">Connexion</a></h5>
         <p>Si vous êtes ici, cette étape est déjà terminée ! <span style="color:orange;"><svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg> Félicitations ! <svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg></span></p>
       </div>
       <div class="columns large-4">
@@ -45,16 +45,16 @@
       </a>
       <div class="columns" id="step2" style="display:none;">
 
-        <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html' ) }}">Assemblage mécanique</a></h5>
+        <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/mechanical-construction.html' ) }}">Assemblage mécanique</a></h5>
 
         <div class="row" align="center">
         <div class="large-4 medium-5 columns">
-          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/<creature>/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="Assemblez votre robot">
+          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/' + robot.creature + '/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="Assemblez votre robot">
         </div>
         <div class="large-8 medium-7 columns">
           <span>Consultez la documentation de votre robot pour suivre les instructions pas-à-pas.</span>
           <div class="large-8 medium-7 row columns menu-tile" align="center">
-            <a target="_blank" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html')}}" title="Documentation d'assemblage mécanique" data-equalizer-watch>
+            <a target="_blank" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/mechanical-construction.html')}}" title="Documentation d'assemblage mécanique" data-equalizer-watch>
               <h3>
               <svg class="pp-icon pp-icon-doc">
                 <title>Docs</title>
@@ -67,7 +67,7 @@
         </div>
         </div>
 
-      <h5><a target="_blank" title="afficher la documentation" href="http://poppy.local:4000/en/assembly-guides/ergo-jr/motor-configuration.html">Configuration du moteur</a></h5>
+      <h5><a target="_blank" title="afficher la documentation" href='http://{{ robot.name }}.local:4000/en/assembly-guides/ergo-jr/motor-configuration.html'>Configuration du moteur</a></h5>
       <p>Nous devrons d'abord configurer chaque moteur l'un après l'autre : pour chaque moteur, connectez-le seul à la carte Pixl, choisissez son nom et cliquez sur Configurer. Rappelez-vous ensuite le nom que vous avez défini pour ce moteur, il devra être monté au bon endroit.</p>
       <div class="row">
         <div class="large-6 medium-6 columns">
@@ -137,7 +137,7 @@
         <h4 class="section-title">Étape 3: Réveillez et testez votre robot &ensp;<span id="iconStep3" style="font-size: 75%">&#8690;</span> <span id="info-3" style="font-size: 50%">Cliquez pour agrandir</span></h4>
       </a>
       <div class='columns' id="step3" style="display:none;">
-      <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html#step-9---test-your-robot-')}}">Essayons de réveiller et de déplacer votre robot !</a></h5>
+      <h5><a target="_blank" title="afficher la documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/mechanical-construction.html#step-9---test-your-robot-')}}">Essayons de réveiller et de déplacer votre robot !</a></h5>
       <div class="row columns wrap" align="center">
         <div class="callout" style="border-color: grey;">
           <p>Tout d'abord, démarrez l'API pour réveiller le robot, attendez un peu et vérifiez qu'aucune erreur ne se produit :</p>

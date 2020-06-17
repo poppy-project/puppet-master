@@ -27,7 +27,7 @@
       </a>
       <span id="step1" style="display:none;">
       <div class="columns large-8">
-        <h5><a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/electronic-assembly.html' ) }}">Electronic assembly</a> and <a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/motor-configuration.html#turn-on-the-robot') }}">Connection</a></h5>
+        <h5><a target="_blank" title="show documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/electronic-assembly.html' ) }}">Electronic assembly</a> and <a target="_blank" title="show documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/motor-configuration.html#turn-on-the-robot') }}">Connection</a></h5>
         <p>If you are here, this step is already done! <span style="color:orange;"><svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg> Congratulations! <svg class="pp-icon pp-icon-congrat"><use xlink:href="#pp-icon-congrat"></use></svg></span></p>
       </div>
       <div class="columns large-4">
@@ -44,16 +44,16 @@
       </a>
       <div class="columns" id="step2" style="display:none;">
 
-        <h5><a target="_blank" title="show documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html' ) }}">Mechanical assembly</a></h5>
+        <h5><a target="_blank" title="show documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/mechanical-construction.html' ) }}">Mechanical assembly</a></h5>
 
         <div class="row" align="center">
         <div class="large-4 medium-5 columns">
-          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/<creature>/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="Build your robot">
+          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/' + robot.creature + '/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="Build your robot">
         </div>
         <div class="large-8 medium-7 columns">
           <span>Consult the documentation of your robot for step-by-step instructions.</span>
           <div class="large-8 medium-7 row columns menu-tile" align="center">
-            <a target="_blank" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html')}}" title="Mechanical Assembly Documentations" data-equalizer-watch>
+            <a target="_blank" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/mechanical-construction.html')}}" title="Mechanical Assembly Documentation" data-equalizer-watch>
               <h3>
               <svg class="pp-icon pp-icon-doc">
                 <title>Docs</title>
@@ -66,7 +66,7 @@
         </div>
         </div>
 
-      <h5><a target="_blank" title="show documentations" href="http://poppy.local:4000/en/assembly-guides/ergo-jr/motor-configuration.html">Motor configuration</a></h5>
+      <h5><a target="_blank" title="show documentation" href="http://{{ robot.name }}.local:4000/en/assembly-guides/ergo-jr/motor-configuration.html">Motor configuration</a></h5>
       <p>We'll first need to set each motor its name one after the other: for each motor, connect it alone to the Pixl board, pick a name and click on Configure. Then remember the name you set for this motor: it will have to be mounted at the right location.</p>
       <div class="row">
         <div class="large-6 medium-6 columns">
@@ -137,7 +137,7 @@
         <h4 class="section-title">Step 3: Wake up and test your robot &ensp;<span id="iconStep3" style="font-size: 75%">&#8690;</span> <span id="info-3" style="font-size: 50%">click to expand</span></h4>
       </a>
       <div class='columns' id="step3" style="display:none;">
-      <h5><a target="_blank" title="show documentations" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/<creature>/mechanical-construction.html#step-9---test-your-robot-')}}">Let's try to wake up and move your robot!</a></h5>
+      <h5><a target="_blank" title="show documentation" href="{{ url_for( 'docs_page_content', page_path='assembly-guides/' + robot.creature + '/mechanical-construction.html#step-9---test-your-robot-')}}">Let's try to wake up and move your robot!</a></h5>
       <div class="row columns wrap" align="center">
         <div class="callout" style="border-color: grey;">
           <p>First, start the API in order to wake up the robot, wait a bit and check that no error happens:</p>
