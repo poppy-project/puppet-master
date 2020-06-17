@@ -5,7 +5,7 @@
 <div class="row columns" style="max-width: 1000px; margin: auto">
 
   <div class="section-title" align="center">
-    <h2 style="line-height:2">Welcome to {{ robot.creature }} Manager</h2>
+    <h2 style="line-height:2">Welcome to the {{ robot.creature | replace("-", " ") | capitalize }} manager</h2>
     <h4>Setup your robot</h4>
   </div>
   <div class="row columns" align="center">
@@ -18,8 +18,8 @@
     </div>
   </div>
 
+  {% if robot.creature == "poppy-ergo-jr" %}
   <div id="getting-started">
-
   <div class="callout">
     <div class="row columns">
       <a id="linkStep1" onclick="openStep(1)" title="Open Step">
@@ -48,7 +48,7 @@
 
         <div class="row" align="center">
         <div class="large-4 medium-5 columns">
-          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/<creature>/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="building robot gif">
+          <img class="callout" style="width:100%" src="{{ url_for( 'docs_img_content', img_path='assembly-guides/<creature>/img/assembly/steps/ErgoJr_assembly.gif')}}" alt="Build your robot">
         </div>
         <div class="large-8 medium-7 columns">
           <span>Consult the documentation of your robot for step-by-step instructions.</span>
@@ -115,9 +115,10 @@
             {% else %}
               <p>No Poppy creature seems to be installed on the robot.</p>
             {% endif %}
+
             <div class="row" id="config-Logs" style="display:none;">
               <div class="large-12 columns">
-                <pre>> Start configuration...
+                <pre> Start configuration...
                   <code id="configlogs" class="accesslog hljs"></code>
                 </pre>
               </div>
@@ -222,6 +223,7 @@
       </span>
     </div>
   </div>
+  {% endif %}
 
   <div class="row columns" align="center">
     <a class="button" style="width:35%; min-width:250px" align="center" href="{{ url_for('end_opening') }}" onclick="return confirm('Are you sure? If you need to come back here later, re-activate «first connection page» in the settings tab.')">Finally, enjoy! Go to Home</a>
