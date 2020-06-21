@@ -34,7 +34,7 @@
           <div class="large-7 columns">
             <div class="input-group">
               <span class="input-group-label" style="height:2rem">http://</span>
-              <input id="robot-hostname" type="text" class="input-group-field" style="height:2rem" placeholder={{ robot.name }}>
+              <input id="robot-hostname" type="text" class="input-group-field" style="height:2rem" placeholder="poppy" value="{{ robot.name }}">
               <span class="input-group-label" style="height:2rem">.local</span>
             </div>
           </div>
@@ -58,7 +58,7 @@
                   <use xlink:href="#pp-icon-broadcast"></use>
                 </svg>
               </span>
-              <input id="robot-hotspot-ssid" type="text" class="input-group-field" style="height:2rem" placeholder={{ hotspot.ssid }}>
+              <input id="robot-hotspot-ssid" type="text" class="input-group-field" style="height:2rem" placeholder="POPPY_ROBOT" value="{{ hotspot.ssid }}">
             </div>
           </div>
           <div class="large-3 columns">
@@ -68,7 +68,7 @@
                   <use xlink:href="#pp-icon-key"></use>
                 </svg>
               </span>
-              <input id="robot-hotspot-psk" type="text" class="input-group-field" style="height:2rem" placeholder={{ hotspot.psk }}>
+              <input id="robot-hotspot-psk" type="text" class="input-group-field" style="height:2rem" placeholder="POPPY_ROBOT" value="{{ hotspot.psk }}">
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
                   <use xlink:href="#pp-icon-wifi"></use>
                 </svg>
               </span>
-              <input id="robot-wifi-ssid" type="text" class="input-group-field" style="height:2rem" placeholder={{ wifi.ssid }}>
+              <input id="robot-wifi-ssid" type="text" class="input-group-field" style="height:2rem" placeholder="MON_WIFI" value="{{ wifi.ssid }}">
             </div>
           </div>
           <div class="large-3 columns">
@@ -101,7 +101,7 @@
                   <use xlink:href="#pp-icon-key"></use>
                 </svg>
               </span>
-              <input id="robot-wifi-psk" type="text" class="input-group-field" style="height:2rem" placeholder={{ wifi.psk }}>
+              <input id="robot-wifi-psk" type="text" class="input-group-field" style="height:2rem" placeholder="MON_PASSWORD" value="{{ wifi.psk }}">
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@
   <div class="large-12 columns">
     <div class="callout">
       <span  class="section-title"><a onclick="openStep('Starting')"><h4>Configurer le démarrage &emsp;<span id="openButton-Starting" style="font-size: 80%">&#8690;</span></h4></a></span>
-      <div id="step-Starting" style="display: none;" align='right'>
+      <div id="step-Starting" style="display: none;">
         <div class="large-10 columns">
           <h4>
             Page de première connexion
@@ -175,7 +175,7 @@
           </div>
           <div class="large-2 columns">
             <div class="input-group">
-              <input id="nb-bot" type="text" class="input-group-field" placeholder={{ robot.virtualBot }}>
+              <input id="nb-bot" type="text" class="input-group-field" placeholder="1" value="{{ robot.virtualBot }}">
               <span class="input-group-label">robots</span>
             </div>
           </div>
@@ -279,7 +279,7 @@
           </div>
         </div>
         <div class="large-3 columns">
-          <a href={{ url_for('update') }}>
+          <a href="{{ url_for('update') }}">
             <button type="button" class="button"  style="width: 100%;">Démarrer<br>la mise à jour </button>
           </a>
         </div>

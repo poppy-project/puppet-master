@@ -64,7 +64,7 @@
         <form>
            <div class="input-group">
               <span class="input-group-label">Record Name</span>
-              <input title="Give name for record" id="record-move_name" type="text" class="input-group-field" placeholder="move_name" style="font-size:80%">
+              <input title="Give name for record" id="record-move_name" type="text" class="input-group-field" placeholder="move_name" value="move_name" style="font-size:80%">
            </div>
         </form>
         <div>
@@ -180,7 +180,6 @@ function state_record(state){
         buttonRecord.setAttribute("class", "button success");
         buttonRecord.setAttribute("onclick", "state_record(true)");
         buttonRecord.innerHTML = 'START Record';
-        recordName.setAttribute("placeholder", "Same name to overwrite");
         recordName.value = '';
         recordName.removeAttribute("readonly");
     };
