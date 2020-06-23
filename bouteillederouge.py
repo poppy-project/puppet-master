@@ -76,7 +76,7 @@ if pm.config.robot.autoStart:
     pm.start()
 else:
     with open(pm.config.info.logfile, 'w') as log:
-        log.write('Auto-start API disable ! \nShow configuration page for enable auto-start, or start manually.')
+        log.write('Robot API autostart is disabled! \nGo to the configuration page to enable autostart, or start it manually.')
         log.close()
 
 number=int(pm.config.robot.virtualBot)
