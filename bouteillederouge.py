@@ -351,7 +351,7 @@ def restart_services():
     flash(flash_msg['services_restart'][pm.config.info.langage], 'success')
     return ('', 204)
 
-@app.route('/APIreset')
+@app.route('/api/rest')
 def APIreset():
     if pm.running:
         pm.stop()
@@ -359,7 +359,7 @@ def APIreset():
     flash(flash_msg['api_set'][pm.config.info.langage].format('restart'), 'success')
     return ('', 204)
 
-@app.route('/APIstart', methods=['GET', 'POST'])
+@app.route('/api/start', methods=['GET', 'POST'])
 def APIstart():
     if request.method == 'POST':
         if request.form['dialog'] == 'quiet':
@@ -376,7 +376,7 @@ def APIstart():
         flash(flash_msg['api_set'][pm.config.info.langage].format('start'), 'success')
     return ('', 204)
 
-@app.route('/APIstop')
+@app.route('/api/stop')
 def APIstop():
     if pm.running:
         pm.stop()
