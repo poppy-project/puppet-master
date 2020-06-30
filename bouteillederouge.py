@@ -351,7 +351,7 @@ def restart_services():
     flash(flash_msg['services_restart'][pm.config.info.langage], 'success')
     return ('', 204)
 
-@app.route('/api/rest')
+@app.route('/api/reset')
 def APIreset():
     if pm.running:
         pm.stop()
