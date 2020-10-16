@@ -185,13 +185,13 @@ def docs_log():
 @app.route('/monitoring')
 def monitoring():
     if not pm.running:
-        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('monitor and control', url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Monitor &amp; Control', url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(pm.config.info.langage+'/monitoring.html')
 
 @app.route('/monitoring/monitor')
 def monitor():
     if not pm.running:
-        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Primitive manager',url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Primitive Manager',url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src=url_for(
@@ -207,7 +207,7 @@ def base_static_monitor(filename):
 @app.route('/monitoring/recorder')
 def move_recorder():
     if not pm.running:
-        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('move recorder',url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Move Recorder',url_for('logs'),url_for('APIstart'))), 'alert')
         connect=False
         source=None
     else:
@@ -223,7 +223,7 @@ def move_recorder():
 @app.route('/monitoring/visualisator')
 def viewer():
     if not pm.running:
-        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('web viewer',url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Web Viewer',url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src='http://{}:{}/{}/#{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.viewer, pm.config.robot.creature, pm.config.poppyPort.http)
@@ -236,7 +236,7 @@ def multiview():
 @app.route('/monitoring/camera')
 def camera():
     if not pm.running:
-        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('web camera', url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Web Camera', url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template('camera.html', source='http://{}:{}/frame.png'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.snap), FPS=6)
 
 @app.route('/programming')
@@ -246,7 +246,7 @@ def programming():
 @app.route('/programming/snap')
 def snap():
     if not pm.running:
-        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('<i>Snap!</i>', url_for('logs'),url_for('APIstart'))), 'alert')
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Snap', url_for('logs'),url_for('APIstart'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src=url_for('base_static_snap', filename='snap.html')
@@ -260,13 +260,13 @@ def base_static_snap(filename):
 def jupyter():
     default_notebook= 'http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Discover%20your%20{}.ipynb'.format( urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter, pm.config.robot.creature.replace('-',' ').title().replace(' ','%20'))
     if pm.running:
-        flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format(url_for('logs'),url_for('APIstop'))), 'alert')
+        flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format("Jupyter Notebook", url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template('base-iframe.html', iframe_src=default_notebook)
 
 @app.route('/programming/AnotherLanguage')
 def AnotherLanguage():
     if pm.running:
-        flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format(url_for('logs'),url_for('APIstop'))), 'alert')
+        flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format("another programming language", url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template('base-iframe.html', iframe_src='http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Another%20language.ipynb'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter))
 
 @app.route('/MyDocuments')
