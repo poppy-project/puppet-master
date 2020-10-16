@@ -8,23 +8,23 @@
         "EN" : "> API is <b>not running</b>! Start before use {}. &nbsp; > Show <a href=\"{}\">logs</a> or <a onclick=\"refreshForMsg(\"{}\")\">start it</a> now."
         },
     "api_set" : {
-        "FR" : "> L'API du robot a été <i>{}</i>.",
+        "FR" : "> L'API du robot est maintenant à l'état \"{}\"",
         "EN" : "> Your robot's API has been {}ed."
         },
     "api_already_set" : {
-        "FR" : "> L'API du robot est déjà <i>{}</i>.",
+        "FR" : "> L'API du robot est déjà à l'état \"{}\"",
         "EN" : "> Your robot's API has already been {}ed."
         },
     "camera_set" : {
-        "FR" : "> La camera du robot est maintenant en mode {}!",
-        "EN" : "> Your robot camera is now turned {}!"
+        "FR" : "> La camera du robot est maintenant à l'état \"{}\"",
+        "EN" : "> Your robot camera is now turned {}"
         },
     "clone_launch" : {
         "FR" : "> {} instance(s) suplémentaire(s) ont été lancée(s)",
         "EN" : "> {} more instance(s) were launched"
         },
     "lang" : {
-        "FR" : "> Seules quelques pages sont actuellement traduites. Merci de votre compréhension.",
+        "FR" : "> Il manque encore quelques traductions françaises à votre robot. Merci de votre compréhension.",
         "EN" : "None"
         },
     "changed" : {
@@ -48,7 +48,7 @@
         "EN" : "> All services will be restarted in few seconds"
         },
     "rasp" : {
-        "FR" : "> Votre {} va maintenant être <i>{}</i> dans quelques secondes",
+        "FR" : "> Votre {} va maintenant passer à l'état \"{}\" dans quelques secondes",
         "EN" : "> Your {} will now be {}ed in a few seconds."
         },
     "update" : {
