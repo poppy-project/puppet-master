@@ -1,11 +1,11 @@
 {
     "api_is_start" : {
-        "FR" : "> L'API est <b>déjà démarrée</b>! Arrêtez-la avant d'utiliser {}.<br>> Consultez <a href=\"{}\">les logs</a> ou <a onclick=\"refreshForMsg(\"{}\")\">arrêtez-la</a> maintenant.",
-        "EN" : "> API is <b>already running</b>! Stop it before instanciating the robot with Python. &nbsp; > Show <a href=\"{}\">logs</a> or <a onclick=\"refreshForMsg(\"{}\")\">stop it</a> now."
+        "FR" : "> L'API est <b>déjà démarrée</b>! Arrêtez-la avant d'utiliser {}.<br>> Consultez <a href=\"{}\">les logs</a> ou <a onclick='refreshForMsg(\"{}\")'>arrêtez-la</a> maintenant.",
+        "EN" : "> API is <b>already running</b>! Stop it before instanciating the robot with Python. &nbsp; > Show <a href=\"{}\">logs</a> or <a onclick='refreshForMsg(\"{}\")'>stop it</a> now."
         },
     "api_is_stop" : {
-        "FR" : "> L'API <b>n'est pas démarrée</b>! Démarrez-la avant d'utiliser {}.<br>> Consultez <a href=\"{}\">les logs</a> ou <a onclick=\"refreshForMsg(\"{}\")\">démarrez-la</a> maintenant.",
-        "EN" : "> API is <b>not running</b>! Start before use {}. &nbsp; > Show <a href=\"{}\">logs</a> or <a onclick=\"refreshForMsg(\"{}\")\">start it</a> now."
+        "FR" : "> L'API <b>n'est pas démarrée</b>! Démarrez-la avant d'utiliser {}.<br>> Consultez <a href=\"{}\">les logs</a> ou <a onclick='refreshForMsg(\"{}\")'>démarrez-la</a> maintenant.",
+        "EN" : "> API is <b>not running</b>! Start before use {}. &nbsp; > Show <a href=\"{}\">logs</a> or <a onclick='refreshForMsg(\"{}\")'>start it</a> now."
         },
     "api_set" : {
         "FR" : "> L'API du robot est maintenant à l'état \"{}\"",
