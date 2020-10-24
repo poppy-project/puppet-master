@@ -17,13 +17,13 @@ hotspot:
   start: on
   confFile: /boot/hotspot.txt
   ssid: Poppy-Hotspot
-  psk: poppy-project
+  psk: poppyproject
 
 wifi:
   start: off
   confFile: /etc/wpa_supplicant/wpa_supplicant.conf
-  ssid: Poppy-Router
-  psk: poppy-project
+  ssid: My-Router
+  psk: my-psk
 
 services:
   PuppetMaster: puppet-master.service
