@@ -23,7 +23,6 @@
     </a>
   </div>
 
-  {% if robot.creature == "poppy-ergo-jr" %}
   <div class="large-6 medium-6 columns menu-tile">
     <a href="{{ url_for('move_recorder') }}" data-equalizer-watch>
       <h3>
@@ -35,7 +34,8 @@
       <p>Move recorder</p>
     </a>
   </div>
-
+  
+  {% if robot.creature == "poppy-ergo-jr" %}
   <div class="large-6 medium-6 columns menu-tile">
     <a href="{{ url_for('viewer') }}" data-equalizer-watch>
       <h3>
