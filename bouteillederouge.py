@@ -269,6 +269,20 @@ def AnotherLanguage():
         flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format("another programming language", url_for('logs'),url_for('APIstop'))), 'alert')
     return render_template('base-iframe.html', iframe_src='http://{}:{}/notebooks/My%20Documents/Python%20notebooks/Another%20language.ipynb'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter))
 
+@app.route('/programming/scratch')
+def scratch():
+    if not pm.running:
+        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Scratch', url_for('logs'),url_for('APIstart'))), 'alert')
+    return render_template(
+        'base-iframe.html',
+        iframe_src=url_for('base_static_scratch', filename='index.html')
+    )
+
+@app.route('/programming/scratch/<path:filename>')
+def base_static_scratch(filename):
+    path=app.root_path.replace('/puppet-master','')
+    return send_from_directory(path + '/scratch/', filename)
+
 @app.route('/MyDocuments')
 def MyDoc():
     return render_template('base-iframe.html', iframe_src='http://{}:{}/tree/My%20Documents'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.jupyter))
