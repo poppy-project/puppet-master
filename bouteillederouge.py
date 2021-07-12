@@ -271,8 +271,9 @@ def AnotherLanguage():
 
 @app.route('/programming/scratch')
 def scratch():
-    if not pm.running:
-        flash(Markup(flash_msg['api_is_stop'][pm.config.info.langage].format('Scratch', url_for('logs'),url_for('APIstart'))), 'alert')
+    if pm.running:
+        flash(Markup(flash_msg['api_is_start'][pm.config.info.langage].format("Scratch", url_for('logs'),
+                                                                              url_for('APIstop'))), 'alert')
     return render_template(
         'base-iframe.html',
         iframe_src=url_for('base_static_scratch', filename='index.html')
