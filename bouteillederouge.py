@@ -346,7 +346,7 @@ def terminal():
 @app.route('/reboot')
 def reboot():
     pm.reboot()
-    flash(flash_msg['rasp'][pm.config.info.langage].format(pm.config.info.board, 'REBOOT'), 'success')
+    flash(flash_msg['rasp'][pm.config.info.langage].format(pm.config.info.board, 'reboot'), 'success')
     return ('', 204)
 
 @app.route('/logs')
@@ -470,7 +470,7 @@ def ready_to_roll():
 @app.route('/shutdown')
 def shutdown():
     pm.shutdown()
-    flash(flash_msg['rasp'][pm.config.info.langage].format(pm.config.info.board, 'HALTED'), 'success')
+    flash(flash_msg['rasp'][pm.config.info.langage].format(pm.config.info.board, 'halt'), 'success')
     return ('', 204)
 
 @app.route('/api/raw_logs', methods=['POST'])
