@@ -9,7 +9,7 @@ from threading import Thread
 from poppyd import PoppyDaemon
 from config import Config, attrsetter
 from pypot.creatures import installed_poppy_creatures
-from pypot.server.snap import find_local_ip
+
 
 class PuppetMaster(object):
     def __init__(self, DaemonCls, configfile, pidfile):
@@ -31,6 +31,7 @@ class PuppetMaster(object):
         }
         self._updating = False
         self.nb_clone = 0
+        self.ros_started = False
 
     def start(self):
         self.daemon.start()
@@ -74,15 +75,16 @@ class PuppetMaster(object):
 
         if self.running:
             self.stop()
-            flag=True
+            flag = True
         else:
-            flag=False
+            flag = False
 
         if os.path.exists(self.config.poppyLog.update):
             os.remove(self.config.poppyLog.update)
         success = check_call(['poppy-update'])
 
-        if flag: self.start()
+        if flag:
+            self.start()
 
         self._updating = False
 
@@ -97,9 +99,9 @@ class PuppetMaster(object):
         call(['sudo', 'hostnamectl', 'set-hostname', name])
 
     def restart_network(self):
-        call(['sudo', 'systemctl', 'restart', 'networking.service']) #needed for change hostname
-        call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service']) #needed for change hostname
-        call(['sudo', 'systemctl', 'restart', self.config.info.serviceNetwork ]) #needed for change wifi or hotspot
+        call(['sudo', 'systemctl', 'restart', 'networking.service'])  # needed for change hostname
+        call(['sudo', 'systemctl', 'restart', 'avahi-daemon.service'])  # needed for change hostname
+        call(['sudo', 'systemctl', 'restart', self.config.info.serviceNetwork])  # needed for change wifi or hotspot
         if self.running:
             self.restart()
 
@@ -113,37 +115,37 @@ class PuppetMaster(object):
     def _configure_motors(self, motor):
         if self.running:
             self.stop()
-            flag=True
+            flag = True
         else:
-            flag=False
+            flag = False
 
         creature = self.config.robot.creature.split('poppy-')[1]
-        with open(self.config.poppyLog.configMotor,"wb") as f:
+        with open(self.config.poppyLog.configMotor, "wb") as f:
             check_call(['poppy-configure', creature, motor], stdout=f, stderr=f)
             f.close()
 
         if flag: self.start()
 
     def _set_wifi(self, state):
-        tmp_file='/tmp/tmp.txt'
+        tmp_file = '/tmp/tmp.txt'
         with open(tmp_file, 'w') as f:
-            #tricks to pass through of the permission denied in conf file
+            # tricks to pass through of the permission denied in conf file
             call(['sudo', 'cat', self.config.wifi.confFile], stdout=f)
             f.close()
         with open(tmp_file, 'r') as f:
             data = f.readlines()
             f.close()
         if state:
-            add= [
+            add = [
                 '#default_Network\n',
                 'network={\n',
                 '\tssid=\"{}\"\n'.format(self.config.wifi.ssid),
                 '\tpsk=\"{}\"\n'.format(self.config.wifi.psk),
                 '}\n'
             ]
-            data+=add
+            data += add
         else:
-            for i,line in enumerate(data):
+            for i, line in enumerate(data):
                 if '#default_Network' in line:
                     for _ in range(5):
                         del data[i]
@@ -155,12 +157,12 @@ class PuppetMaster(object):
 
     def _change_wifi(self, _):
         if self.config.wifi.start:
-            self._set_wifi(False)#remove old config
-            self._set_wifi(True)#set new config
+            self._set_wifi(False)  # remove old config
+            self._set_wifi(True)  # set new config
 
     def _set_hotspot(self, _):
         if self.config.hotspot.start:
-            tmp_file='/tmp/tmp.txt'
+            tmp_file = '/tmp/tmp.txt'
             with open(tmp_file, 'w') as f:
                 f.write('ssid={}\npassphrase={}\n'.format(self.config.hotspot.ssid, self.config.hotspot.psk))
                 f.close()
@@ -177,39 +179,39 @@ class PuppetMaster(object):
         nb_try = 0
         status = 'occuped'
         while status == 'occuped':
-            nb_try+=1
-            http+=1
-            snap+=1
-            ws+=1
+            nb_try += 1
+            http += 1
+            snap += 1
+            ws += 1
             try:
                 requests.get('http://localhost:{}'.format(http))
             except:
                 status = 'free'
-        for nb in range (number):
-            with open(self.config.poppyLog.virtualBot.replace('.log', '_{}.log'.format(nb+nb_try)), 'wb') as f:
+        for nb in range(number):
+            with open(self.config.poppyLog.virtualBot.replace('.log', '_{}.log'.format(nb + nb_try)), 'wb') as f:
                 try:
                     Popen(['poppy-services', '--poppy-simu', '--no-browser',
                            '--http', '--http-port', str(http),
                            '--snap', '--snap-port', str(snap),
                            '--ws', '--ws-port', str(ws),
                            self.config.robot.creature],
-                           stdout=f, stderr=f)
+                          stdout=f, stderr=f)
                     f.close()
                 except:
-                    f.write('>> ERROR <<')
+                    f.write(bytes(">> ERROR <<", 'utf-8'))
                     f.close()
                     return 'ECHEC'
-            self.nb_clone+=1
-            http+=1
-            snap+=1
-            ws+=1
+            self.nb_clone += 1
+            http += 1
+            snap += 1
+            ws += 1
 
     def restart_services(self):
         def delayed_restart_services(command, sec=2):
             time.sleep(sec)
             call(command)
 
-        cmd=['sudo','systemctl','restart']
+        cmd = ['sudo', 'systemctl', 'restart']
         for service in self.config.services.as_dict().values():
             cmd.append(service)
 
@@ -228,8 +230,8 @@ class PuppetMaster(object):
         def delayed_halt(sec=3):
             time.sleep(sec)
             call(['sudo', 'reboot'])
-        Thread(target=delayed_halt).start()
 
+        Thread(target=delayed_halt).start()
 
     def shutdown(self):
         try:
@@ -244,6 +246,7 @@ class PuppetMaster(object):
         def delayed_halt(sec=3):
             time.sleep(sec)
             call(['sudo', 'halt'])
+
         Thread(target=delayed_halt).start()
 
     def get_motors(self, alias='motors'):
