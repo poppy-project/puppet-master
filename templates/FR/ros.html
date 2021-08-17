@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <div class="large-10 medium-10 row">
+      <div class="large-12 medium-12 columns section-title">
+        <h3>Contrôler votre Ergo Jr avec ROS</h3>
+      </div>
+
+      <h4>Qu'est ce que ROS ?</h4>
+        Robot Operating System (ROS) est une plateforme de développement logicielle pour robot. Il s'agit d'un
+        méta-système d'exploitation qui peut fonctionner sur un ou plusieurs ordinateurs et qui fournit plusieurs
+        fonctionnalités : abstraction du matériel, contrôle des périphériques de bas niveau, mise en œuvre de
+        fonctionnalités couramment utilisées, transmission de messages entre les processus et gestions des packages
+        installés [<a href="https://fr.wikipedia.org/wiki/Robot_Operating_System#Description">Wikipédia</a>].<br>
+
+      <h4>Comment contrôler votre Ergo Jr avec ROS ?</h4>
+        Pour contrôler votre robot avec ROS, vous allez démarrer le ROS Master et le package ROS poppy_controllers, ce
+        qui vous permettra d'accéder aux services ROS de l'Ergo Jr. <br>
+
+        Pour lancer le ROS Master et les services ROS de Poppy, cliquez simplement sur le bouton ci-dessous. Attention,
+        vous devez arrêtez l'API avant de lancer ROS.<br>
+
+        Sur le pc avec lequel vous voulez contrôler votre Ergo Jr, définissez la variable ROS_MASTER_URI avec :
+        <code>export ROS_MASTER_URI=http://poppy.local:11311</code>. Vous pourrez ensuite lancer Rviz ou bien accéder
+        aux différents services de l'Ergo Jr avec <code>rosservice</code> (en ligne de commande).
+
+      <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+        <a class="button button-primary" id="start-ros" onclick="refreshForMsg('{{ url_for('rosstart') }}')" style="margin: 4px; padding-right: 40px; padding-left: 40px;">Démarrer ROS</a>
+        <a class="button button-primary" id="stop-ros" onclick="refreshForMsg('{{ url_for('rosstop') }}')" style="margin: 4px; padding-right: 40px; padding-left: 40px;">Arrêter ROS</a>
+      </div>
+    </div>
+
+{% endblock content %}

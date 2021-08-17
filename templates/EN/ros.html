@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <div class="large-10 medium-10 row">
+      <div class="large-12 medium-12 columns section-title">
+        <h3>Control your Ergo Jr with ROS</h3>
+      </div>
+
+      <h4>What is ROS ?</h4>
+      Robot Operating System (ROS) is an open-source, meta-operating system for your robot. It provides the services you
+      would expect from an operating system, including hardware abstraction, low-level device control, implementation of
+      commonly-used functionality, message-passing between processes, and package management. It also provides tools and
+      libraries for obtaining, building, writing, and running code across multiple computers
+      [<a href="http://wiki.ros.org/ROS/Introduction">http://wiki.ros.org</a>].<br>
+
+      <h4>How to control your Ergo Jr with ROS ?</h4>
+      To control your robot with ROS, you will need to run the ROS master and the poppy_controllers package which allows
+        you to access ROS services from your Ergo Jr. <br>
+
+      To run the ROS master and the Poppy services, simply click on the button below. Please note that you must stop the
+      API first.<br>
+
+      Set the variable ROS_MASTER_URI on the pc you want to control your Ergo Jr with:
+      <code>export ROS_MASTER_URI=http://poppy.local:11311</code>. You can then launch Rviz or access the different services of
+      the Poppy with <code>rosservice</code> (command line).
+
+      <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+        <a class="button button-primary" id="start-ros" onclick="refreshForMsg('{{ url_for('rosstart') }}')" style="margin: 4px; padding-right: 40px; padding-left: 40px;">Start ROS</a>
+        <a class="button button-primary" id="stop-ros" onclick="refreshForMsg('{{ url_for('rosstop') }}')" style="margin: 4px; padding-right: 40px; padding-left: 40px;">Stop ROS</a>
+      </div>
+    </div>
+
+{% endblock content %}
