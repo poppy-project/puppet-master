@@ -59,7 +59,7 @@ Logs for real robot <span id="show-switch_0" style="visibility:hidden" onclick="
       </div>
     </div>
     &emsp;
-    {%- for nb in range(1,clone+1) %}
+    {%- for nb in range(1, clone + 1) %}
     <div class="row">
       <div class="large-12 columns">
         <pre>
@@ -140,7 +140,30 @@ Logs for jupyter service <span id="show-switch_-3" style="visibility:hidden" onc
     </div>
   </div>
 </div>
-&emsp;
+<div class="large-10 medium-10 row">
+  <div class="callout">
+    <div class="row">
+      <div class="columns">
+        <h3>> ROS service</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns">
+        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-ros" href='{{ url_for('ros') }}'>Open ROS page</a>
+      </div>
+    </div>
+    &emsp;
+    <div class="row">
+      <div class="large-12 columns">
+        <pre>
+Logs for ROS service <span id="show-switch_-4" style="visibility:hidden" onclick="switchShow(-4)">(<a>show more logs</a>)</span>
+<code style="max-height:145px; overflow-y:hidden;" id="logs_-4" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-4" onclick="downloadLogs(-4)">Save this log</a>
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="large-10 medium-10 row" align="center">
     <div class="large-3 medium-6 small-6 columns">
         <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open a Terminal</a><br>
@@ -160,12 +183,12 @@ Logs for jupyter service <span id="show-switch_-3" style="visibility:hidden" onc
 
 {% block endscript %}
 <script>
-var timeOut;
+let timeOut;
 
 function refreshLogs() {
-  for (i = -3; i < {{ clone+1 }} ; i++) {
+  for (let i = -4; i < {{ clone + 1 }} ; i++) {
       getLogs(i);
-  };
+  }
   startTimeout();
 }
 
@@ -196,7 +219,7 @@ function switchShow(id) {
         showElement.style.maxHeight = "145px";
         showElement.style.overflowY = "hidden";
         showSwitch.innerHTML = "(<a>show more logs</a>)";
-    };
+    }
 }
 
 function downloadLogs(id) {
@@ -214,8 +237,8 @@ function startTimeout() {
 startTimeout();
 
 function clone() {
-    var new_clone =  document.getElementById('new_clone').value;
-    if (new_clone == ''){new_clone=1};
+    let new_clone = document.getElementById('new_clone').value;
+    if (new_clone === ''){new_clone=1};
     $.post('{{ url_for('clone') }}', {nb:new_clone}, function() {window.location.reload();})
 }
 
