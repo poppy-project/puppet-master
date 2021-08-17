@@ -258,6 +258,25 @@ class PuppetMaster(object):
         r = requests.post(url.format(self.config.poppyPort.http, motor, register), json=value)
         return r
 
+    def manage_ros_service(self, command):
+        """
+        Starts or stops the poppy_controllers service to control your Ergo Jr with ROS.
+        :param command: can be "start", "stop" or "restart".
+        :return:
+        """
+        def delayed_roslaunch(cmd, sec=1):
+            time.sleep(sec)
+            call(['sudo', 'systemctl', cmd, 'ros-poppy_controllers.service'])
+        if command == 'start' or 'restart':
+            self.ros_started = True
+        elif command == 'stop':
+            self.ros_started = False
+        Thread(target=delayed_roslaunch(cmd=command, sec=0)).start()
+
+    @property
+    def ros_is_running(self):
+        return self.ros_started
+
 
 if __name__ == '__main__':
     import sys
