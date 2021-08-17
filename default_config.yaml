@@ -37,6 +37,7 @@ poppyLog:
   update: /tmp/poppy-update.log
   docs: /tmp/poppy-docs.log
   viewer: /tmp/poppy-viewer.log
+  poppyControllers: /tmp/ros-poppy_controllers.log
   virtualBot: /tmp/virtual-bot.log
   configMotor: /tmp/motor-config.log
 
@@ -56,4 +57,5 @@ version:
   snap: 5.4.5
   viewer: 1.0.0
   docs: 1.0.0
+  ros: noetic
   monitor: 1.0.0
