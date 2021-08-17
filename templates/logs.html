@@ -2,245 +2,245 @@
 
 {% block content %}
 
-<div class="large-10 medium-10 row">
-  <div class="columns section-title">
-    <h1>What happened?</h1>
-  </div>
-</div>
-<div class="large-10 medium-10 row">
-  <div class="callout">
-    <div class="row">
-      <div class="columns">
-        <h3>> Real Robot</h3>
-      </div>
-    </div>
-    <div class="row">
-      <div class="large-6 medium-9 small-9 columns">
-        <a class="button button-primary" style="width: 30%; min-width:150px" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
-        <a class="button button-primary" style="width: 30%; min-width:150px" id="APIreset" onclick="refreshForMsg('{{ url_for('APIreset') }}')">Reboot Robot API</a>
-        <a class="button button-primary" style="width: 30%; min-width:150px" id="APIstop" onclick="refreshForMsg('{{ url_for('APIstop') }}')">Stop Robot API</a>
-      </div>
-      <div class="large-3 medium-3 small-3 columns" align="right">
-        <h4>Toggle camera</h4>
-        <div class="switch il">
-          <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch" onclick="refreshForMsg('{{ url_for('switch_camera') }}')" {% if robot.camera %} checked{% endif %}>
-          <label class="switch-paddle" for="camera-switch">
-            <span class="show-for-sr">Toggle Camera</span>
-          </label>
+    <div class="large-10 medium-10 row">
+        <div class="columns section-title">
+            <h1>What happened?</h1>
         </div>
-      </div>
     </div>
-    <div class="row">
-      <div class="large-12 columns">
+    <div class="large-10 medium-10 row">
+        <div class="callout">
+            <div class="row">
+                <div class="columns">
+                    <h3>> Real Robot</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 medium-9 small-9 columns">
+                    <a class="button button-primary" style="width: 30%; min-width:150px" id="APIstart" onclick="refreshForMsg('{{ url_for('APIstart') }}')">Start Robot API</a>
+                    <a class="button button-primary" style="width: 30%; min-width:150px" id="APIreset" onclick="refreshForMsg('{{ url_for('APIreset') }}')">Reboot Robot API</a>
+                    <a class="button button-primary" style="width: 30%; min-width:150px" id="APIstop" onclick="refreshForMsg('{{ url_for('APIstop') }}')">Stop Robot API</a>
+                </div>
+                <div class="large-3 medium-3 small-3 columns" align="right">
+                    <h4>Toggle camera</h4>
+                    <div class="switch il">
+                        <input class="switch-input" id="camera-switch" type="checkbox" name="camera-switch" onclick="refreshForMsg('{{ url_for('switch_camera') }}')" {% if robot.camera %} checked{% endif %}>
+                        <label class="switch-paddle" for="camera-switch">
+                            <span class="show-for-sr">Toggle Camera</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
         <pre>
 Logs for real robot <span id="show-switch_0" style="visibility:hidden" onclick="switchShow(0)">(<a>show more logs</a>)</span>
 <code style="min-height:130px; max-height:145px; overflow-y:hidden;" id="logs_0" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_0" onclick="downloadLogs(0)">Save this log</a>
         </pre>
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<div class="large-10 medium-10 row">
-<div class="callout">
-    <div class="row columns">
-        <h3>&gt; Virtual instances of robot</h3>
-      </div>
-    <div class="row columns">
-        <div class="input-group" style="width: 45%; min-width: 300px;">
-          <span class="button button-primary input-group-button" type="button" onclick="clone()" style="width: 40%; min-width:105px">Launch</span>
-          <input id="new_clone" type="number" min="1" class="input-group-field" placeholder="1" value="1" style="text-align:right; min-width:40px">
-          <span class="input-group-label" style="text-align:center; width: 45%; font-size:90%">additional instance(s)</span>
-      </div>
-    </div>
-    <div class="row columns">
-        <div class="input-group" style="width: 45%; min-width: 300px;">
-            <span style="width: 40%;" class="input-group-button"><a class="button button-primary" style="width: 100%;" id="open-multiview" href="/monitoring/visualisator/multiview">Open Multiview</a></span>
-          <span class="input-group-label" style="width: 60%;">{{ clone }} instances are running</span>
-      </div>
-    </div>
-    &emsp;
-    {%- for nb in range(1, clone + 1) %}
-    <div class="row">
-      <div class="large-12 columns">
+    <div class="large-10 medium-10 row">
+        <div class="callout">
+            <div class="row columns">
+                <h3>&gt; Virtual instances of robot</h3>
+            </div>
+            <div class="row columns">
+                <div class="input-group" style="width: 45%; min-width: 300px;">
+                    <span class="button button-primary input-group-button" type="button" onclick="clone()" style="width: 40%; min-width:105px">Launch</span>
+                    <input id="new_clone" type="number" min="1" class="input-group-field" placeholder="1" value="1" style="text-align:right; min-width:40px">
+                    <span class="input-group-label" style="text-align:center; width: 45%; font-size:90%">additional instance(s)</span>
+                </div>
+            </div>
+            <div class="row columns">
+                <div class="input-group" style="width: 45%; min-width: 300px;">
+                    <span style="width: 40%;" class="input-group-button"><a class="button button-primary" style="width: 100%;" id="open-multiview" href="/monitoring/visualisator/multiview">Open Multiview</a></span>
+                    <span class="input-group-label" style="width: 60%;">{{ clone }} instances are running</span>
+                </div>
+            </div>
+            &emsp;
+            {%- for nb in range(1, clone + 1) %}
+                <div class="row">
+                    <div class="large-12 columns">
         <pre>
 Logs for virtual instance #{{ nb }} > show in <a id="viewer_{{ nb }}" href='http://{{ robot.name }}.local:8000/{{ robot.creature }}/#{{ nb + 8080 }}' target="_blank">web viewer</a> <span id="show-switch_{{ nb }}" style="visibility:hidden" onclick="switchShow({{ nb }})">(<a>show more logs</a>)</span>
 <code style="max-height:145px; overflow-y:hidden;" id="logs_{{ nb }}" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_{{ nb }}" onclick="downloadLogs({{ nb }})">Save this log</a>
         </pre>
-      </div>
+                    </div>
+                </div>
+            {%- endfor %}
+        </div>
     </div>
-    {%- endfor %}
-  </div>
-</div>
-<div class="large-10 medium-10 row">
-  <div class="callout">
-    <div class="row">
-      <div class="columns">
-        <h3>> Viewer service</h3>
-      </div>
-    </div>
-    <div class="row">
-      <div class="columns">
-        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-viewer" href='{{ url_for('viewer') }}'>Open the Web Viewer</a>
-      </div>
-    </div>
-    &emsp;
-    <div class="row">
-      <div class="large-12 columns">
+    <div class="large-10 medium-10 row">
+        <div class="callout">
+            <div class="row">
+                <div class="columns">
+                    <h3>> Viewer service</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <a class="button button-primary" style="width: 25%; min-width:250px" id="open-viewer" href='{{ url_for('viewer') }}'>Open the Web Viewer</a>
+                </div>
+            </div>
+            &emsp;
+            <div class="row">
+                <div class="large-12 columns">
         <pre>
 Logs for web viewer <span id="show-switch_-1" style="visibility:hidden" onclick="switchShow(-1)">(<a>show more logs</a>)</span>
 <code style="max-height:145px; overflow-y:hidden;" id="logs_-1" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-1" onclick="downloadLogs(-1)">Save this log</a>
         </pre>
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<div class="large-10 medium-10 row">
-  <div class="callout">
-    <div class="row">
-      <div class="columns">
-        <h3>> Docs service</h3>
-      </div>
-    </div>
-    <div class="row">
-      <div class="columns">
-        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-docs" href='{{ url_for('docs') }}'>Open the Documentations</a>
-      </div>
-    </div>
-    &emsp;
-    <div class="row">
-      <div class="large-12 columns">
+    <div class="large-10 medium-10 row">
+        <div class="callout">
+            <div class="row">
+                <div class="columns">
+                    <h3>> Docs service</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <a class="button button-primary" style="width: 25%; min-width:250px" id="open-docs" href='{{ url_for('docs') }}'>Open the Documentations</a>
+                </div>
+            </div>
+            &emsp;
+            <div class="row">
+                <div class="large-12 columns">
         <pre>
 Logs for docs service <span id="show-switch_-2" style="visibility:hidden" onclick="switchShow(-2)">(<a>show more logs</a>)</span>
 <code style="max-height:145px; overflow-y:hidden;" id="logs_-2" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-2" onclick="downloadLogs(-2)">Save this log</a>
         </pre>
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<div class="large-10 medium-10 row">
-  <div class="callout">
-    <div class="row">
-      <div class="columns">
-        <h3>> Jupyter service</h3>
-      </div>
-    </div>
-    <div class="row">
-      <div class="columns">
-        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-jupyter" href='{{ url_for('jupyter') }}'>Open Jupyter Notebook</a>
-      </div>
-    </div>
-    &emsp;
-    <div class="row">
-      <div class="large-12 columns">
+    <div class="large-10 medium-10 row">
+        <div class="callout">
+            <div class="row">
+                <div class="columns">
+                    <h3>> Jupyter service</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <a class="button button-primary" style="width: 25%; min-width:250px" id="open-jupyter" href='{{ url_for('jupyter') }}'>Open Jupyter Notebook</a>
+                </div>
+            </div>
+            &emsp;
+            <div class="row">
+                <div class="large-12 columns">
         <pre>
 Logs for jupyter service <span id="show-switch_-3" style="visibility:hidden" onclick="switchShow(-3)">(<a>show more logs</a>)</span>
 <code style="max-height:145px; overflow-y:hidden;" id="logs_-3" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-3" onclick="downloadLogs(-3)">Save this log</a>
         </pre>
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<div class="large-10 medium-10 row">
-  <div class="callout">
-    <div class="row">
-      <div class="columns">
-        <h3>> ROS service</h3>
-      </div>
-    </div>
-    <div class="row">
-      <div class="columns">
-        <a class="button button-primary" style="width: 25%; min-width:250px" id="open-ros" href='{{ url_for('ros') }}'>Open ROS page</a>
-      </div>
-    </div>
-    &emsp;
-    <div class="row">
-      <div class="large-12 columns">
+    <div class="large-10 medium-10 row">
+        <div class="callout">
+            <div class="row">
+                <div class="columns">
+                    <h3>> ROS service</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <a class="button button-primary" style="width: 25%; min-width:250px" id="open-ros" href='{{ url_for('ros') }}'>Open ROS page</a>
+                </div>
+            </div>
+            &emsp;
+            <div class="row">
+                <div class="large-12 columns">
         <pre>
 Logs for ROS service <span id="show-switch_-4" style="visibility:hidden" onclick="switchShow(-4)">(<a>show more logs</a>)</span>
 <code style="max-height:145px; overflow-y:hidden;" id="logs_-4" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-4" onclick="downloadLogs(-4)">Save this log</a>
         </pre>
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="large-10 medium-10 row" align="center">
-    <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open a Terminal</a><br>
+    <div class="large-10 medium-10 row" align="center">
+        <div class="large-3 medium-6 small-6 columns">
+            <a class="button button-primary" id="terminal" href="{{ url_for('terminal') }}" style="width: 100%;">Open a Terminal</a><br>
+        </div>
+        <div class="large-3 medium-6 small-6 columns">
+            <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Reboot robot services</a><br>
+        </div>
+        <div class="large-3 medium-6 small-6 columns">
+            <a class="button button-primary" id="reboot-rasp" onclick="refreshForMsg('{{ url_for('reboot') }}')" style="width: 100%;">Reboot  {{ info.board }}</a><br>
+        </div>
+        <div class="large-3 medium-6 small-6 columns">
+            <a class="button button-primary" id="shutdown" onclick="refreshForMsg('{{ url_for('shutdown') }}')" style="width: 100%;">Halt  {{ info.board }}</a><br>
+        </div>
     </div>
-    <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="reboot-services" onclick="refreshForMsg('{{ url_for('restart_services') }}')" style="width: 100%;">Reboot robot services</a><br>
-    </div>
-    <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="reboot-rasp" onclick="refreshForMsg('{{ url_for('reboot') }}')" style="width: 100%;">Reboot  {{ info.board }}</a><br>
-    </div>
-    <div class="large-3 medium-6 small-6 columns">
-        <a class="button button-primary" id="shutdown" onclick="refreshForMsg('{{ url_for('shutdown') }}')" style="width: 100%;">Halt  {{ info.board }}</a><br>
-    </div>
-</div>
-&emsp;
+    &emsp;
 {% endblock content %}
 
 {% block endscript %}
-<script>
-let timeOut;
+    <script>
+        let timeOut;
 
-function refreshLogs() {
-  for (let i = -4; i < {{ clone + 1 }} ; i++) {
-      getLogs(i);
-  }
-  startTimeout();
-}
+        function refreshLogs() {
+            for (let i = -4; i < {{ clone + 1 }} ; i++) {
+                getLogs(i);
+            }
+            startTimeout();
+        }
 
-function getLogs(id) {
-  var logsElement = document.getElementById('logs_'+id);
-  $.post('{{ url_for('raw_logs') }}', {id:id}, function(rawLogs) {
-      rawLogs=rawLogs.replace(/</g,'&lt;');
-      rawLogs=rawLogs.replace(/>/g,'&gt;');
-      logsElement.innerHTML = rawLogs;
-      logsElement.scrollTop = logsElement.scrollHeight;
-      hljs.highlightBlock(logsElement);
-  });
-  if (logsElement.scrollHeight > 145) {
-      document.getElementById('show-switch_'+id).style.visibility = "visible";
-  } else {
-      document.getElementById('show-switch_'+id).style.visibility = "hidden";
-  };
-}
+        function getLogs(id) {
+            let logsElement = document.getElementById('logs_'+id);
+            $.post('{{ url_for('raw_logs') }}', {id:id}, function(rawLogs) {
+                rawLogs=rawLogs.replace(/</g,'&lt;');
+                rawLogs=rawLogs.replace(/>/g,'&gt;');
+                logsElement.innerHTML = rawLogs;
+                logsElement.scrollTop = logsElement.scrollHeight;
+                hljs.highlightBlock(logsElement);
+            });
+            if (logsElement.scrollHeight > 145) {
+                document.getElementById('show-switch_'+id).style.visibility = "visible";
+            } else {
+                document.getElementById('show-switch_'+id).style.visibility = "hidden";
+            }
+        }
 
-function switchShow(id) {
-    var showSwitch = document.getElementById('show-switch_'+id);
-    var showElement = document.getElementById('logs_'+id);
-    if (showSwitch.innerHTML === "(<a>show more logs</a>)") {
-        showElement.style.maxHeight = "none";
-        showElement.style.overflowY = "auto";
-        showSwitch.innerHTML = "(<a>show less logs</a>)";
-    } else {
-        showElement.style.maxHeight = "145px";
-        showElement.style.overflowY = "hidden";
-        showSwitch.innerHTML = "(<a>show more logs</a>)";
-    }
-}
+        function switchShow(id) {
+            var showSwitch = document.getElementById('show-switch_'+id);
+            var showElement = document.getElementById('logs_'+id);
+            if (showSwitch.innerHTML === "(<a>show more logs</a>)") {
+                showElement.style.maxHeight = "none";
+                showElement.style.overflowY = "auto";
+                showSwitch.innerHTML = "(<a>show less logs</a>)";
+            } else {
+                showElement.style.maxHeight = "145px";
+                showElement.style.overflowY = "hidden";
+                showSwitch.innerHTML = "(<a>show more logs</a>)";
+            }
+        }
 
-function downloadLogs(id) {
-    var ContentElement =  document.getElementById('save-logs_'+id);
-    ContentElement.download="logs_"+id+".txt";
-    $.post('{{ url_for('raw_logs') }}', {id:id}, function(rawLogs) {
-        ContentElement.href="data:text/html," + rawLogs.replace(/#/g,'%23');
-    });
-}
+        function downloadLogs(id) {
+            var ContentElement =  document.getElementById('save-logs_'+id);
+            ContentElement.download="logs_"+id+".txt";
+            $.post('{{ url_for('raw_logs') }}', {id:id}, function(rawLogs) {
+                ContentElement.href="data:text/html," + rawLogs.replace(/#/g,'%23');
+            });
+        }
 
-function startTimeout() {
-  timeOut = window.setTimeout(refreshLogs, 500);
-}
+        function startTimeout() {
+            timeOut = window.setTimeout(refreshLogs, 500);
+        }
 
-startTimeout();
+        startTimeout();
 
-function clone() {
-    let new_clone = document.getElementById('new_clone').value;
-    if (new_clone === ''){new_clone=1};
-    $.post('{{ url_for('clone') }}', {nb:new_clone}, function() {window.location.reload();})
-}
+        function clone() {
+            let new_clone = document.getElementById('new_clone').value;
+            if (new_clone === ''){new_clone=1};
+            $.post('{{ url_for('clone') }}', {nb:new_clone}, function() {window.location.reload();})
+        }
 
-</script>
+    </script>
 {% endblock endscript %}
