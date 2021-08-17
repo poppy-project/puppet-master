@@ -54,5 +54,17 @@
     "update" : {
         "FR" : "> Votre robot est maintenant à jour",
         "EN" : "> Your robot is now up-to-date!"
+        },
+    "start_ros" : {
+        "FR" : "> Le service ROS poppy_controllers vient de démarrer.<br>> Voir les <a href=\"{}\">logs</a>",
+        "EN" : "> ROS service poppy_controllers has been started.<br>> Show <a href=\"{}\">logs</a>"
+        },
+    "restart_ros" : {
+        "FR" : "> Le service ROS poppy_controllers a été redémarré.<br>> Voir les <a href=\"{}\">logs</a>",
+        "EN" : "> ROS service poppy_controllers has been restarted.<br>> Show <a href=\"{}\">logs</a>"
+        },
+    "stop_ros" : {
+        "FR" : "> Le service ROS poppy_controllers a été arrêté.<br>> Voir les <a href=\"{}\">logs</a>",
+        "EN" : "> ROS service poppy_controllers has been stopped.<br>> Show <a href=\"{}\">logs</a>"
         }
 }
