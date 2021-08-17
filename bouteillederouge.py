@@ -330,6 +330,55 @@ def base_static_scratch(filename):
     return send_from_directory(path + '/scratch/', filename)
 
 
+@app.route('/programming/ros')
+def ros():
+    try:
+        if pm.running:
+            flash(Markup(
+                flash_msg['api_is_start'][pm.config.info.langage].format('ROS', url_for('logs'), url_for('APIstop'))),
+                'alert')
+        return render_template(pm.config.info.langage + '/ros.html')
+    except Exception as ex:
+        template = "An exception of type {0} occured. Arguments:\n{1}"
+        message = template.format(type(ex).__name__, " ".join(ex.args))
+        return message, 400
+
+
+@app.route('/rosstart')
+def rosstart():
+    try:
+        if pm.running:
+            return render_template(pm.config.info.langage + '/ros.html')
+        else:
+            if pm.ros_is_running:
+                pm.manage_ros_service('restart')
+                flash(Markup(flash_msg['restart_ros'][pm.config.info.langage].format(url_for('logs'))), 'success')
+                return 'Restarting ROS', 202
+            else:
+                pm.manage_ros_service('start')
+                flash(Markup(flash_msg['start_ros'][pm.config.info.langage].format(url_for('logs'))), 'success')
+                return 'Starting ROS', 202
+    except Exception as ex:
+        template = "An exception of type {0} occured. Arguments:\n{1}"
+        message = template.format(type(ex).__name__, " ".join(ex.args))
+        return message, 400
+
+
+@app.route('/rosstop')
+def rosstop():
+    try:
+        if pm.ros_is_running:
+            pm.manage_ros_service('stop')
+            flash(Markup(flash_msg['stop_ros'][pm.config.info.langage].format(url_for('logs'))), 'success')
+            return 'Stopping ROS', 202
+        else:
+            return 'ROS is not running', 409
+    except Exception as ex:
+        template = "An exception of type {0} occured. Arguments:\n{1}"
+        message = template.format(type(ex).__name__, " ".join(ex.args))
+        return message, 400
+
+
 @app.route('/MyDocuments')
 def MyDoc():
     return render_template('base-iframe.html',
@@ -544,24 +593,26 @@ def shutdown():
 
 @app.route('/api/raw_logs', methods=['POST'])
 def raw_logs():
-	log_id = int(request.form['id'])
-	if log_id > 0:
-		file = pm.config.poppyLog.virtualBot.replace('.log', '_{}.log'.format(request.form['id']))
-	elif log_id == -3:
-		file = pm.config.poppyLog.jupyter
-	elif log_id == -2:
-		file = pm.config.poppyLog.docs
-	elif log_id == -1:
-		file = pm.config.poppyLog.viewer
-	else:
-		file = pm.config.poppyLog.puppetMaster
-	try:
-		with open(file) as f:
-			content = f.read()
-			f.close()
-	except IOError:
-		content = 'No log found...'
-	return Response(content, mimetype='text/plain')
+    log_id = int(request.form['id'])
+    if log_id > 0:
+        file = pm.config.poppyLog.virtualBot.replace('.log', '_{}.log'.format(request.form['id']))
+    elif log_id == -4:
+        file = pm.config.poppyLog.poppyControllers
+    elif log_id == -3:
+        file = pm.config.poppyLog.jupyter
+    elif log_id == -2:
+        file = pm.config.poppyLog.docs
+    elif log_id == -1:
+        file = pm.config.poppyLog.viewer
+    else:
+        file = pm.config.poppyLog.puppetMaster
+    try:
+        with open(file) as f:
+            content = f.read()
+            f.close()
+    except IOError:
+        content = 'No log found...'
+    return Response(content, mimetype='text/plain')
 
 
 @app.route('/api/update_raw_logs')
