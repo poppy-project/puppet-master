@@ -12,11 +12,11 @@
 <div class="large-10 medium-10 row wrap" data-equalizer data-equalize-on="medium">
 
   <div class="large-4 medium-6 columns menu-tile">
-    <a href="{{ url_for('snap') }}" data-equalizer-watch>
+    <a href="{{ url_for('scratch') }}" data-equalizer-watch>
       <h3>
-        <img width="113" height="62" src="{{ url_for('static', filename='img/logo-snap.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-snap-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Snap!">
+        <img width="150" height="62" src="{{ url_for('static', filename='img/logo-scratch.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-scratch-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Scratch">
       </h3>
-      <p>Snap</p>
+      <p>Scratch</p>
     </a>
   </div>
 
@@ -28,6 +28,25 @@
       <p>Python notebook</p>
     </a>
   </div>
+
+  <div class="large-4 medium-6 columns menu-tile">
+    <a href="{{ url_for('snap') }}" data-equalizer-watch>
+      <h3>
+        <img width="113" height="62" src="{{ url_for('static', filename='img/logo-snap.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-snap-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="Snap!">
+      </h3>
+      <p>Snap</p>
+    </a>
+  </div>
+  {% if robot.creature == "poppy-ergo-jr" %}
+    <div class="large-4 medium-6 columns menu-tile">
+      <a href="{{ url_for('ros') }}" data-equalizer-watch>
+        <h3>
+          <img width="113" height="62" src="{{ url_for('static', filename='img/logo-ros.png') }}" data-interchange="[{{ url_for('static', filename='img/logo-ros-large.png') }}, retina]" src="{{ url_for('static', filename='img/logo.png') }}" alt="ROS">
+        </h3>
+        <p>ROS</p>
+      </a>
+  </div>
+  {% endif %}
 
   <div class="large-4 medium-6 columns menu-tile">
     <a href="{{ url_for('AnotherLanguage') }}" data-equalizer-watch>
