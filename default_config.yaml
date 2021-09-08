@@ -53,9 +53,10 @@ poppyPort:
 version:
   puppetMaster: 2.0.0
   creature: 2.1.0
-  pypot: 3.2.0
+  pypot: 4.0.0
   snap: 5.4.5
   viewer: 1.0.0
   docs: 1.0.0
   ros: noetic
   monitor: 1.0.0
+  scratch: 3.0.0
