@@ -152,15 +152,16 @@ Logs for jupyter service <span id="show-switch_-3" style="visibility:hidden" onc
                     <a class="button button-primary" style="width: 25%; min-width:250px" id="open-ros" href='{{ url_for('ros') }}'>Open ROS page</a>
                 </div>
             </div>
-            &emsp;
-            <div class="row">
-                <div class="large-12 columns">
-        <pre>
-Logs for ROS service <span id="show-switch_-4" style="visibility:hidden" onclick="switchShow(-4)">(<a>show more logs</a>)</span>
-<code style="max-height:145px; overflow-y:hidden;" id="logs_-4" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-4" onclick="downloadLogs(-4)">Save this log</a>
-        </pre>
+            {% if robot.creature == "poppy-ergo-jr" %}
+                <div class="row">
+                    <div class="large-12 columns">
+                        <pre>
+                Logs for ROS service <span id="show-switch_-4" style="visibility:hidden" onclick="switchShow(-4)">(<a>show more logs</a>)</span>
+                <code style="max-height:145px; overflow-y:hidden;" id="logs_-4" class="accesslog hljs">{{ logs_content }}</code><a id="save-logs_-4" onclick="downloadLogs(-4)">Save this log</a>
+                        </pre>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 
