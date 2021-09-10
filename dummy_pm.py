@@ -43,6 +43,7 @@ class PuppetMaster(pm.PuppetMaster):
         self.update_config('robot.use-dummy', True)
         self.update_config('update.logfile', '/tmp/update.log')
 
+
     def log(self, msg, erase=False):
         if erase:
             os.remove(self.config.poppyLog.puppetMaster)
