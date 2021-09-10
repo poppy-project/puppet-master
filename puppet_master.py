@@ -247,11 +247,11 @@ class PuppetMaster(object):
         Thread(target=delayed_halt).start()
 
     def get_motors(self, alias='motors'):
-        r = requests.get('http://localhost:{}/motor/{}/list.json'.format(self.config.poppyPort.http, alias)).json()
+        r = requests.get('http://localhost:{}/motors/{}/list.json'.format(self.config.poppyPort.http, alias)).json()
         return r[alias]
 
     def send_value(self, motor, register, value):
-        url = 'http://localhost:{}/motor/{}/register/{}/value.json'
+        url = 'http://localhost:{}/motors/{}/register/{}/value.json'
         r = requests.post(url.format(self.config.poppyPort.http, motor, register), json=value)
         return r
 
