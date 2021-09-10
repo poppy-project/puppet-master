@@ -106,155 +106,160 @@
 <script>
 get_alias_list();
 let list_id_player=[]
-function compliant(state){
-    if (state) {state=1; opposite=0} else {state=0; opposite=1};
-    var motors = document.getElementById("compliant-motors_list").children;
-    for (i = 0; i < motors.length; i++) {
+
+function compliant(state) {
+    let opposite = !state;
+    let motors = document.getElementById("compliant-motors_list").children;
+    for (let i = 0; i < motors.length; i++) {
         if (motors[i].hasAttribute("name")) {
             if (motors[i].checked) {
-                $.get("{{source}}/motor/"+motors[i].name+"/set/compliant/"+state);
+                $.post(url="{{source}}/motors/"+motors[i].name+"/registers/compliant/value.json", data=state);
             } else {
-                $.get("{{source}}/motor/"+motors[i].name+"/set/compliant/"+opposite);
-            };
-        };
-    };
+                $.post(url="{{source}}/motors/"+motors[i].name+"/registers/compliant/value.json", data=opposite);
+            }
+        }
+    }
 }
+
 function get_alias_list(){
-    $.get("{{source}}/motors/alias", function(alias_list) {
-        alias=alias_list.split("/");
-        for (alia in alias) {
-            opt = document.createElement("option");
-            opt.value = alias[alia];
-            opt.text= alias[alia];
+    $.get("{{source}}/motors/aliases/list.json", function(alias_list) {
+        for (let a in alias_list) {
+            let opt = document.createElement("option");
+            opt.value = alias_list[a];
+            opt.text= alias_list[a];
             document.getElementById("record-alias_list").appendChild(opt.cloneNode(true));
             document.getElementById("compliant-alias_list").appendChild(opt.cloneNode(true));
-        };
+        }
       });
 }
+
 function set_motor_list(target) {
-    var motors = document.getElementById(target+"-motors_list").children;
-    var alias = document.getElementById(target+"-alias_list").value;
-    if (alias == 'none') {
-        for (i = 0; i < motors.length; i++) {motors[i].checked = false};
+    let motors = document.getElementById(target+"-motors_list").children;
+    let alias = document.getElementById(target+"-alias_list").value;
+    if (alias === 'none') {
+        for (let i = 0; i < motors.length; i++) {motors[i].checked = false}
     } else {
-        $.get("{{source}}/motors/"+alias, function(motors_ref) {
+        $.get("{{source}}/motors/aliases/"+alias+".json", function(motors_ref) {
             motors_ref=motors_ref.split("/");
-            for (i = 0; i < motors.length; i++) {
-                if (motors_ref.includes(motors[i].name)) {
-                    motors[i].checked = true;
-                } else {
-                    motors[i].checked = false;
-                };
-            };
+            for (let i = 0; i < motors.length; i++) {
+                motors[i].checked = motors_ref.includes(motors[i].name);
+            }
           });
     }
 }
+
 function set_alias(target) {
     document.getElementById(target+"-alias_list").value = '';
 }
+
 function state_record(state){
-    var recordName=document.getElementById("record-move_name");
-    var buttonRecord=document.getElementById("record");
-    var name = recordName.value;
-    if (name == ''){name='move_name'}
+    let recordName=document.getElementById("record-move_name");
+    let buttonRecord=document.getElementById("record");
+    let name = recordName.value;
+    if (name === '') {name='move_name'}
     if (state) {
-        var motors = document.getElementById("record-motors_list").children;
+        let motors = document.getElementById("record-motors_list").children;
         let motors_to_follow=[];
-        for (i = 0; i < motors.length; i++) {
+        for (let i = 0; i < motors.length; i++) {
             if (motors[i].checked) {
                 motors_to_follow.push(motors[i].name);
-            };
-        };
-        if (motors_to_follow.length == 0) {
-            alert('Please, select at least one motor to follow');
+            }
+        }
+        if (motors_to_follow.length === 0) {
+            alert('Veuillez sélectionner au moins 1 moteur pour l\'enregistrement');
         } else {
             buttonRecord.setAttribute("class", "button alert");
             buttonRecord.setAttribute("onclick", "state_record(false)");
-            buttonRecord.innerHTML = 'Arrêter l\'enregistrement';
+            buttonRecord.innerHTML = 'Arrêter l\' enregistrement';
             recordName.setAttribute("readonly", 'true');
-            $.get("{{source}}/primitive/MoveRecorder/"+name+"/start/"+motors_to_follow.join(';'));
-        };
+            $.post(url="{{source}}/records/"+name+"/record.json",
+                   data='{"motors": "' + motors.toString() + '"}');
+        }
     } else {
-        $.get("{{source}}/primitive/MoveRecorder/"+name+"/stop");
+        $.post(url="{{source}}/records/"+name+"/save.json", data='{}');
         add_player(name);
         buttonRecord.setAttribute("class", "button success");
         buttonRecord.setAttribute("onclick", "state_record(true)");
-        buttonRecord.innerHTML = 'Démarrer l\'enregistrement';
+        buttonRecord.innerHTML = 'Démarrer l\'enregitrement';
         recordName.value = '';
         recordName.removeAttribute("readonly");
-    };
+    }
 }
+
 function refresh_moves_list(id, ref=''){
-    $.get("{{source}}/primitive/MovePlayer", function(moves_list) {
+    $.get("{{source}}/records/list.json", function(moves) {
         $('#moves-list_'+id).empty();
-        moves=moves_list.split("/");
-        for (move in moves) {
-            opt = document.createElement("option");
+        for (let move in moves) {
+            let opt = document.createElement("option");
             opt.value = moves[move];
             opt.text= moves[move];
-            if (moves[move] == ref) {opt.selected="selected"};
+            if (moves[move] === ref) {opt.selected = true}
             document.getElementById("moves-list_"+id).appendChild(opt);
         }
       });
 }
+
 function close_player(id) {
     document.getElementById('player_'+id).remove();
     list_id_player.splice(list_id_player.indexOf(id),1);
 }
+
 function state_player(id, state, send=true){
-    var player = document.getElementById("button_player_"+id);
-    var move = document.getElementById("moves-list_"+id);
-    if (state && player.title=='Rejouer') {
+    let player = document.getElementById("button_player_"+id);
+    let move = document.getElementById("moves-list_"+id);
+    if (state && player.title === 'Play Move') {
         $('#close-player_'+id).attr('disabled', true);
         $('#refresh-player_'+id).attr('disabled', true);
         move.setAttribute('disabled', true);
-        player.title="Arrêter";
+        player.title="Arrêter le mouvement";
         player.innerHTML = '&FilledSmallSquare;';
         player.setAttribute("class", "button alert input-group-button");
         player.setAttribute("onclick", `state_player(${id}, false)`);
-        var speed = 1;
-        $.get("{{source}}/primitive/MovePlayer/"+move.value+"/start/"+speed);
+        let speed = 1;
+        $.post(url="{{source}}/records/"+move.value+"/play.json",
+               data='{"speed": "' + speed + '"}');
         player_running(id, move.value);
-    } else if (!(state) && player.title=='Arrêter') {
+    } else if (!(state) && player.title === 'Stop Move') {
         $('#close-player_'+id).attr('disabled', false);
         $('#refresh-player_'+id).attr('disabled', false);
         move.removeAttribute('disabled');
-        player.title="Rejouer";
+        player.title="Play Move";
         player.innerHTML = '&rtrif;';
         player.setAttribute("class", "button success input-group-button");
         player.setAttribute("onclick", `state_player(${id}, true)`);
-        if (send) {$.get("{{source}}/primitive/MovePlayer/"+move.value+"/stop")};
-    };
+        if (send) {
+            $.post(url="{{source}}/records/"+move.value+"/stop.json", data='{}');
+        }
+    }
 }
+
 function player_running(target, move_lock){
-    move = `_${move_lock}_player`;
-    $.get("{{source}}/primitives/running", function(moves_running) {
-        moves=moves_running.split("/");
+    let move = `_${move_lock}_player`;
+    $.get("{{source}}/primitives/running/list.json", function(moves) {
         console.log(moves);
         console.log(move);
         if (moves.includes(move)) {
             setTimeout(player_running, 250, target, move_lock);
         } else {
             state_player(target, false, false);
-        };
+        }
       });
 }
 function add_player(ref=""){
-    if (list_id_player.length == 0){
-        var id = 0;
-    } else {
-        var id = Math.max(...list_id_player)+1;
-    };
-    var original = document.getElementById('player_template');
-    var clone = original.cloneNode(true);
-    clone.id = "player_" + id;
+    let player_id = 0;
+    if (list_id_player.length !== 0){
+        player_id = Math.max(...list_id_player)+1;
+    }
+    let original = document.getElementById('player_template');
+    let clone = original.cloneNode(true);
+    clone.id = "player_" + player_id;
     clone.style.display = 'table';
     original.parentNode.appendChild(clone);
     list_id_player.push(id)
-    var children = clone.children;
-    for (i = 0; i < children.length; i++) {
+    let children = clone.children;
+    for (let i = 0; i < children.length; i++) {
         children[i].id = children[i].id.replace("template", id);
-    };
+    }
     children[0].setAttribute("onclick", `close_player(${id})`);
     children[1].setAttribute("onclick", `refresh_moves_list(${id})`);
     children[3].setAttribute("onclick", `state_player(${id}, true)`);
@@ -263,7 +268,7 @@ function add_player(ref=""){
 function play_all(state){
     for (id of list_id_player.values()) {
         state_player(id, state);
-    };
+    }
 }
 </script>
 {% endblock endscript %}
