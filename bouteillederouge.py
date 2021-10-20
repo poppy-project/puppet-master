@@ -228,7 +228,7 @@ def move_recorder():
         connect = False
         source = None
     else:
-        source = 'http://{}:{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.snap)
+        source = 'http://{}:{}'.format(urlparse(request.url_root).hostname, pm.config.poppyPort.http)
         try:
             response = requests.get(source)
             if response.status_code == 200:
