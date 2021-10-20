@@ -300,11 +300,11 @@ function dance(state) {
     if (state == 1){
         document.getElementById('start-prim').style.display = 'none';
         document.getElementById('stop-prim').style.display = 'block';
-        $.get("http://{{ robot.name }}.local:6969/primitive/dance/start");
+        $.get("http://{{ robot.name }}.local:{{ port.http }}/primitives/dance/start.json");
     } else {
         document.getElementById('start-prim').style.display = 'block';
         document.getElementById('stop-prim').style.display = 'none';
-        $.get("http://{{ robot.name }}.local:6969/primitive/dance/stop");
+        $.get("http://{{ robot.name }}.local:{{ port.http }}/primitives/dance/stop.json");
     };
 }
 $('#configure-motor').click(function () {
