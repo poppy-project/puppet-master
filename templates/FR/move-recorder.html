@@ -209,11 +209,11 @@ function close_player(id) {
 function state_player(id, state, send=true){
     let player = document.getElementById("button_player_"+id);
     let move = document.getElementById("moves-list_"+id);
-    if (state && player.title === 'Play Move') {
+    if (state && player.title === 'Rejouer') {
         $('#close-player_'+id).attr('disabled', true);
         $('#refresh-player_'+id).attr('disabled', true);
         move.setAttribute('disabled', true);
-        player.title="Arrêter le mouvement";
+        player.title="Arrêter";
         player.innerHTML = '&FilledSmallSquare;';
         player.setAttribute("class", "button alert input-group-button");
         player.setAttribute("onclick", `state_player(${id}, false)`);
@@ -221,11 +221,11 @@ function state_player(id, state, send=true){
         $.post(url="{{source}}/records/"+move.value+"/play.json",
                data='{"speed": "' + speed + '"}');
         player_running(id, move.value);
-    } else if (!(state) && player.title === 'Stop Move') {
+    } else if (!(state) && player.title === 'Arrêter') {
         $('#close-player_'+id).attr('disabled', false);
         $('#refresh-player_'+id).attr('disabled', false);
         move.removeAttribute('disabled');
-        player.title="Play Move";
+        player.title="Rejouer";
         player.innerHTML = '&rtrif;';
         player.setAttribute("class", "button success input-group-button");
         player.setAttribute("onclick", `state_player(${id}, true)`);
