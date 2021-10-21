@@ -10,7 +10,7 @@
   <div class="columns callout">
     <div class="section-title"><h4>ERROR</h4></div>
     <div class="columns">
-      <p><strong>Snap server not ready!</strong> If API is running, show <a href="{{ url_for('logs') }}" >Logs page</a> or <a onclick="window.location.reload()">Refresh</a>, else <a onclick="refreshForMsg('{{ url_for('APIstart') }}')" >Start API</a>.</p>
+      <p><strong>Robot API not ready!</strong> If the API is running, consult the <a href="{{ url_for('logs') }}" >Logs page</a> or <a onclick="window.location.reload()">Refresh</a>, else <a onclick="refreshForMsg('{{ url_for('APIstart') }}')" >Start API</a>.</p>
     </div>
   </div>
   {% else %}
@@ -113,9 +113,9 @@ function compliant(state) {
     for (let i = 0; i < motors.length; i++) {
         if (motors[i].hasAttribute("name")) {
             if (motors[i].checked) {
-                $.post(url="{{source}}/motors/"+motors[i].name+"/registers/compliant/value.json", data=state);
+                $.post(url="{{source}}/motors/"+motors[i].name+"/registers/compliant/value.json", data=JSON.stringify(state));
             } else {
-                $.post(url="{{source}}/motors/"+motors[i].name+"/registers/compliant/value.json", data=opposite);
+                $.post(url="{{source}}/motors/"+motors[i].name+"/registers/compliant/value.json", data=JSON.stringify(opposite));
             }
         }
     }
@@ -123,6 +123,7 @@ function compliant(state) {
 
 function get_alias_list(){
     $.get("{{source}}/motors/aliases/list.json", function(alias_list) {
+        alias_list = JSON.parse(alias_list).aliases;
         for (let a in alias_list) {
             let opt = document.createElement("option");
             opt.value = alias_list[a];
@@ -139,8 +140,8 @@ function set_motor_list(target) {
     if (alias === 'none') {
         for (let i = 0; i < motors.length; i++) {motors[i].checked = false}
     } else {
-        $.get("{{source}}/motors/aliases/"+alias+".json", function(motors_ref) {
-            motors_ref=motors_ref.split("/");
+        $.get("{{source}}/motors/"+alias+"/list.json", function(motors_ref) {
+            motors_ref=JSON.parse(motors_ref)[alias];
             for (let i = 0; i < motors.length; i++) {
                 motors[i].checked = motors_ref.includes(motors[i].name);
             }
@@ -173,7 +174,7 @@ function state_record(state){
             buttonRecord.innerHTML = 'STOP Record';
             recordName.setAttribute("readonly", 'true');
             $.post(url="{{source}}/records/"+name+"/record.json",
-                   data='{"motors": "' + motors.toString() + '"}');
+                   data='{"motors": "' + motors_to_follow.join() + '"}');
         }
     } else {
         $.post(url="{{source}}/records/"+name+"/save.json", data='{}');
@@ -189,6 +190,7 @@ function state_record(state){
 function refresh_moves_list(id, ref=''){
     $.get("{{source}}/records/list.json", function(moves) {
         $('#moves-list_'+id).empty();
+        moves = JSON.parse(moves).moves;
         for (let move in moves) {
             let opt = document.createElement("option");
             opt.value = moves[move];
@@ -236,8 +238,7 @@ function state_player(id, state, send=true){
 function player_running(target, move_lock){
     let move = `_${move_lock}_player`;
     $.get("{{source}}/primitives/running/list.json", function(moves) {
-        console.log(moves);
-        console.log(move);
+        moves = JSON.parse(moves).running_primitives;
         if (moves.includes(move)) {
             setTimeout(player_running, 250, target, move_lock);
         } else {
@@ -246,13 +247,13 @@ function player_running(target, move_lock){
       });
 }
 function add_player(ref=""){
-    let player_id = 0;
+    let id = 0;
     if (list_id_player.length !== 0){
-        player_id = Math.max(...list_id_player)+1;
+        id = Math.max(...list_id_player)+1;
     }
     let original = document.getElementById('player_template');
     let clone = original.cloneNode(true);
-    clone.id = "player_" + player_id;
+    clone.id = "player_" + id;
     clone.style.display = 'table';
     original.parentNode.appendChild(clone);
     list_id_player.push(id)
